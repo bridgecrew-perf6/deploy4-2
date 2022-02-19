@@ -121,7 +121,7 @@ document.getElementById("desc").innerHTML = "Find video inspirations quick & eas
         <a width="80%" onclick="unMySearch()" class="back_icon" href="#">
           <img style = "width: 40%; "src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
         </a>
-        <form class="" action="http://localhost:8000/search-video" method="post">
+        <form class="" action="http://kudos02.pythonanywhere.com/search-video" method="post">
           {% csrf_token %}
           {{form}}
           <input style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
@@ -133,8 +133,8 @@ document.getElementById("desc").innerHTML = "Find video inspirations quick & eas
     <div id="profile-page">
       <div>
         
-      <a href="http://localhost:8000/register">LogIn</a>
-      <a href="http://localhost:8000/login">SignUp</a>
+      <a href="http://kudos02.pythonanywhere.com/register">LogIn</a>
+      <a href="http://kudos02.pythonanywhere.com/login">SignUp</a>
         
       </div>
       <br><br>
@@ -193,17 +193,16 @@ document.getElementById("desc").innerHTML = "Find video inspirations quick & eas
           <h2>No Record Found</h2>
           {% endif %}
         </div>
-      
         <div class="footer">
           <div class="footer_dimensions">
 
-              <a class="pluudo_mid_icons" href="">
-                <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
-              </a>
+            <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
+              <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
+            </a>
               <a class="pluudo_mid_icons" href="">
                 <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
               </a>
-              <a class="pluudo_mid_icons" href="">
+              <a onclick="myProfile()" class="pluudo_mid_icons" >
                 <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
               </a>
 
