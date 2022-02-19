@@ -1,0 +1,92 @@
+{% load static %}
+{% load embed_video_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/styles.css">
+</head>
+<body>
+
+  <style>
+
+    div#sticky {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    
+  </style>
+
+    {% video my_video.video as myvideo %}
+      <div id="sticky">
+        {% if "youtube" in myvideo.url %}
+        <iframe src="{{myvideo.url}}&autoplay=1&mute=1" style="position: relative; height: 17em;
+        width: 100%;" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        {% endif %}
+        {% if "youtube" not in  myvideo.url %}
+        <iframe src="{{myvideo.url}}?autoplay=1&muted=1" style="position: relative; height: 17em;
+        width: 100%;" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        {% endif %}
+      </div>
+        <div style="text-align: center;">
+          {{my_video.desc}}
+          <br>
+          {{my_video.added}}
+          <!-- <br>
+          <a href="{{myvideo.url}}">see on official website</a> -->
+        </div>
+      </div>
+    {% endvideo %}
+        
+
+    <h1 style="text-align: center;">Similar videos</h1>
+   <div class="">
+        {% for i in obj %}
+        {% video i.video as my_video %}
+          <div class="videos_list">
+            <div style="width: 100%; height: auto">
+
+              <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+                <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
+              </a>
+              
+            </div>
+              {{my_video.backend}}
+              
+            <div class="video_description">
+            {{ i.desc }}, {{ i.added }} 
+            </div>
+            <br> <br> <br>
+          </div> 
+        {% endvideo %}  
+        {% endfor %}
+        </div>
+    <div class="footer">
+      <div class="footer_dimensions">
+
+          <a class="pluudo_mid_icons" href="">
+            <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
+          </a>
+          <a class="pluudo_mid_icons" href="">
+            <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
+          </a>
+          <a class="pluudo_mid_icons" href="">
+            <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
+          </a>
+
+      </div>
+      <div>
+        <a onclick="history.back()" class="back_icon" href="#">
+          <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+        </a>
+        <a class="pluudo_icon" href="#">
+          <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
+        </a>
+      </div>
+    </div>
+</body>
+</html>

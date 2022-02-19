@@ -1,0 +1,215 @@
+{% load static %}
+{% load embed_video_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pluudo.com</title>
+  <script src="../../static/style.js"></script>
+  <link rel="stylesheet" href="../../static/styles.css">
+</head>
+<script>
+  ////
+// code to count number of times the site is loaded
+
+let bool = 1;
+
+var n = localStorage.getItem('on_load_counter');
+
+if (n === null) {
+    n = 0;
+}
+
+n++;
+
+localStorage.setItem("on_load_counter", n);
+
+//////////////////
+
+//////////////////// 
+
+// code to hide and show videos' description on click
+
+function hide() {
+var list = document.getElementsByClassName("video_description");
+for(var i=0; i<list.length; i++){
+if(bool%2 == 0){
+list[i].style.display = 'block';
+}
+else{
+list[i].style.display = 'none';
+}
+}
+bool++;
+}
+//////////////////////
+
+
+//////////////////////
+//code to identify which description about site need to be shown
+
+function myFunction() {
+//localStorage.setItem(localStorage.getItem("count"), localStorage.getItem("count")+1)
+localStorage.setItem("count",localStorage.getItem("count")+1);
+
+if(n%3 == 0){
+document.getElementById("desc").innerHTML = "Your search engine for visually appealing videos ";
+}
+if(n%3 == 1){
+document.getElementById("desc").innerHTML = "Collect videos from all across & store at one place ";
+}
+if(n%3 == 2){
+document.getElementById("desc").innerHTML = "Find video inspirations quick & easy ";
+}
+}
+////////////////////  
+</script>
+<body onload="myFunction()">
+  
+
+  <script>
+
+    function mySearch(){
+      document.getElementById("search-page").style.display = "inline";
+      document.getElementById("main-page").style.display = "none";
+    }
+  
+    function unMySearch(){
+      document.getElementById("search-page").style.display = "none";
+      document.getElementById("main-page").style.display = "block";
+    }
+    
+  </script>
+  
+  <script>
+  
+    function myProfile(){
+      document.getElementById("profile-page").style.display = "inline";
+      document.getElementById("main-page").style.display = "none";
+    }
+  
+    function unMyProfile(){
+      document.getElementById("profile-page").style.display = "none";
+      document.getElementById("main-page").style.display = "block";
+    }
+    
+  </script>
+  
+  <style>
+  
+    #search-page{
+      display: none;
+    }
+  
+    #profile-page{
+      display: none;
+    }
+  
+  </style>
+  
+  <style>
+    #main{
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  
+    <div id="search-page">
+      <div id="main">
+        <a width="80%" onclick="unMySearch()" class="back_icon" href="#">
+          <img style = "width: 40%; "src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+        </a>
+        <form class="" action="http://kudos02.pythonanywhere.com/search-video" method="post">
+          {% csrf_token %}
+          {{form}}
+          <input style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
+        </form>
+        
+      </div>
+    </div>
+  
+    <div id="profile-page">
+      <div>
+        
+      <a href="http://kudos02.pythonanywhere.com/register">LogIn</a>
+      <a href="http://kudos02.pythonanywhere.com/login">SignUp</a>
+        
+      </div>
+      <br><br>
+      <a onclick="unMyProfile()" class="back_icon" href="#">
+        <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+      </a>
+    </div>
+  
+    <div id="main-page">
+
+       <div class="header" style="color:blue;">
+        <a class="pluudo_logo" href="http://kudos02.pythonanywhere.com">
+          <img src="../static/anne/logo.png" alt="Pluudo_logo">
+        </a>
+        
+        <a class="show_hide_desc" onclick="hide()">
+         <img src="../static/anne/Pluudo_Show_Text.png" alt="videos_description">
+       </a>
+     </div>
+
+         <div id="desc" style="text-align:center; "> </div>
+         
+       <br><br>
+        <!-- <button onclick="hide()">Desc</button> 
+        <a onclick="hide()">
+          <img src="../static/anne/Pluudo_Show_Text.png" alt="">
+        </a>
+        -->
+        <div class="">
+          {% for i in obj %}
+          {% video i.video as my_video %}
+            <div class="videos_list">
+              <!-- <div class = "video-container">
+                 {% video my_video  %} 
+                <img src="{{my_video.thumbnail}}" alt="">
+              </div> -->
+              <div style="width: 100%; height: auto">
+
+                <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+                  <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
+                </a>
+                
+              </div>
+              <div class="video_description">
+              {{ i.desc }}, {{ i.added }} 
+              </div>
+              <br> <br> 
+            </div> 
+          {% endvideo %}  
+          {% endfor %}
+          </div>
+        <div class="footer">
+          <div class="footer_dimensions">
+
+            <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
+              <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
+            </a>
+              <a class="pluudo_mid_icons" href="">
+                <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
+              </a>
+              <a onclick="myProfile()" class="pluudo_mid_icons" >
+                <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
+              </a>
+
+          </div>
+          <div>
+            <!-- <a class="back_icon" href="#">
+              <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+            </a> -->
+            <a class="pluudo_icon" href="#">
+              <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
+            </a>
+          </div>
+        </div>
+      </div>  
+    </div>
+</body>
+</html>
