@@ -19,4 +19,10 @@ class UserRegisterForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
       class Meta:
           model = Profile
-          fields = {'first_name', 'about', 'website_name', 'phone_no'}    
+          fields = {'first_name', 'about', 'website_name', 'phone_no'} 
+          widgets={
+            'first_name':forms.TextInput(attrs={'class':'form-control','placeholder':'e.g. The Weeknd'}),
+            'about':forms.TextInput(attrs={'class':'form-control','placeholder':'describe about yourself'}),
+            'website_name':forms.TextInput(attrs={'class':'form-control','placeholder':'e.g. pluudo.com'}),
+            'phone_no':forms.TextInput(attrs={'class':'form-control','placeholder':'e.g. 1234567890'}),
+            }     

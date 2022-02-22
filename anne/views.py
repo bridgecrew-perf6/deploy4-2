@@ -52,7 +52,10 @@ def register(request):
             form.save()
             ##################################################################
             messages = 'Your account has been created ! You are now able to log in'
-            return render(request, 'anne/profile.html', {'msg':messages})
+            username = request.POST['username']
+            form_ = ProfileForm()
+            form_.data['user'] = username
+            return render(request, 'anne/profile.html', {'msg':messages, 'form':form_, 'username':username})
     else:
         form = UserRegisterForm()
     return render(request, 'anne/register.html', {'form': form, 'title':'reqister here'})
@@ -73,30 +76,44 @@ def Login(request):
             login(request, user)
             try:
                 profile = models.Profile.objects.get(user=user)
-
             except:
                 profile = False
                 return render(request, 'anne/profile.html',{'profile':profile})
             request.session['sess_id'] = profile.id
             if 'sess_id' in request.session:
                 sess_id = request.session['sess_id']
-                print(sess_id)
-                print(sess_id)
-                print(sess_id)
-                print(sess_id)
             fields = {'id':profile.id,'about':profile.about,'first_name':profile.first_name,'website_name':profile.website_name, 'phone_no':profile.phone_no}
             form = ProfileForm(initial=fields)
-            return render(request, 'anne/profile.html',{'profile':profile, 'form':form})    
+            return render(request, 'anne/profile.html',{'profile':profile, 'form':form})   
         else:
-            messages = 'Your account has been created ! You are now to logged in'
-            return render(request, 'anne/profile.html', {'msg':messages})
+            form = AuthenticationForm()
+            messages = "Either username or password is incorrect....TRY AGAIN !!!"
+            res = render(request,'anne/login.html',{'form':form,'messages':messages})
+            return res    
     form = AuthenticationForm()
     return render(request, 'anne/login.html', {'form':form, 'title':'log in'})
 
 
+def addProfile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST or None)
+        print(form)
+        if form.is_valid():
+            profile = models.Profile()
+            username = request.GET['username']
+            user = models.User.objects.get(username=username)
+            profile.user = user
+            profile.first_name = form.data['first_name']
+            profile.about = form.data['about']
+            profile.website_name = form.data['website_name']
+            profile.phone_no = form.data['phone_no']
+            profile.save()
+            return render(request,'anne/profile.html',{'profile':profile, 'form':form})
+
 @login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def editProfile(request):
     if request.method == 'POST':
+        print("aman")
         if 'sess_id' in request.session:
             sess_id = request.session['sess_id']
             profile = models.Profile.objects.get(id = sess_id)
