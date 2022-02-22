@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate,login,logout
-from .forms import SearchVideoForm
+from .forms import SearchVideoForm, ProfileForm
 from anne import models
 
 from django.contrib.auth import authenticate,login,logout
@@ -57,7 +57,7 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'anne/register.html', {'form': form, 'title':'reqister here'})
   
-################ login forms###################################################
+################ login forms ###################################################
 def Login(request):
     if request.method == 'POST':
   
@@ -65,12 +65,50 @@ def Login(request):
   
         username = request.POST['username']
         password = request.POST['password']
+        print(username)
+        print(password)
         user = authenticate(request, username = username, password = password)
-        if user is not None:
-            form = login(request, user)
-            return render(request, 'anne/profile.html',)
+        print(user)
+        if user:
+            login(request, user)
+            try:
+                profile = models.Profile.objects.get(user=user)
+
+            except:
+                profile = False
+                return render(request, 'anne/profile.html',{'profile':profile})
+            request.session['sess_id'] = profile.id
+            if 'sess_id' in request.session:
+                sess_id = request.session['sess_id']
+                print(sess_id)
+                print(sess_id)
+                print(sess_id)
+                print(sess_id)
+            fields = {'id':profile.id,'about':profile.about,'first_name':profile.first_name,'website_name':profile.website_name, 'phone_no':profile.phone_no}
+            form = ProfileForm(initial=fields)
+            return render(request, 'anne/profile.html',{'profile':profile, 'form':form})    
         else:
             messages = 'Your account has been created ! You are now to logged in'
             return render(request, 'anne/profile.html', {'msg':messages})
     form = AuthenticationForm()
-    return render(request, 'anne/login.html', {'form':form, 'title':'log in'})        
+    return render(request, 'anne/login.html', {'form':form, 'title':'log in'})
+
+
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
+def editProfile(request):
+    if request.method == 'POST':
+        if 'sess_id' in request.session:
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            form = ProfileForm(request.POST or None, instance=profile)
+            form.save()
+            return render(request,'anne/profile.html',{'profile':profile, 'form':form})
+
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
+def viewProfile(request):
+    if 'sess_id' in request.session:
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            form = ProfileForm(request.POST or None, instance=profile)
+            return render(request,'anne/profile.html',{'profile':profile, 'form':form})
+                      

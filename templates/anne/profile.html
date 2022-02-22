@@ -8,6 +8,28 @@
 </head>
 <body>
     <h1>Profile</h1>
+    name : {{profile.first_name|upper}}
+        <br>
+        mob no. : {{profile.phone_no}}
+        <br>
+        website : {{profile.website_name}}
+        <br>
+        about : {{profile.about}}
+        <br>
+        id : {{profile.id}}
+        
+        <form action="http://kudos02.pythonanywhere.com/edit-profile/" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Edit">
+        </form>
+
+    {% else %} 
+     
+        <p> edit profile </p>
+
+    {% endif %}
+
     {{ msg }}
     <a href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
 </body>

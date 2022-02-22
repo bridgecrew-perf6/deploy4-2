@@ -195,9 +195,15 @@ document.getElementById("desc").innerHTML = "Find video inspirations quick & eas
               <a class="pluudo_mid_icons" href="">
                 <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
               </a>
+              {% if request.session.sess_id %}
+              <a class="pluudo_mid_icons" href="http://localhost:8000/view-profile">
+                <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
+              </a>
+              {% else %}
               <a onclick="myProfile()" class="pluudo_mid_icons" >
                 <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
               </a>
+              {% endif %}
 
           </div>
           <div>
