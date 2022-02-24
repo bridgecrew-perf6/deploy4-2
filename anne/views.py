@@ -21,13 +21,20 @@ def userLogout(request):
     logout(request)
     return HttpResponseRedirect('http://kudos02.pythonanywhere.com/login/')
 def searchUser(request):
+    users = models.User.objects.all()
+    emails = []
+    authform = AuthenticationForm()
+    registerform = UserRegisterForm()
+    for i in users:
+        print(i.email)
+        emails.append(i.email)
     authform = AuthenticationForm()
     regform = UserRegisterForm()
     form = SearchVideoForm()
     obj = models.Item.objects.all()
     print(obj)
     site_d = models.SiteDesc.objects.all()
-    return render(request,'anne/index.html', {'obj':obj, 'site_des':set(site_d), 'form': form, 'regform' : regform, 'authform' : authform})
+    return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form, 'regform' : regform, 'authform' : authform, 'emails' : emails})
 
 
 def videoPlayer(request):
@@ -78,7 +85,8 @@ def Login(request):
                 profile = models.Profile.objects.get(user=user)
             except:
                 profile = False
-                return render(request, 'anne/profile.html',{'profile':profile})
+                form = ProfileForm
+                return render(request, 'anne/profile.html',{'profile':profile, 'form':form, 'username':username})
             request.session['sess_id'] = profile.id
             if 'sess_id' in request.session:
                 sess_id = request.session['sess_id']
@@ -88,7 +96,7 @@ def Login(request):
         else:
             form = AuthenticationForm()
             messages = "Either username or password is incorrect....TRY AGAIN !!!"
-            res = render(request,'anne/login.html',{'form':form,'messages':messages})
+            res = render(request,'anne/index.html',{'authform':form,'messages':messages})
             return res    
     form = AuthenticationForm()
     return render(request, 'anne/login.html', {'form':form, 'title':'log in'})
@@ -108,6 +116,7 @@ def addProfile(request):
             profile.website_name = form.data['website_name']
             profile.phone_no = form.data['phone_no']
             profile.save()
+            request.session['sess_id'] = profile.id
             return render(request,'anne/profile.html',{'profile':profile, 'form':form})
 
 @login_required(login_url='http://kudos02.pythonanywhere.com/login/')

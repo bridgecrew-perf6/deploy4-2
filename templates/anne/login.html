@@ -11,12 +11,18 @@
     
     <form method="POST">
       {% csrf_token %}
-      {{form.media}}
-        {{ form.as_table }}
+        {{ form }}
       <button type="submit"></span>login</button>
-    <a href="http://kudos02.pythonanywhere.com/register">don't have account,sign up</a>
+    
+    <br/>
+ 
+    {% if messages %}
+     {{messages}}
+     <br> OR <br>
+    {% endif %}  
+        
+    <a href="http://kudos02.pythonanywhere.com/register">Don't have account,sign up</a>
     </form>
-  
    </div>
 </body>
 </html>

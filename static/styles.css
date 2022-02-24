@@ -35,6 +35,21 @@ p
     align-items: center;
   } */
 
+
+  #search-page{
+    display: none;
+  }
+
+  #profile-page{
+    display: none;
+  }
+
+
+  #main{
+    display: flex;
+    align-items: center;
+  }
+
   .site_used_for {
     display: block;
     text-align: center;
@@ -52,6 +67,12 @@ p
 
   .video_description { 
     display:block;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 
   .video-container { 
