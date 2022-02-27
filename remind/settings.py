@@ -27,7 +27,7 @@ SECRET_KEY = 'o*6@+hv&%4g_g$@xuy46cdud8&ge0yd&zflgew_=7cv9#cl(c('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
