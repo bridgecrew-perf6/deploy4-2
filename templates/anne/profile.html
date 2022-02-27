@@ -33,7 +33,7 @@
 
     {% else %} 
      
-        <p> Edit Profile please...</p>
+        <h2>Profile Page</h2>
         <form action="http://kudos02.pythonanywhere.com/add-profile/?username={{username}}" method="post">
             {% csrf_token %}
             {{form.as_p}}
