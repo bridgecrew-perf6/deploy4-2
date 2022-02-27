@@ -62,6 +62,7 @@ def register(request):
             form.save()
             ##################################################################
             username = request.POST['username']
+            request.session['session_username'] = username
             return render(request, 'anne/profile.html', {'username':username})
     else:
         print("not entering to register function")
@@ -81,7 +82,8 @@ def Login(request):
         user = authenticate(request, username = username, password = password)
         print(user)
         if user:
-            request.session['session_username'] = username
+            if 'session_username' not in request.session:
+                request.session['session_username'] = username
             return render(request, 'anne/profile.html')   
         else:
             form = LoginForm()
