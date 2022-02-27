@@ -19,7 +19,7 @@ from django.template import Context
 
 def userLogout(request):
     logout(request)
-    return HttpResponseRedirect('http://kudos02.pythonanywhere.com/login/')
+    return HttpResponseRedirect('http://kudos02.pythonanywhere.com/')
 
 def searchUser(request):
     users = models.CustomUser.objects.all()
