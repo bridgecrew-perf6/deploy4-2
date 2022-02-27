@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../../static/styles.css">
 </head>
 <body onload="myFunction()">
+  <!-- {{emails}} -->
   <style>
     body {
     text-align: center;
@@ -53,42 +54,66 @@
      <div class="popup">
         <div class="blocker" onclick="hidePopup()"></div>
         <div class="contents" style="overflow: scroll;">
-        
-          <p>{{emails}}</p>
+          <div id="emailform">
+            Email 
+            <br>
+            <input id = "emailentered" type="email">
+            <br>
+            <button onclick="emailPopup()" id="submit_email">Next</button>
+          </div>
 
 
-        <div id = "emailform">
-          Email <br>
-          <input id="emailentered" type="email">
-          <button onclick="emailPopup()">Next</button>
-        </div>
-
-
-        
-        <div class="content-section col-md-8 col-md-offset-2">
-          <form action="http://kudos02.pythonanywhere.com/login/" id="passwordform" method="POST">
-            {% csrf_token %}
-      
-            {{ authform.as_p }}
+          <div class="content-section col-md-8 col-md-offset-2">
+           
+            <form id="passwordform" action="http://kudos02.pythonanywhere.com/login/" method="POST">
+              {% csrf_token %}
+              <input id="username" type="email" name="username">
+              password
+              <input id="your_password" type="password" name="password">
+              <button type="submit">login</button>
+            <br/>
+         
+            {% if messages %}
+             {{messages}}
+             <br> OR <br>
+            {% endif %}  
+            </form>
             
-              <button type="submit">sign up</button>
-            <br />
-            <a href="http://kudos02.pythonanywhere.com/login" >Already have an account ?</a>
-          </form>
+            <form action="http://kudos02.pythonanywhere.com/register/" id="registerform" method="POST">
+              {% csrf_token %}
+              Email <br>
+              <input style="display: none;"id="email" type="email" name="email">
+              <div id="confirmpassword">
+                password <br>
+                <input id="password1"  name="password1">
+                <br>
+                confirm password <br>
+                <input id="password2"  name="password2">
+                <br>
+                <input value="next" type="button" onclick="confirmPassword()" id="submit_password">
+                <p id="password_not_valid"></p>
+              <br/>
+              </div>
+              <div id="confirmusername">
+                first name <br>
+                <input type="text" name="first_name">
+                <br>
+                last name <br>
+                <input type="text" name="last_name">
+                <br>
+                username <br>
+                <input type="text" name="username">
+                <br>
+                <input type="submit" value="register">
+              </div>
+            </form>
+          </div>
 
-          <form action="http://kudos02.pythonanywhere.com/register/" id="cnrfpasswordform" method="POST">
-            {% csrf_token %}
-      
-            {{ registerform.as_p }}
-            
-              <button type="submit">sign up</button>
-            <br />
-            <a href="http://kudos02.pythonanywhere.com/login" >Already have an account ?</a>
-          </form>
-        </div>
+
           <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
          
           </iframe>
+
         </div>
       </div>
       
@@ -102,7 +127,7 @@
         }
           document.getElementById("emailform").style.display = "block";
           document.getElementById("passwordform").style.display = "none";
-          document.getElementById("cnrfpasswordform").style.display = "none";
+          document.getElementById("registerform").style.display = "none";
 
       }
       function hidePopup() {
@@ -116,7 +141,7 @@
 
       function emailPopup(){
           var email_entered = document.getElementById("emailentered").value;
-          console.log(email_entered);
+          // console.log(email_entered);
           if(email_entered.includes("@gmail.com") == false){
             alert("please enter a valid email");
             return;
@@ -138,19 +163,36 @@
           if(bool == true){
           console.log("yes");  
           document.getElementById("emailform").style.display = "none";
+          document.getElementById("username").style.display = "none";
+          document.getElementById("username").value = email_entered;
           document.getElementById("passwordform").style.display = "block";
-          document.getElementById("cnrfpasswordform").style.display = "none";
+          document.getElementById("registerform").style.display = "none";
          } 
          else{
           console.log("no") 
+          document.getElementById("email").value = email_entered;
           document.getElementById("emailform").style.display = "none";
           document.getElementById("passwordform").style.display = "none";
-          document.getElementById("cnrfpasswordform").style.display = "block";
+          document.getElementById("registerform").style.display = "block";
+          document.getElementById("confirmusername").style.display = "none";
+          document.getElementById("confirmpassword").style.display = "block";
          }
           
+
       }
 
-
+      function confirmPassword(){
+           let p1 = document.getElementById("password1").value ;
+           let p2 = document.getElementById("password2").value ;
+           if(p1 === p2 && p1.length >=8 ){
+            document.getElementById("confirmusername").style.display = "block";
+            document.getElementById("confirmpassword").style.display = "none";
+           }
+           else{
+            document.getElementById("password_not_valid").innerHTML = "password not matched or length should of atleast 6 characters";
+           }
+          
+         }
       </script>
       
   
@@ -223,7 +265,7 @@
     <div id="main-page">
 
        <div class="header" style="color:blue;">
-        <a class="pluudo_logo" href="http://kudos02.pythonanywhere.com">
+        <a class="pluudo_logo" href="http://kudos02.pythonanywhere.com/">
           <img src="../static/anne/logo.png" alt="Pluudo_logo">
         </a>
         
@@ -272,7 +314,7 @@
               <a class="pluudo_mid_icons" href="">
                 <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
               </a>
-              {% if request.session.sess_id %}
+              {% if request.session.session_username %}
               <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
                 <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
               </a>
