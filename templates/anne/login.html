@@ -7,22 +7,128 @@
   <title>Document</title>
 </head>
 <body>
-  <div class="content-section col-md-8 col-md-offset-2">
+  <div class="contents">
+    <div id="emailform">
+      Email 
+      <br>
+      <input id = "emailentered" type="email">
+      <br>
+      <button onclick="emailPopup()" id="submit_email">Next</button>
+    </div>
+
+
+    <div class="content-section col-md-8 col-md-offset-2">
+     
+      <form id="passwordform" action="http://kudos02.pythonanywhere.com/login/" method="POST">
+        {% csrf_token %}
+        <input id="username" type="email" name="username">
+        password
+        <input id="your_password" type="password" name="password">
+        <button type="submit">login</button>
+        <p id="valid_email"></p>
+      <br/>
+   
+      {% if messages %}
+       {{messages}}
+       <br> OR <br>
+      {% endif %}  
+      </form>
+      
+      <form action="http://kudos02.pythonanywhere.com/register/" id="registerform" method="POST">
+        {% csrf_token %}
+        Email <br>
+        <input style="display: none;"id="email" type="email" name="email">
+        <div id="confirmpassword">
+          password <br>
+          <input id="password1"  name="password1">
+          <br>
+          confirm password <br>
+          <input id="password2"  name="password2">
+          <br>
+          <input value="next" type="button" onclick="confirmPassword()" id="submit_password">
+          <p id="password_not_valid"></p>
+        <br/>
+        </div>
+        <div id="confirmusername">
+          first name <br>
+          <input type="text" name="first_name">
+          <br>
+          last name <br>
+          <input type="text" name="last_name">
+          <br>
+          username <br>
+          <input type="text" name="username">
+          <br>
+          <input type="submit" value="register">
+        </div>
+      </form>
+    </div>
+
+
+
+<script>
+
+    document.getElementById("emailform").style.display = "block";
+    document.getElementById("passwordform").style.display = "none";
+    document.getElementById("registerform").style.display = "none";
+
+function emailPopup(){
+    var email_entered = document.getElementById("emailentered").value;
+    console.log(email_entered);
+    if(email_entered.includes(".com") == false || email_entered.includes("@") == false){
+      document.getElementById("valid_email").innerHTML = "please enter a valid email";
+      return
+    }
     
-    <form method="POST">
-      {% csrf_token %}
-        {{ form }}
-      <button type="submit"></span>login</button>
+    let bool = false;
     
-    <br/>
- 
-    {% if messages %}
-     {{messages}}
-     <br> OR <br>
-    {% endif %}  
-        
-    <a href="http://kudos02.pythonanywhere.com/register">Don't have account,sign up</a>
-    </form>
-   </div>
+
+    document.getElementById("emailform").style.display = "none";
+   
+  let emails = {{ emails|safe }};
+    
+    var email_entered = document.getElementById("emailentered").value;
+    for(let i=0; i<emails.length; i++){
+      if(emails[i] == email_entered){
+        bool = true;
+        break;
+      }
+    }
+    if(bool == true){
+    console.log("yes");  
+    document.getElementById("emailform").style.display = "none";
+    document.getElementById("username").style.display = "none";
+    document.getElementById("username").value = email_entered;
+    document.getElementById("passwordform").style.display = "block";
+    document.getElementById("registerform").style.display = "none";
+   } 
+   else{
+    console.log("no") 
+    document.getElementById("email").value = email_entered;
+    document.getElementById("emailform").style.display = "none";
+    document.getElementById("passwordform").style.display = "none";
+    document.getElementById("registerform").style.display = "block";
+    document.getElementById("confirmusername").style.display = "none";
+    document.getElementById("confirmpassword").style.display = "block";
+   }
+    
+  }
+
+function confirmPassword(){
+     let p1 = document.getElementById("password1").value ;
+     let p2 = document.getElementById("password2").value ;
+     if(p1 === p2 && p1.length >=8 ){
+      document.getElementById("confirmusername").style.display = "block";
+      document.getElementById("confirmpassword").style.display = "none";
+     }
+     else{
+      document.getElementById("password_not_valid").innerHTML = "password not matched or length should of atleast 6 characters";
+     }
+    
+   }
+</script>
+
+
+
 </body>
 </html>

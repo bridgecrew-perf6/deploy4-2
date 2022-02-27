@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from .forms import SearchVideoForm #, ProfileForm
 from anne import models
 
-from django.contrib.auth import authenticate #,login,logout
+from django.contrib.auth import authenticate,login,logout
 from .forms import LoginForm, RegisterForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -17,9 +17,10 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 
-# def userLogout(request):
-#     logout(request)
-#     return HttpResponseRedirect('http://localhost:8000/login/')
+def userLogout(request):
+    logout(request)
+    return HttpResponseRedirect('http://kudos02.pythonanywhere.com/login/')
+
 def searchUser(request):
     users = models.CustomUser.objects.all()
     emails = []
@@ -60,9 +61,8 @@ def register(request):
             print("form not valid")
             form.save()
             ##################################################################
-            messages = 'Your account has been created ! You are now able to log in'
             username = request.POST['username']
-            return render(request, 'anne/profile.html', {'msg':messages, 'username':username})
+            return render(request, 'anne/profile.html', {'username':username})
     else:
         print("not entering to register function")
         form = RegisterForm()
@@ -89,7 +89,12 @@ def Login(request):
             res = render(request,'anne/login.html',{'form':form,'messages':messages})
             return res    
     form = LoginForm()
-    return render(request, 'anne/login.html', {'form':form})
+    users = models.CustomUser.objects.all()
+    emails = []
+    for i in users:
+        print(i.email)
+        emails.append(i.email)
+    return render(request, 'anne/login.html', {'form':form, 'emails':emails})
 
 
 
@@ -174,6 +179,7 @@ def Login(request):
 
 def viewProfile(request):
     if 'session_username' in request.session:
+            print("aman")
             # sess_id = request.session['sess_id']
             # profile = models.Profile.objects.get(id = sess_id)
             # form = ProfileForm(request.POST or None, instance=profile)
