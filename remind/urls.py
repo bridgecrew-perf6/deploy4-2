@@ -1,76 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="../../static/style.js"></script>
-  <link rel="stylesheet" href="../../static/styles.css">
-    <title>Document</title>
-</head>
-<body>
-  hey, 
-  {{ request.session.session_username }}
-    {% if profile %}
+"""remind URL Configuration
 
-      <h1>Profile</h1>
-        name : {{profile.first_name|upper}}
-        <br>
-        mob no. : {{profile.phone_no}}
-        <br>
-        website : {{profile.website_name}}
-        <br>
-        about : {{profile.about}}
-        <br>
-        id : {{profile.id}}
-        
-        <form action="http://kudos02.pythonanywhere.com/edit-profile/" method="post">
-            {% csrf_token %}
-            <!-- {{form.data['user']} -->
-            {{form.as_p}}
-            <input type="submit" value="Edit">
-        </form>
-
-    {% else %} 
-     
-        <p> Edit Profile please...</p>
-        <form action="http://kudos02.pythonanywhere.com/add-profile/?username={{username}}" method="post">
-            {% csrf_token %}
-            {{form.as_p}}
-            <!-- <input type="submit" value="Edit"> -->
-        </form>
-
-    {% endif %}
-
-    <a href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
-    <div class="footer">
-        <div class="footer_dimensions">
-
-          <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
-            <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
-          </a>
-            <a class="pluudo_mid_icons" href="">
-              <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
-            </a>
-            {% if request.session.session_username %}
-            <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
-              <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
-            </a>
-            {% else %}
-            <a onclick="myProfile()" class="pluudo_mid_icons" >
-              <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
-            </a>
-            {% endif %}
-
-        </div>
-        <div>
-          <!-- <a class="back_icon" href="#">
-            <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-          </a> -->
-          <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com/">
-            <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
-          </a>
-        </div>
-      </div>
-</body>
-</html>
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from anne import views
+from django.conf import settings
+from django.conf.urls.static import static
+from anne import views as user_view
+from django.contrib.auth import views as auth
+ 
+urlpatterns = [
+    path('',views.searchUser),
+    path('search-video', views.searchVideo),    
+    path('video-player', views.videoPlayer),
+    path('admin/', admin.site.urls),
+    path('login/', user_view.Login, name ='login'),
+    path('logout/', views.userLogout, name = 'logout'),
+    path('register/', user_view.register, name ='register'),
+    # path('edit-profile/', views.editProfile, name ='edit-profile'),
+    path('view-profile/', views.viewProfile, name = 'view-profile'),
+    # path('add-profile/', views.addProfile, name = 'add-profile'),    
+]
+if settings.DEBUG:
+    urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
