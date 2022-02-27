@@ -172,7 +172,6 @@ def Login(request):
 #             form.save()
 #             return render(request,'anne/profile.html',{'profile':profile, 'form':form})
 
-@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def viewProfile(request):
     if 'session_username' in request.session:
             # sess_id = request.session['sess_id']

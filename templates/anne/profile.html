@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+  {{request.session.session_username}}
     {% if profile %}
 
       <h<!DOCTYPE html>
@@ -127,7 +128,7 @@
             <a class="pluudo_mid_icons" href="">
               <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
             </a>
-            {% if request.session.sess_id %}
+            {% if request.session.session_username %}
             <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
               <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
             </a>
