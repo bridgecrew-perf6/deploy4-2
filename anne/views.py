@@ -85,12 +85,6 @@ def userLogout(request):
 
 def searchUser(request):
     users = models.CustomUser.objects.all()
-    emails = []
-    usernames = []
-    for i in users:
-        print(i.email)
-        emails.append(i.email)
-        usernames.append(i.username)
     form = SearchVideoForm()
     authform = LoginForm()
     registerform = RegisterForm()
@@ -98,7 +92,7 @@ def searchUser(request):
     print(obj)
     site_d = models.SiteDesc.objects.all()
     #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-    return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'usernames':usernames,'emails':emails, 'obj':obj, 'site_des':set(site_d), 'form': form})
+    return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
 
 
 def videoPlayer(request):
