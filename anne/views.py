@@ -37,6 +37,7 @@ def checkUsername(request):
         if u_bool:
             print(form) 
             form.save()       
+            request.session['session_username'] = username
             return JsonResponse({"status":"username not registered"})   
 
         else:
@@ -54,6 +55,7 @@ def Login(request):
         if user is not None:
             print("inside login function user exists")
             login(request, user)
+            request.session['session_username'] = user.username
             return JsonResponse({'status':'User Login Success'})
         else:
             print("inside login function user not exists")
