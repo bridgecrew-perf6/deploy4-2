@@ -11,7 +11,9 @@
   <link rel="stylesheet" href="../../static/styles.css">
 </head>
 <body onload="myFunction()">
-  <!-- {{emails}} -->
+  {{emails}}
+  <br>
+  <div> {{usernames}}</div>
   <style>
     body {
     text-align: center;
@@ -54,7 +56,187 @@
      <div class="popup">
         <div class="blocker" onclick="hidePopup()"></div>
         <div class="contents" style="overflow: scroll;">
-          <div id="emailform">
+
+          <form id="checkEmailForm" method="post">
+            {% csrf_token %}
+            <label for="email">Email</label> <br>
+            <input id="email_entered" type="email" required> <br> <br>
+            <input type="submit" value="Continue">
+          </form>
+          <p id="email_message"></p>
+          <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+          
+          </script>
+
+          <script>
+            // to check whether email registered or not
+            $(document).on('submit', '#checkEmailForm', function(e) {
+
+              e.preventDefault();
+              var email_entered = $('#email_entered').val();
+
+              $.ajax({
+                type: 'POST',
+                url: 'http://kudos02.pythonanywhere.com/check-email/',
+                data: {
+                  'email_entered': email_entered,
+                  csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+                },
+                success:function(response) {
+                  console.log(response.status);
+                  $('#email_message').text(response.status)
+                  if(response.status == "email not registered"){
+                    document.getElementById("email").value = email_entered;
+                    document.getElementById("checkEmailForm").style.display = "none";
+                    document.getElementById("registerForm").style.display = "block";
+                    document.getElementById("askPasswordForm").style.display = "block";
+                    document.getElementById("askNameForm").style.display = "none";
+                  }
+                  else{
+                    document.getElementById("login_email").value = email_entered;
+                    document.getElementById("checkEmailForm").style.display = "none";  
+                    document.getElementById("loginForm").style.display = "block";
+                }
+                }
+              })
+            })
+
+            // to check whether username availble or not
+            $(document).on('submit', '#registerForm', function(e) {
+              console.log("inside username verification function");
+              e.preventDefault();
+              var username_entered = $('#username_entered').val();
+              var password_1 = $('#password_1').val();
+              var password_2 = $('#password_2').val();
+              var first_name = $('#first_name').val();
+              var last_name = $('#last_name').val();
+              var email = $('#email').val();
+
+              $.ajax({
+                type: 'POST',
+                url: 'http://kudos02.pythonanywhere.com/check-username/',
+                data: {
+                  'username': username_entered,
+                  'password1': password_1,
+                  'password2': password_2,
+                  'first_name': first_name, 
+                  'last_name': last_name,
+                  'email': email,
+                  csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+                },
+                success:function(response) {
+                  console.log(response.status);
+                  $('#username_message').text(response.status)
+                  if(response.status == "username registered"){
+                    document.getElementById("username_message").innerHTML = "username already taken";
+                    document.getElementById("entered_username").value = "";
+                  }
+                  else{
+                    window.location = "http://kudos02.pythonanywhere.com/view-profile/"
+                  }
+                }
+              })
+            })
+
+            // to check whether password and confirm password matches or not
+            function verifyPassword(){
+              let pswd_1 = document.getElementById("password_1").value ;
+              let pswd_2 = document.getElementById("password_2").value ;
+              if(pswd_1 === pswd_2 && pswd_1.length >=8 ){
+            
+                document.getElementById("askPasswordForm").style.display = "none";
+                document.getElementById("askNameForm").style.display = "block";
+              }
+              else{
+                document.getElementById("password_matching_validation").innerHTML = "password not matched or length should of atleast 8 characters";
+              }
+            }
+
+            // login with authentication
+            $(document).on('submit', '#loginForm', function(e) {
+            console.log("inside login function")
+            e.preventDefault();
+            var login_email = $('#login_email').val();
+            var login_password = $('#password').val();
+            console.log(login_email)
+            console.log(login_password)
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://kudos02.pythonanywhere.com/login/',
+                data: {
+                  'login_email': login_email,
+                  'login_password': login_password,
+                  csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+                },
+                success:function(response) {
+                  console.log(response.status);
+                  $('#login_validation').text(response.status)
+                  if(response.status == 'User Login Success'){
+                      document.getElementById("checkEmailForm").style.display = "none";
+                      $('#login_validation').text(response.status)
+                      window.location = 'http://kudos02.pythonanywhere.com/view-profile/'
+                  } 
+                  else{
+                      $('#login_validation').text(response.status)
+                  }
+                }
+              })
+            })
+            
+
+          </script>
+
+          <div>
+
+            <form id="loginForm" style="display: none;">
+              <input type="email" id="login_email" style="display: none;">
+              <label for="password">Password</label>
+              <input type="password" id="password" required>
+
+              <input type="submit" value="Continue">
+              <p id="login_validation"></p>
+            </form>
+          </div>
+
+
+          <div>
+            <form id="registerForm" style="display: none;">
+              {% csrf_token %}
+              <div id="askPasswordForm">
+                <input type="email" id="email" style="display: none;">
+                <label for="password_1">Password</label> <br>
+                <input id="password_1" type="password" > <br>
+
+                <label for="password_2">Confirm Password</label> <br>
+                <input id="password_2" type="text" > <br>
+
+                <button id="askPasswordForm_Button" onclick="verifyPassword()">
+                  Next
+                </button>
+                <p id="password_matching_validation"></p>
+              </div>
+
+              <div id="askNameForm">
+
+                <label for="first_name">First Name</label> <br>
+                <input id="first_name" type="text" required> <br>
+
+                <label for="last_name">Last Name</label> <br>
+                <input id="last_name" type="text" required> <br>
+
+                <label for="username_entered">Username</label> <br>
+                <input id="username_entered" type="text" required> <br>
+                <p id="username_message"></p> <br>
+
+                <input type="submit" id="register_user">
+
+              </div>
+
+              
+            </form>
+          </div>
+          <!-- <div id="emailform">
             Email 
             <br>
             <input id = "emailentered" type="email">
@@ -66,7 +248,7 @@
 
           <div class="content-section col-md-8 col-md-offset-2">
            
-            <form id="passwordform" action="http://kudos02.pythonanywhere.com/login/" method="POST">
+            <form id="passwordform" action="http://localhost:8000/login/" method="POST">
               {% csrf_token %}
               <input id="username" type="email" name="username">
               password
@@ -80,9 +262,9 @@
             {% endif %}  
             </form>
             
-            <form action="http://kudos02.pythonanywhere.com/register/" id="registerform" method="POST">
+            <form action="http://localhost:8000/register/" id="registerform" method="POST">
               {% csrf_token %}
-              Email <br>
+              
               <input style="display: none;"id="email" type="email" name="email">
               <div id="confirmpassword">
                 password <br>
@@ -103,12 +285,14 @@
                 <input type="text" name="last_name">
                 <br>
                 username <br>
-                <input type="text" name="username">
+                <input type="text"  id="usernameentered" name="username">
+                <input onclick="checkUsername()" type="submit" id="user_exists">
                 <br>
-                <input type="submit" value="register">
+                <p id="checkusername"></p>
+
               </div>
             </form>
-          </div>
+          </div> -->
 
 
           <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
@@ -117,6 +301,25 @@
 
         </div>
       </div>
+
+      <!-- <script>
+        
+        function checkUsername(){
+          let usernames = {{ usernames|safe }};
+          for(let i=0; i<usernames.length; i++){
+            console.log(usernames[i]);
+            if(document.getElementById("usernameentered").value == usernames[i]){
+              console.log("present");
+              document.getElementById("checkusername").innerHTML = "username already present";
+              return;
+            }
+          }
+
+            console.log("not present");
+        
+          
+        }
+      </script> -->
       
       <script>
       const popup = document.querySelector('.popup');
@@ -126,9 +329,9 @@
         for (var i=0;i<elems.length;i+=1){
           elems[i].style.display = 'none';
         }
-          document.getElementById("emailform").style.display = "block";
-          document.getElementById("passwordform").style.display = "none";
-          document.getElementById("registerform").style.display = "none";
+          // document.getElementById("emailform").style.display = "block";
+          // document.getElementById("passwordform").style.display = "none";
+          // document.getElementById("registerform").style.display = "none";
 
       }
       function hidePopup() {
@@ -140,60 +343,60 @@
       }
 
 
-      function emailPopup(){
-          var email_entered = document.getElementById("emailentered").value;
-          // console.log(email_entered);
-          if(email_entered.includes(".com") == false || email_entered.includes("@") == false){
-            document.getElementById("valid_email").innerHTML = "please enter a valid email";
-            return;
-          }
-          let bool = false;
+      // function emailPopup(){
+      //     var email_entered = document.getElementById("emailentered").value;
+      //     // console.log(email_entered);
+      //     if(email_entered.includes(".com") == false || email_entered.includes("@") == false){
+      //       document.getElementById("valid_email").innerHTML = "please enter a valid email";
+      //       return;
+      //     }
+      //     let bool = false;
           
     
-          document.getElementById("emailform").style.display = "none";
+      //     document.getElementById("emailform").style.display = "none";
          
-        let emails = {{ emails|safe }};
+      //   let emails = {{ emails|safe }};
           
-          var email_entered = document.getElementById("emailentered").value;
-          for(let i=0; i<emails.length; i++){
-            if(emails[i] == email_entered){
-              bool = true;
-              break;
-            }
-          }
-          if(bool == true){
-          console.log("yes");  
-          document.getElementById("emailform").style.display = "none";
-          document.getElementById("username").style.display = "none";
-          document.getElementById("username").value = email_entered;
-          document.getElementById("passwordform").style.display = "block";
-          document.getElementById("registerform").style.display = "none";
-         } 
-         else{
-          console.log("no") 
-          document.getElementById("email").value = email_entered;
-          document.getElementById("emailform").style.display = "none";
-          document.getElementById("passwordform").style.display = "none";
-          document.getElementById("registerform").style.display = "block";
-          document.getElementById("confirmusername").style.display = "none";
-          document.getElementById("confirmpassword").style.display = "block";
-         }
+      //     var email_entered = document.getElementById("emailentered").value;
+      //     for(let i=0; i<emails.length; i++){
+      //       if(emails[i] == email_entered){
+      //         bool = true;
+      //         break;
+      //       }
+      //     }
+      //     if(bool == true){
+      //     console.log("yes");  
+      //     document.getElementById("emailform").style.display = "none";
+      //     document.getElementById("username").style.display = "none";
+      //     document.getElementById("username").value = email_entered;
+      //     document.getElementById("passwordform").style.display = "block";
+      //     document.getElementById("registerform").style.display = "none";
+      //    } 
+      //    else{
+      //     console.log("no") 
+      //     document.getElementById("email").value = email_entered;
+      //     document.getElementById("emailform").style.display = "none";
+      //     document.getElementById("passwordform").style.display = "none";
+      //     document.getElementById("registerform").style.display = "block";
+      //     document.getElementById("confirmusername").style.display = "none";
+      //     document.getElementById("confirmpassword").style.display = "block";
+      //    }
           
 
-      }
+      // }
 
-      function confirmPassword(){
-           let p1 = document.getElementById("password1").value ;
-           let p2 = document.getElementById("password2").value ;
-           if(p1 === p2 && p1.length >=8 ){
-            document.getElementById("confirmusername").style.display = "block";
-            document.getElementById("confirmpassword").style.display = "none";
-           }
-           else{
-            document.getElementById("password_not_valid").innerHTML = "password not matched or length should of atleast 8 characters";
-           }
+      // function confirmPassword(){
+      //      let p1 = document.getElementById("password1").value ;
+      //      let p2 = document.getElementById("password2").value ;
+      //      if(p1 === p2 && p1.length >=8 ){
+      //       document.getElementById("confirmusername").style.display = "block";
+      //       document.getElementById("confirmpassword").style.display = "none";
+      //      }
+      //      else{
+      //       document.getElementById("password_not_valid").innerHTML = "password not matched or length should of atleast 8 characters";
+      //      }
           
-         }
+      //    }
       </script>
       
   

@@ -1,3 +1,6 @@
+import json
+from django.http import JsonResponse
+
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate,login,logout
@@ -17,6 +20,63 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 
+def checkUsername(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        username = request.POST.get('username')
+
+        u_bool = True
+        users = models.CustomUser.objects.all()
+        emails = []
+        usernames = []
+        
+        for i in users:
+            if username == i.username :
+                u_bool = False
+
+        if u_bool:
+            print(form) 
+            form.save()       
+            return JsonResponse({"status":"username not registered"})   
+
+        else:
+            return JsonResponse({"status":"username registered"})        
+
+def Login(request):
+    if request.method == 'POST':
+        print("inside login function")
+        email = request.POST.get('login_email')
+        password = request.POST.get('login_password')
+        try:
+            user = authenticate(request, username = email, password = password)
+        except:
+            return JsonResponse({'status':'Invalid credentials'})
+        if user is not None:
+            print("inside login function user exists")
+            login(request, user)
+            return JsonResponse({'status':'User Login Success'})
+        else:
+            print("inside login function user not exists")
+            return JsonResponse({'status':'Invaid Credentials'})                   
+
+def checkEmail(request):
+    if request.method == 'POST':
+        email_entered = request.POST.get('email_entered')
+        print("inside check_email")
+        print(email_entered)
+        print(email_entered)
+        e_bool = True
+        users = models.CustomUser.objects.all()
+        emails = []
+        usernames = []
+        for i in users:
+            if email_entered == i.email :
+                e_bool = False
+        if e_bool:        
+            return JsonResponse({"status":"email not registered"})    
+        else:
+            return JsonResponse({"status":"email registered"})        
+
 def userLogout(request):
     logout(request)
     return HttpResponseRedirect('http://kudos02.pythonanywhere.com/')
@@ -24,9 +84,11 @@ def userLogout(request):
 def searchUser(request):
     users = models.CustomUser.objects.all()
     emails = []
+    usernames = []
     for i in users:
         print(i.email)
         emails.append(i.email)
+        usernames.append(i.username)
     form = SearchVideoForm()
     authform = LoginForm()
     registerform = RegisterForm()
@@ -34,7 +96,7 @@ def searchUser(request):
     print(obj)
     site_d = models.SiteDesc.objects.all()
     #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-    return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'emails':emails, 'obj':obj, 'site_des':set(site_d), 'form': form})
+    return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'usernames':usernames,'emails':emails, 'obj':obj, 'site_des':set(site_d), 'form': form})
 
 
 def videoPlayer(request):
@@ -70,33 +132,35 @@ def register(request):
         return render(request, 'anne/register.html', {'form': form, 'title':'register here'})
   
 
-def Login(request):
-    if request.method == 'POST':
-  
-        # AuthenticationForm_can_also_be_used__
+# def Login(request):
+#     if request.method == 'POST':
         
-        username = request.POST['username']
-        password = request.POST['password']
-        print(username)
-        print(password)
-        user = authenticate(request, username = username, password = password)
-        print(user)
-        if user:
-            if 'session_username' not in request.session:
-                request.session['session_username'] = username
-            return render(request, 'anne/profile.html')   
-        else:
-            form = LoginForm()
-            messages = "Either username or password is incorrect....TRY AGAIN !!!"
-            res = render(request,'anne/login.html',{'form':form,'messages':messages})
-            return res    
-    form = LoginForm()
-    users = models.CustomUser.objects.all()
-    emails = []
-    for i in users:
-        print(i.email)
-        emails.append(i.email)
-    return render(request, 'anne/login.html', {'form':form, 'emails':emails})
+#         # AuthenticationForm_can_also_be_used__
+        
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         print(username)
+#         print(password)
+#         user = authenticate(request, username = username, password = password)
+#         print(user)
+#         if user:
+#             if 'session_username' not in request.session:
+#                 request.session['session_username'] = username
+#             return render(request, 'anne/profile.html')   
+#         else:
+#             form = LoginForm()
+#             messages = "Either username or password is incorrect....TRY AGAIN !!!"
+#             res = render(request,'anne/login.html',{'form':form,'messages':messages})
+#             return res    
+#     form = LoginForm()
+#     users = models.CustomUser.objects.all()
+#     emails = []
+#     usernames = []
+#     for i in users:
+#         print(i.email)
+#         emails.append(i.email)
+#         emails.append(i.username)
+#     return render(request, 'anne/login.html', {'form':form, 'emails':emails, 'usernames':usernames})
 
 
 
@@ -180,7 +244,6 @@ def Login(request):
 #             return render(request,'anne/profile.html',{'profile':profile, 'form':form})
 
 def viewProfile(request):
-    if 'session_username' in request.session:
             print("aman")
             # sess_id = request.session['sess_id']
             # profile = models.Profile.objects.get(id = sess_id)
