@@ -84,139 +84,187 @@
     
     
     
-         <div class="popup">
-            <div class="blocker" onclick="hidePopup()"></div>
-            <div class="contents" style="overflow: scroll;">
-               
-              <style>
-                #profile-options, #add-profile-form, #edit-profile-form{
-                  text-align: center;
-                }
-                #profile-options > div, #add-profile-form > div, #edit-profile-form > div{
-                  padding: 5%;
-                }
-              </style>
-            
-          <div id="profile-header">
+    <div class="popup">
+      <div class="blocker" onclick="hidePopup()"></div>
+      <div class="contents" style="overflow: scroll;">
+         
+        <style>
+          input:focus, textarea:focus, select:focus{
+            outline: none;
+          }
+          #profile-options, #add-profile-form, #edit-profile-form, #settings{
+            text-align: center;
+          }
+          #profile-options > div, #add-profile-form > div, #edit-profile-form > div, #settings > div{
+            padding: 5%;
+          }
+        </style>
+      
+    <div id="profile-header">
 
-            <div id="profile-options">
-                <div>
-                  <span onclick="editProfile()">Edit Profile</span>
-                </div>
-                
-                <div>
-                  <a href="">Settings</a>
-                </div>
-                
-                <div>
-                  <a href="">Copy Profile Link</a>
-                </div>
-                
-                <a onclick="hidePopup()" >close</a>
-
-            </div>
+      <div id="profile-options">
+          <div>
+            <span onclick="editProfile()">Edit Profile</span>
+          </div>
           
           <div>
-
-            <form method="post" id="add-profile-form" action="http://kudos02.pythonanywhere.com/add-profile/">
-              {% csrf_token %}
-              add-profile
-              <div>
-                About <br>
-              {{profile_form.about}}
-              </div>
-
-              <div>
-                Website <br>
-                {{profile_form.website_name}}
-              </div>
-              
-              <div>
-                Country <br>
-                {{profile_form.country}}
-              </div>
-              
-              <input type="submit">
-            </form>
-
-            <form method="post" id="edit-profile-form" action="http://kudos02.pythonanywhere.com/edit-profile/">
-              {% csrf_token %}
-
-              edit-profile
-              <div>
-                About <br>
-              {{profile_form.about}}
-              </div>
-
-              <div>
-                Website <br>
-                {{profile_form.website_name}}
-              </div>
-              
-              <div>
-                Country <br>
-                {{profile_form.country}}
-              </div>
-              
-              <input type="submit">
-            </form>
-            
+            <span onclick="showSettings()">Settings</span>
           </div>
-    <script>
-      function editProfile(){
-        console.log(sess_id)
-        console.log(sess_id)
-        var sess_id = document.getElementById('sess_id').innerHTML;
+          
+          <div>
+            <a href="">Copy Profile Link</a>
+          </div>
+          
+          <a onclick="hidePopup()" >close</a>
+
+      </div>
+    
+      <div id="settings" style="display: none;">
+        <h3>Settings</h3>
+        <div>
+          <span>Email Id</span> <br>
+          {{user.email}}
+        </div>
+
+        <div>
+          Version <br>
+           V 2.0
+        </div>
         
-        console.log(sess_id)
-        console.log(sess_id)
-        if(sess_id){
-          document.getElementById('add-profile-form').style.display = "none";
-          document.getElementById('edit-profile-form').style.display = "block";
-          document.getElementById('profile-options').style.display = "none";
-          console.log(sess_id);
-        }
-        else{
-          console.log(sess_id);        
-          document.getElementById('add-profile-form').style.display = "block";
-          document.getElementById('profile-options').style.display = "none";
-          document.getElementById('profile-options').style.display = "none";
-     
-        }
-       
-      }
-    </script>
-            <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
-            
-            </iframe>
-    
-            </div>
-          </div>
-    
-          <script>
-            const popup = document.querySelector('.popup');
-            function showPopup() {
-              popup.classList.add('open');
-              
-        document.getElementById('add-profile-form').style.display = "none";
-        document.getElementById('edit-profile-form').style.display = "none";
-        document.getElementById('profile-options').style.display = "block";
+        
+        <div>
+          <a href="">Change Password</a>
+        </div>
+        
+        <div>
+          <a href="">Privacy & Terms</a>
+        </div>
+        
+        <div>
+          <a href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
+        </div>
+        
+        <div>
+          <a href="">Deactivate Account</a>
+        </div>
+        
+        
+      </div>
+    <div>
 
-              var elems = document.getElementsByClassName('footer');
-              for (var i=0;i<elems.length;i+=1){
-                elems[i].style.display = 'none';
-              }
+      <form method="post" id="add-profile-form" action="http://kudos02.pythonanywhere.com/add-profile/">
+        {% csrf_token %}
+        add-profile
+        <div>
+          About <br>
+        {{profile_form.about}}
+        </div>
+
+        <div>
+          Website <br>
+          {{profile_form.website_name}}
+        </div>
+        
+        <div>
+          Country <br>
+          {{profile_form.country}}
+        </div>
+        
+        <input type="submit">
+      </form>
+
+      <form method="post" id="edit-profile-form" action="http://kudos02.pythonanywhere.com/edit-profile/">
+        {% csrf_token %}
+
+        edit-profile
+        <div>
+          About <br>
+        {{profile_form.about}}
+        </div>
+
+        <div>
+          Website <br>
+          {{profile_form.website_name}}
+        </div>
+        
+        <div>
+          Country <br>
+          {{profile_form.country}}
+        </div>
+        
+        <input type="submit">
+      </form>
       
-            }
-            function hidePopup() {
-              popup.classList.remove('open');
-              var elems = document.getElementsByClassName('footer');
-              for (var i=0;i<elems.length;i++){
-                elems[i].style.display = 'block';
-              }
-            }
+    </div>
+<script>
+function editProfile(){
+  console.log(sess_id)
+  console.log(sess_id)
+  var sess_id = document.getElementById('sess_id').innerHTML;
+  
+  console.log(sess_id)
+  console.log(sess_id)
+  if(sess_id){
+    document.getElementById('settings').style.display = "none";
+    document.getElementById('add-profile-form').style.display = "none";
+    document.getElementById('edit-profile-form').style.display = "block";
+    document.getElementById('profile-options').style.display = "none";
+    console.log(sess_id);
+  }
+  else{
+    console.log(sess_id);  
+    document.getElementById('settings').style.display = "none";      
+    document.getElementById('add-profile-form').style.display = "block";
+    document.getElementById('profile-options').style.display = "none";
+    document.getElementById('profile-options').style.display = "none";
+
+  }
+ 
+}
+
+function showSettings(){
+
+  document.getElementById('settings').style.display = "block";
+  document.getElementById('add-profile-form').style.display = "none";
+  document.getElementById('edit-profile-form').style.display = "none";
+  document.getElementById('profile-options').style.display = "none";
+  
+}
+
+</script>
+      <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
       
-          </script>
+      </iframe>
+
+      </div>
+    </div>
+
+    <script>
+      const popup = document.querySelector('.popup');
+      function showPopup() {
+        popup.classList.add('open');
+        
+  document.getElementById('settings').style.display = "none";
+  document.getElementById('edit-profile-form').style.display = "none";
+  document.getElementById('add-profile-form').style.display = "none";
+  document.getElementById('profile-options').style.display = "block";
+
+        var elems = document.getElementsByClassName('footer');
+        for (var i=0;i<elems.length;i+=1){
+          elems[i].style.display = 'none';
+        }
+
+      }
+      function hidePopup() {
+        popup.classList.remove('open');
+        var elems = document.getElementsByClassName('footer');
+        for (var i=0;i<elems.length;i++){
+          elems[i].style.display = 'block';
+        }
+      }
+
+    </script>
+
 
 </body>
 </html>
