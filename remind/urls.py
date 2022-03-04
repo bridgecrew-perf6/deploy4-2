@@ -31,9 +31,9 @@ urlpatterns = [
     path('login/', views.Login),
     path('logout/', views.userLogout, name = 'logout'),
     path('register/', user_view.register, name ='register'),
-    # path('edit-profile/', views.editProfile, name ='edit-profile'),
+    path('edit-profile/', views.editProfile, name ='edit-profile'),
     path('view-profile/', views.viewProfile, name = 'view-profile'),
-    # path('add-profile/', views.addProfile, name = 'add-profile'),    
+    path('add-profile/', views.addProfile, name = 'add-profile'),    
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

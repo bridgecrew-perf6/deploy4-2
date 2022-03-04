@@ -1,5 +1,5 @@
 from django import forms
-# from .models import Profile
+from .models import Profile
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 
@@ -18,16 +18,11 @@ from django.contrib.auth.forms import UserCreationForm
 #         fields = ['username', 'email', 'password1', 'password2']
       
 
-# class ProfileForm(forms.ModelForm):
-#       class Meta:
-#           model = Profile
-#           fields = {'first_name', 'about', 'website_name', 'phone_no'} 
-#           widgets={
-#             'first_name':forms.TextInput(attrs={'class':'form-control','placeholder':'e.g. The Weeknd'}),
-#             'about':forms.TextInput(attrs={'class':'form-control','placeholder':'describe about yourself'}),
-#             'website_name':forms.TextInput(attrs={'class':'form-control','placeholder':'e.g. pluudo.com'}),
-#             'phone_no':forms.TextInput(attrs={'class':'form-control','placeholder':'e.g. 1234567890'}),
-#             }  
+class ProfileForm(forms.ModelForm):
+      class Meta:
+          model = Profile
+          fields = {'about', 'website_name', 'country'} 
+           
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -37,3 +32,4 @@ class RegisterForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label='Email / Username')
+   

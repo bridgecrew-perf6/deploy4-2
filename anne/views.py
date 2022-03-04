@@ -8,7 +8,7 @@ from .forms import SearchVideoForm #, ProfileForm
 from anne import models
 
 from django.contrib.auth import authenticate,login,logout
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ProfileForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -211,39 +211,40 @@ def register(request):
 #     return render(request, 'anne/login.html', {'form':form, 'title':'log in'})
 
 
-# def addProfile(request):
-#     if request.method == 'POST':
-#         form = ProfileForm(request.POST or None)
-#         print(form)
-#         if form.is_valid():
-#             profile = models.Profile()
-#             username = request.GET['username']
-#             user = models.User.objects.get(username=username)
-#             profile.user = user
-#             profile.first_name = form.data['first_name']
-#             profile.about = form.data['about']
-#             profile.website_name = form.data['website_name']
-#             profile.phone_no = form.data['phone_no']
-#             profile.save()
-#             request.session['sess_id'] = profile.id
-#             return render(request,'anne/profile.html',{'profile':profile, 'form':form})
+
+def addProfile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST or None)
+        print(form)
+        if form.is_valid():
+            profile = models.Profile()
+            username = request.session['session_username']
+            user = models.CustomUser.objects.get(username=username)
+            profile.user = user
+            profile.about = form.data['about']
+            profile.website_name = form.data['website_name']
+            profile.save()
+            request.session['sess_id'] = profile.id
+            return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form})
 
 # @login_required(login_url='http://localhost:8000/login/')
-# def editProfile(request):
-#     if request.method == 'POST':
-#         print("aman")
-#         if 'sess_id' in request.session:
-#             sess_id = request.session['sess_id']
-#             profile = models.Profile.objects.get(id = sess_id)
-#             form = ProfileForm(request.POST or None, instance=profile)
-#             form.save()
-#             return render(request,'anne/profile.html',{'profile':profile, 'form':form})
+def editProfile(request):
+    if request.method == 'POST':
+        print("aman")
+        if 'sess_id' in request.session:
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            form = ProfileForm(request.POST or None, instance=profile)
+            form.save()
+            return render(request,'anne/profile.html',{'profile':profile, 'form':form})
 
 def viewProfile(request):
-            print("aman")
-            # sess_id = request.session['sess_id']
-            # profile = models.Profile.objects.get(id = sess_id)
-            # form = ProfileForm(request.POST or None, instance=profile)
-
-            return render(request,'anne/profile.html')
-                      
+        print("aman")
+        if 'sess_id' in request.session: 
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            profile_form = ProfileForm(request.POST or None, instance=profile)
+        else:
+            profile_form = ProfileForm()
+        return render(request,'anne/profile.html', {'profile_form':profile_form})
+                     

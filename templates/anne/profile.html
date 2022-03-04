@@ -9,40 +9,15 @@
     <title>Document</title>
 </head>
 <body>
-  hey, 
-  {{ request.session.session_username }}
-    {% if profile %}
+    
+    
+    <div style="text-align: center; margin: 5%;">
+        <a style="float: left;" href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
+       <span style="font-size: 300%;">{{ request.session.session_username }}</span>
+       <p id="sess_id" style="display: none;">{{request.session.sess_id}}</p>
+      <button style="float: right;" onclick="showPopup()">popup</button>
+    </div>
 
-      <h1>Profile</h1>
-        name : {{profile.first_name|upper}}
-        <br>
-        mob no. : {{profile.phone_no}}
-        <br>
-        website : {{profile.website_name}}
-        <br>
-        about : {{profile.about}}
-        <br>
-        id : {{profile.id}}
-        
-        <form action="http://kudos02.pythonanywhere.com/edit-profile/" method="post">
-            {% csrf_token %}
-            <!-- {{form.data['user']} -->
-            {{form.as_p}}
-            <input type="submit" value="Edit">
-        </form>
-
-    {% else %} 
-     
-        <h2>Profile Page</h2>
-        <form action="http://kudos02.pythonanywhere.com/add-profile/?username={{username}}" method="post">
-            {% csrf_token %}
-            {{form.as_p}}
-            <!-- <input type="submit" value="Edit"> -->
-        </form>
-
-    {% endif %}
-
-    <a href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
     <div class="footer">
         <div class="footer_dimensions">
 
@@ -67,10 +42,181 @@
           <!-- <a class="back_icon" href="#">
             <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
           </a> -->
-          <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com/">
+          <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com">
             <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
           </a>
         </div>
       </div>
+
+      <style>
+      .popup { display: none; }
+      .popup.open { display: block; }
+    
+      .blocker {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        content: ' ';
+        background: rgba(0,0,0,.5);
+      }
+      .popup .contents {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+        height: 55%;
+        background: #FFF;
+    
+        position: fixed;
+        bottom: 0px;
+      }
+      </style>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+         <div class="popup">
+            <div class="blocker" onclick="hidePopup()"></div>
+            <div class="contents" style="overflow: scroll;">
+               
+              <style>
+                #profile-options, #add-profile-form, #edit-profile-form{
+                  text-align: center;
+                }
+                #profile-options > div, #add-profile-form > div, #edit-profile-form > div{
+                  padding: 5%;
+                }
+              </style>
+            
+          <div id="profile-header">
+
+            <div id="profile-options">
+                <div>
+                  <span onclick="editProfile()">Edit Profile</span>
+                </div>
+                
+                <div>
+                  <a href="">Settings</a>
+                </div>
+                
+                <div>
+                  <a href="">Copy Profile Link</a>
+                </div>
+                
+                <a onclick="hidePopup()" >close</a>
+
+            </div>
+          
+          <div>
+
+            <form method="post" id="add-profile-form" action="http://kudos02.pythonanywhere.com/add-profile/">
+              {% csrf_token %}
+              add-profile
+              <div>
+                About <br>
+              {{profile_form.about}}
+              </div>
+
+              <div>
+                Website <br>
+                {{profile_form.website_name}}
+              </div>
+              
+              <div>
+                Country <br>
+                {{profile_form.country}}
+              </div>
+              
+              <input type="submit">
+            </form>
+
+            <form method="post" id="edit-profile-form" action="http://kudos02.pythonanywhere.com/edit-profile/">
+              {% csrf_token %}
+
+              edit-profile
+              <div>
+                About <br>
+              {{profile_form.about}}
+              </div>
+
+              <div>
+                Website <br>
+                {{profile_form.website_name}}
+              </div>
+              
+              <div>
+                Country <br>
+                {{profile_form.country}}
+              </div>
+              
+              <input type="submit">
+            </form>
+            
+          </div>
+    <script>
+      function editProfile(){
+        console.log(sess_id)
+        console.log(sess_id)
+        var sess_id = document.getElementById('sess_id').innerHTML;
+        
+        console.log(sess_id)
+        console.log(sess_id)
+        if(sess_id){
+          document.getElementById('add-profile-form').style.display = "none";
+          document.getElementById('edit-profile-form').style.display = "block";
+          document.getElementById('profile-options').style.display = "none";
+          console.log(sess_id);
+        }
+        else{
+          console.log(sess_id);        
+          document.getElementById('add-profile-form').style.display = "block";
+          document.getElementById('profile-options').style.display = "none";
+          document.getElementById('profile-options').style.display = "none";
+     
+        }
+       
+      }
+    </script>
+            <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
+            
+            </iframe>
+    
+            </div>
+          </div>
+    
+          <script>
+            const popup = document.querySelector('.popup');
+            function showPopup() {
+              popup.classList.add('open');
+              
+        document.getElementById('add-profile-form').style.display = "none";
+        document.getElementById('edit-profile-form').style.display = "none";
+        document.getElementById('profile-options').style.display = "block";
+
+              var elems = document.getElementsByClassName('footer');
+              for (var i=0;i<elems.length;i+=1){
+                elems[i].style.display = 'none';
+              }
+      
+            }
+            function hidePopup() {
+              popup.classList.remove('open');
+              var elems = document.getElementsByClassName('footer');
+              for (var i=0;i<elems.length;i++){
+                elems[i].style.display = 'block';
+              }
+            }
+      
+          </script>
+
 </body>
 </html>
