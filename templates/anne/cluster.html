@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="showPopup()">Edit Cluster</button>
+    <style>
+        .popup { display: none; }
+        .popup.open { display: block; }
+      
+        .blocker {
+          position: fixed;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          content: ' ';
+          background: rgba(0,0,0,.5);
+        }
+        .popup .contents {
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          width: 100%;
+          height: 65%;
+          background: #FFF;
+      
+          position: fixed;
+          bottom: 0px;
+        }
+        </style>
+ 
+ <style>
+    input:focus, textarea:focus, select:focus{
+      outline: none;
+    }
+    #profile-options, #add-profile-form, #edit-cluster-form, #settings{
+      text-align: center;
+    }
+    #profile-options > div, #add-profile-form > div, #edit-cluster-form > div, #settings > div{
+      padding: 5%;
+    }
+  </style>
+  
+<div class="popup">
+    <div class="blocker" onclick="hidePopup()"></div>
+    <div class="contents" style="overflow: scroll;">
+        <form method="post" id="edit-cluster-form" action="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">
+            {% csrf_token %}
+            <h2>Edit Cluster</h2>
+            <div>
+                Name <br>
+                {{cluster_form.cluster_name}}
+              </div>
+
+            
+            <div>
+              Description <br>
+            {{cluster_form.cluster_desc}}
+            </div>
+        
+            <div>
+              Hashtags <br>
+              {{cluster_form.cluster_hashtags}}
+            </div>
+            
+            
+            <input type="submit">
+          </form>
+        <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
+            
+        </iframe>
+
+    </div>
+</div>
+
+<script>
+    const popup = document.querySelector('.popup');
+    function showPopup() {
+      popup.classList.add('open');
+
+      var elems = document.getElementsByClassName('footer');
+      for (var i=0;i<elems.length;i+=1){
+        elems[i].style.display = 'none';
+      }
+
+    }
+    function hidePopup() {
+      popup.classList.remove('open');
+      var elems = document.getElementsByClassName('footer');
+      for (var i=0;i<elems.length;i++){
+        elems[i].style.display = 'block';
+      }
+    }
+
+  </script>
+
+</body>
+</html>

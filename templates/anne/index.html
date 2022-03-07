@@ -11,12 +11,18 @@
   <link rel="stylesheet" href="../../static/styles.css">
 </head>
 <body onload="myFunction()">
+  {{emails}}
+  <br>
+  <div> {{usernames}}</div>
   <style>
     body {
     text-align: center;
   }
   .popup { display: none; }
   .popup.open { display: block; }
+
+  .popup2 { display: none; }
+  .popup2.open { display: block; }
 
   .blocker {
     position: fixed;
@@ -27,6 +33,17 @@
     content: ' ';
     background: rgba(0,0,0,.5);
   }
+
+  .blocker2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    content: ' ';
+    background: rgba(0,0,0,.5);
+  }
+
   .popup .contents {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -37,12 +54,20 @@
     position: fixed;
     bottom: 0px;
   }
+
+  .popup2 .contents2 {
+    margin-top: 20%;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 65%;
+    width: 70%;
+    background: #FFF;
+
+    position: fixed;
+  }
   </style>
-
-
-
-
-
 
 
 
@@ -233,63 +258,7 @@
               
             </form>
           </div>
-          <!-- <div id="emailform">
-            Email 
-            <br>
-            <input id = "emailentered" type="email">
-            <br>
-            <button onclick="emailPopup()" id="submit_email">Next</button>
-            <p id="valid_email"></p>
-          </div>
-
-
-          <div class="content-section col-md-8 col-md-offset-2">
-           
-            <form id="passwordform" action="http://localhost:8000/login/" method="POST">
-              {% csrf_token %}
-              <input id="username" type="email" name="username">
-              password
-              <input id="your_password" type="password" name="password">
-              <button type="submit">login</button>
-            <br/>
-         
-            {% if messages %}
-             {{messages}}
-             <br> OR <br>
-            {% endif %}  
-            </form>
-            
-            <form action="http://localhost:8000/register/" id="registerform" method="POST">
-              {% csrf_token %}
-              
-              <input style="display: none;"id="email" type="email" name="email">
-              <div id="confirmpassword">
-                password <br>
-                <input id="password1"  name="password1">
-                <br>
-                confirm password <br>
-                <input id="password2"  name="password2">
-                <br>
-                <input value="next" type="button" onclick="confirmPassword()" id="submit_password">
-                <p id="password_not_valid"></p>
-              <br/>
-              </div>
-              <div id="confirmusername">
-                first name <br>
-                <input type="text" name="first_name">
-                <br>
-                last name <br>
-                <input type="text" name="last_name">
-                <br>
-                username <br>
-                <input type="text"  id="usernameentered" name="username">
-                <input onclick="checkUsername()" type="submit" id="user_exists">
-                <br>
-                <p id="checkusername"></p>
-
-              </div>
-            </form>
-          </div> -->
+          
 
 
           <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
@@ -299,26 +268,59 @@
         </div>
       </div>
 
-      <!-- <script>
-        
-        function checkUsername(){
-          let usernames = {{ usernames|safe }};
-          for(let i=0; i<usernames.length; i++){
-            console.log(usernames[i]);
-            if(document.getElementById("usernameentered").value == usernames[i]){
-              console.log("present");
-              document.getElementById("checkusername").innerHTML = "username already present";
-              return;
-            }
-          }
+      <div class="popup2">
 
-            console.log("not present");
+        <div class="blocker2" onclick="hidePopup2()"></div>
         
+        <div class="contents2" style="overflow: scroll;">
+          <h2>Add a Video</h2>
+          <input id="fetch-video-url" type="text" placeholder="please enter url"> <br> <br>
+          <input type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
+          <div>
+            <!-- <iframe width="420" height="315"
+            src="https://www.youtube.com/embed/tgbNymZ7vqY">
+            </iframe> -->
+            <iframe id="video_player" src="" style="position: relative; height: 12em;
+            width: 80%;" allowfullscreen></iframe>
+            <div>
+              <h4>Title</h4>
+              <p id="video-title"></p>
+              <h4>Description</h4>
+              <p id="video-desc"></p>
+            </div>
+          </div>
+        </div>
+     
+      </div>
+     <script>
+       function fetchVideo(){
+          let str = String(document.getElementById("fetch-video-url").value);
+          let url1 = str.substr(17);
+          console.log(url1)
+          let src = document.getElementById("video_player").src;
+          console.log(src);
+          document.getElementById("video_player").src = str;
+          let s1 = "https://www.youtube.com/embed/".concat(url1);
+          src = document.getElementById("video_player").src = s1;
+          console.log(src);
+          let url2 = "https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA6VX3z31ObjBXhbr0JYMwfuftGGqivgaY&part=snippet&id=";
+          let url = url2.concat(url1);
           
+          fetch(url).then((response) => {
+            return response.json();
+          }).then((data) => {
+            console.log(data.items[0].snippet.description);
+            document.getElementById("video-title").innerHTML = data.items[0].snippet.title;
+            document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
+            console.log(data.items[0].snippet.title);
+
+          })
         }
-      </script> -->
-      
+
+     </script>
+
       <script>
+
       const popup = document.querySelector('.popup');
       function showPopup() {
         popup.classList.add('open');
@@ -326,10 +328,6 @@
         for (var i=0;i<elems.length;i+=1){
           elems[i].style.display = 'none';
         }
-          // document.getElementById("emailform").style.display = "block";
-          // document.getElementById("passwordform").style.display = "none";
-          // document.getElementById("registerform").style.display = "none";
-
       }
       function hidePopup() {
         popup.classList.remove('open');
@@ -339,80 +337,27 @@
         }
       }
 
-
-      // function emailPopup(){
-      //     var email_entered = document.getElementById("emailentered").value;
-      //     // console.log(email_entered);
-      //     if(email_entered.includes(".com") == false || email_entered.includes("@") == false){
-      //       document.getElementById("valid_email").innerHTML = "please enter a valid email";
-      //       return;
-      //     }
-      //     let bool = false;
-          
-    
-      //     document.getElementById("emailform").style.display = "none";
-         
-      //   let emails = {{ emails|safe }};
-          
-      //     var email_entered = document.getElementById("emailentered").value;
-      //     for(let i=0; i<emails.length; i++){
-      //       if(emails[i] == email_entered){
-      //         bool = true;
-      //         break;
-      //       }
-      //     }
-      //     if(bool == true){
-      //     console.log("yes");  
-      //     document.getElementById("emailform").style.display = "none";
-      //     document.getElementById("username").style.display = "none";
-      //     document.getElementById("username").value = email_entered;
-      //     document.getElementById("passwordform").style.display = "block";
-      //     document.getElementById("registerform").style.display = "none";
-      //    } 
-      //    else{
-      //     console.log("no") 
-      //     document.getElementById("email").value = email_entered;
-      //     document.getElementById("emailform").style.display = "none";
-      //     document.getElementById("passwordform").style.display = "none";
-      //     document.getElementById("registerform").style.display = "block";
-      //     document.getElementById("confirmusername").style.display = "none";
-      //     document.getElementById("confirmpassword").style.display = "block";
-      //    }
-          
-
-      // }
-
-      // function confirmPassword(){
-      //      let p1 = document.getElementById("password1").value ;
-      //      let p2 = document.getElementById("password2").value ;
-      //      if(p1 === p2 && p1.length >=8 ){
-      //       document.getElementById("confirmusername").style.display = "block";
-      //       document.getElementById("confirmpassword").style.display = "none";
-      //      }
-      //      else{
-      //       document.getElementById("password_not_valid").innerHTML = "password not matched or length should of atleast 8 characters";
-      //      }
-          
-      //    }
       </script>
+
+<script>
+  const popup2 = document.querySelector('.popup2');
+  function showPopup2() {
+    popup2.classList.add('open');
+    var elems = document.getElementsByClassName('footer');
+    for (var i=0;i<elems.length;i+=1){
+      elems[i].style.display = 'none';
+    }
+  }
+  function hidePopup2() {
+    popup2.classList.remove('open');
+    var elems = document.getElementsByClassName('footer');
+    for (var i=0;i<elems.length;i++){
+      elems[i].style.display = 'block';
+    }
+  }
+
+  </script>
       
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -512,7 +457,7 @@
             <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
               <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
             </a>
-              <a class="pluudo_mid_icons" href="">
+              <a onclick="showPopup2()" class="pluudo_mid_icons">
                 <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
               </a>
               {% if request.session.session_username %}

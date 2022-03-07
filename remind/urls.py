@@ -33,7 +33,9 @@ urlpatterns = [
     path('register/', user_view.register, name ='register'),
     path('edit-profile/', views.editProfile, name ='edit-profile'),
     path('view-profile/', views.viewProfile, name = 'view-profile'),
-    path('add-profile/', views.addProfile, name = 'add-profile'),    
+    path('add-profile/', views.addProfile, name = 'add-profile'), 
+    path('add-cluster/', views.addCluster, name = 'add-cluster'),   
+    path('cluster/', views.cluster, name = 'cluster'),  
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

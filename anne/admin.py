@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib import admin
 from embed_video.admin import AdminVideoMixin
-from .models import CustomUser, Item, SiteDesc
+from .models import CustomUser, Item, SiteDesc, Profile, Cluster
 
 class MyModelAdmin(AdminVideoMixin, admin.ModelAdmin):
     pass
@@ -11,3 +11,5 @@ class MyModelAdmin(AdminVideoMixin, admin.ModelAdmin):
 admin.site.register(Item, MyModelAdmin)
 admin.site.register(SiteDesc)
 admin.site.register(CustomUser)
+admin.site.register(Profile)
+admin.site.register(Cluster)

@@ -34,3 +34,20 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user) 
+
+class Cluster(models.Model):
+    id = models.AutoField(primary_key=True)
+    profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    cluster_name = models.CharField(max_length=200)
+    cluster_desc = models.CharField(max_length=200)
+    cluster_hashtags = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.cluster_name    
+
+class ClusterVideos(models.Model):
+    cluster = models.ForeignKey(Cluster,on_delete=models.CASCADE)
+    cluster_video = EmbedVideoField()
+
+    def __str__(self):
+        return self.cluster_video   
