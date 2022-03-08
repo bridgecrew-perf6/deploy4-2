@@ -123,7 +123,7 @@
               })
             })
 
-            // to check whether username availble or not
+            // to check whether username available or not
             $(document).on('submit', '#registerForm', function(e) {
               console.log("inside username verification function");
               e.preventDefault();
@@ -287,6 +287,34 @@
               <p id="video-title"></p>
               <h4>Description</h4>
               <p id="video-desc"></p>
+              <form action="http://kudos02.pythonanywhere.com/add-item/" method="get">
+                {% csrf_token %}
+                <input name="item_url" id="item_url" style="display: none;" type="text">
+                <label for="sel1">Select cluster:</label>
+                  <select name="cluster_id" class="form-control">
+                    {% for cluster in clusters %}
+
+                    <option value="{{cluster.id}}">{{cluster.id}}</option>
+
+                    {% endfor %}
+                    
+                  </select>
+                </div> 
+                <p id="clusterid">{{clusters.id}}</p>
+               
+                <input type="submit" onclick="addItem()" value="save">
+
+                 
+
+            </form>
+            <script>
+              function addItem(){
+
+                document.getElementById("item_url").value = document.getElementById("fetch-video-url").value;
+                document.getElementById("cluster_id").value = document.getElementById("clusterid").innerHTML;
+
+              }
+            </script>
             </div>
           </div>
         </div>
@@ -457,9 +485,15 @@
             <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
               <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
             </a>
+              {% if request.session.session_username %}
               <a onclick="showPopup2()" class="pluudo_mid_icons">
                 <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
               </a>
+              {% else %}
+              <a onclick="showPopup()" class="pluudo_mid_icons" >
+                <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
+              </a>
+              {% endif %}
               {% if request.session.session_username %}
               <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
                 <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">

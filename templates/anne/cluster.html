@@ -1,3 +1,5 @@
+{% load static %}
+{% load embed_video_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +10,25 @@
 </head>
 <body>
     <button onclick="showPopup()">Edit Cluster</button>
+    {% for i in obj %}
+          {% video i.video as my_video %}
+            <div class="videos_list">
+              <!-- <div class = "video-container">
+                 {% video my_video  %} 
+                <img src="{{my_video.thumbnail}}" alt="">
+              </div> -->
+              <div style="width: 100%; height: auto">
+
+                <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+                  <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
+                </a>
+                
+              </div>
+              <br> <br> 
+            </div> 
+          {% endvideo %}  
+      {% endfor %}
+    
     <style>
         .popup { display: none; }
         .popup.open { display: block; }

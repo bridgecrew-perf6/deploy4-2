@@ -31,4 +31,9 @@ class ClusterForm(forms.ModelForm):
     class Meta:
        model = Cluster
        fields = {'cluster_name', 'cluster_desc', 'cluster_hashtags'} 
+
+
+class AddItemForm(forms.Form):
+    cluster_id = forms.CharField(max_length=10)
+    item_url = forms.CharField(label='Title',max_length=400)
   
