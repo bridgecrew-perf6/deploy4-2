@@ -10,24 +10,51 @@
 </head>
 <body>
     
-    <form method="post" action="http://kudos02.pythonanywhere.com/add-cluster/">
-      {{cluster_form.cluster_name}}
-        {% csrf_token %}
-      <input type="submit" name="" id="" value="submit">
-    </form>
-    
-    {% for cluster in clusters %}
-
-      <br>
-      <a href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">{{cluster.cluster_name}}</a>
-
-    {% endfor %}
+   
     <div style="text-align: center; margin: 5%;">
         <a style="float: left;" href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
        <span style="font-size: 300%;">{{ request.session.session_username }}</span>
        <p id="sess_id" style="display: none;">{{request.session.sess_id}}</p>
       <button style="float: right;" onclick="showPopup()">popup</button>
     </div>
+
+    <h2>ADD Cluster</h2>     
+    <form id="addClusterForm">
+      {% csrf_token %}
+    <input type="text" id="clustername">
+    <input type="submit" name="" id="" value="submit">
+    </form>
+    
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $(document).on('submit', '#addClusterForm', function(e) {
+      console.log("inside username verification function");
+      e.preventDefault();
+      var cluster_name = $('#clustername').val();
+      $.ajax({
+        type: 'POST',
+        url: 'http://kudos02.pythonanywhere.com/add-cluster/',
+        data: {
+          'cluster_name': cluster_name,
+          csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+        },
+        success:function(response) {
+            window.location = "http://kudos02.pythonanywhere.com/view-profile/"
+          }
+      })
+    })
+    </script>
+
+    Clusters
+    <ol>
+      
+    {% for cluster in clusters %}
+    
+      <li><a href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">{{cluster.cluster_name}}</a></li>
+
+    {% endfor %}  
+  
+  </ol>
 
     <div class="footer">
         <div class="footer_dimensions">
@@ -276,6 +303,5 @@
             }
       
           </script>
-
 </body>
 </html>

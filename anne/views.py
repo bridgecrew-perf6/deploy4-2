@@ -81,6 +81,7 @@ def searchUser(request):
     form = SearchVideoForm()
     authform = LoginForm()
     registerform = RegisterForm()
+    cluster_form = ClusterForm()
     obj = models.Item.objects.all()
     site_d = models.SiteDesc.objects.all()
     if 'session_username' in request.session:
@@ -89,10 +90,10 @@ def searchUser(request):
         clusters = models.Cluster.objects.filter(user = user)
         print(clusters)
         #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-        return render(request,'anne/index.html', {'add_item_form':AddItemForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form, 'clusters': clusters})
+        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_item_form':AddItemForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form, 'clusters': clusters})
     else:
         #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-        return render(request,'anne/index.html', {'add_item_form':AddItemForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form})
+        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_item_form':AddItemForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form})
     
 
 
@@ -165,21 +166,32 @@ def viewProfile(request):
             profile_form = ProfileForm()
         return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters})
 
+# def addCluster(request):
+#     if request.method == 'POST':
+#         form = ClusterForm(request.POST or None)
+#         cluster = models.Cluster()
+#         cluster.cluster_name = form.data['cluster_name']
+#         user = models.CustomUser.objects.get(username = request.session['session_username']) 
+#         cluster.user = user
+#         cluster.save()
+#         clusters = models.Cluster.objects.filter(user = user)
+#         if 'sess_id' in request.session: 
+#             profile = models.Profile.objects.get(user=user) 
+#             return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'clusters':clusters})
+#         else :
+#             return render(request,'anne/profile.html',{'profile_form':form, 'cluster_form':ClusterForm, 'clusters':clusters})
+
 def addCluster(request):
     if request.method == 'POST':
-        form = ClusterForm(request.POST or None)
+        form = RegisterForm(request.POST or None)
         cluster = models.Cluster()
-        cluster.cluster_name = form.data['cluster_name']
+        cluster.cluster_name = form.data['cluster_name']  
         user = models.CustomUser.objects.get(username = request.session['session_username']) 
         cluster.user = user
         cluster.save()
         clusters = models.Cluster.objects.filter(user = user)
-        if 'sess_id' in request.session: 
-            profile = models.Profile.objects.get(user=user) 
-            return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'clusters':clusters})
-        else :
-            return render(request,'anne/profile.html',{'profile_form':form, 'cluster_form':ClusterForm, 'clusters':clusters})
-        
+        return JsonResponse({"status":"cluster created"}) 
+
 def cluster(request):
     cluster_id = request.GET['cluster_id']
     

@@ -11,9 +11,6 @@
   <link rel="stylesheet" href="../../static/styles.css">
 </head>
 <body onload="myFunction()">
-  {{emails}}
-  <br>
-  <div> {{usernames}}</div>
   <style>
     body {
     text-align: center;
@@ -280,33 +277,55 @@
             <!-- <iframe width="420" height="315"
             src="https://www.youtube.com/embed/tgbNymZ7vqY">
             </iframe> -->
-            <iframe id="video_player" src="" style="position: relative; height: 12em;
-            width: 80%;" allowfullscreen></iframe>
-            <div>
+            
+            <div id="video-details" style="opacity: 0;">
+            <img src="" class="thumbs" alt="fetch-video-thumbnail">
+            
+           
               <h4>Title</h4>
-              <p id="video-title"></p>
-              <h4>Description</h4>
-              <p id="video-desc"></p>
+              <p id="video-title"></p><br><br>
               <form action="http://kudos02.pythonanywhere.com/add-item/" method="get">
                 {% csrf_token %}
                 <input name="item_url" id="item_url" style="display: none;" type="text">
+          
                 <label for="sel1">Select cluster:</label>
                   <select name="cluster_id" class="form-control">
                     {% for cluster in clusters %}
 
-                    <option value="{{cluster.id}}">{{cluster.id}}</option>
+                    <option value="{{cluster.id}}">{{cluster.cluster_name}}</option>
 
                     {% endfor %}
                     
                   </select>
-                </div> 
                 <p id="clusterid">{{clusters.id}}</p>
                
                 <input type="submit" onclick="addItem()" value="save">
 
                  
 
-            </form>
+                </form>
+
+          </div> 
+          <script>
+            $(document).on('submit', '#addClusterForm', function(e) {
+            console.log("inside username verification function");
+            e.preventDefault();
+            var cluster_name = $('#clustername').val();
+            $.ajax({
+              type: 'POST',
+              url: 'http://kudos02.pythonanywhere.com/add-cluster/',
+              data: {
+                'cluster_name': cluster_name,
+                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+              },
+              success:function(response) {
+                  console.log(response.status);
+                }
+            })
+          })
+          </script>
+  
+
             <script>
               function addItem(){
 
@@ -322,27 +341,40 @@
       </div>
      <script>
        function fetchVideo(){
+         document.getElementById("video-details").style.opacity = 1;
           let str = String(document.getElementById("fetch-video-url").value);
-          let url1 = str.substr(17);
-          console.log(url1)
-          let src = document.getElementById("video_player").src;
-          console.log(src);
-          document.getElementById("video_player").src = str;
-          let s1 = "https://www.youtube.com/embed/".concat(url1);
-          src = document.getElementById("video_player").src = s1;
-          console.log(src);
-          let url2 = "https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA6VX3z31ObjBXhbr0JYMwfuftGGqivgaY&part=snippet&id=";
-          let url = url2.concat(url1);
-          
-          fetch(url).then((response) => {
-            return response.json();
-          }).then((data) => {
-            console.log(data.items[0].snippet.description);
-            document.getElementById("video-title").innerHTML = data.items[0].snippet.title;
-            document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
-            console.log(data.items[0].snippet.title);
+          if(str.includes("youtu.be")){
 
-          })
+            let url1 = str.substr(17);
+            console.log(url1)
+            let src = document.getElementsByClassName("thumbs").src;
+            console.log(src);
+            document.getElementsByClassName("thumbs").src = str;
+            let s1 = "https://www.youtube.com/embed/".concat(url1);
+            src = document.getElementsByClassName("thumbs").src = s1;
+            console.log(src);
+            let url2 = "https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA6VX3z31ObjBXhbr0JYMwfuftGGqivgaY&part=snippet&id=";
+            let url = url2.concat(url1);
+            
+            fetch(url).then((response) => {
+              return response.json();
+            }).then((data) => {
+              console.log(data)
+              console.log(data.items[0].snippet.description);
+              document.getElementById("video-title").innerHTML = data.items[0].snippet.title;
+              // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
+              $(".thumbs").attr('src', data.items[0].snippet.thumbnails.high.url)
+              console.log(data.items[0].snippet.title);
+
+            })
+          }
+         else {
+              let id = str.substr(18);
+              $.getJSON('https://vimeo.com/api/oembed.json?url=https://vimeo.com/' + id, {format: "json"}, function(data) {
+                $(".thumbs").attr('src', data.thumbnail_url)
+                document.getElementById("video-title").innerHTML = data.title;
+              });
+          }
         }
 
      </script>
@@ -456,6 +488,7 @@
           <img src="../static/anne/Pluudo_Show_Text.png" alt="">
         </a>
         -->
+
         <div class="">
           {% for i in obj %}
           {% video i.video as my_video %}
@@ -472,8 +505,8 @@
                 
               </div>
               <div class="video_description">
-              {{ my_video.backend }}, 
-              {{ my_video.url}}
+              {{ my_video.desc }}
+              aman
               </div>
               <br> <br> 
             </div> 

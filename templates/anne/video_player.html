@@ -33,11 +33,7 @@
         {% endif %}
       </div>
         <div style="text-align: center;">
-          {{my_video.desc}}
-          <br>
-          {{my_video.added}}
-          <!-- <br>
-          <a href="{{myvideo.url}}">see on official website</a> -->
+          <a href="{{myvideo.url}}">see on official website</a>
         </div>
       </div>
     {% endvideo %}
@@ -55,10 +51,12 @@
               </a>
               
             </div>
+              {{my_video.backend}}
+              
             <div class="video_description">
             {{ i.desc }}, {{ i.added }} 
             </div>
-            <br> 
+            <br> <br> <br>
           </div> 
         {% endvideo %}  
         {% endfor %}
@@ -86,5 +84,20 @@
         </a>
       </div>
     </div>
+
+    <script>
+      import axios, { AxiosRequestConfig } from "axios";
+
+    const getMetadata = async () => {
+      const videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      const requestUrl = `http://youtube.com/oembed?url=${videoUrl}&format=json`;
+      const result = await axios.get(requestUrl);
+      return result.data;
+    };
+
+    console.log(getMetadata);
+    </script>
 </body>
 </html>
+
+
