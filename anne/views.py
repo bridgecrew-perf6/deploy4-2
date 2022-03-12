@@ -9,7 +9,7 @@ from .forms import SearchVideoForm #, ProfileForm
 from anne import models
 
 from django.contrib.auth import authenticate,login,logout
-from .forms import LoginForm, RegisterForm, ProfileForm, ClusterForm, AddItemForm
+from .forms import LoginForm, RegisterForm, ProfileForm, ClusterForm, AddVideoForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -82,7 +82,7 @@ def searchUser(request):
     authform = LoginForm()
     registerform = RegisterForm()
     cluster_form = ClusterForm()
-    obj = models.Item.objects.all()
+    obj = models.Video.objects.all()
     site_d = models.SiteDesc.objects.all()
     if 'session_username' in request.session:
         user = models.CustomUser.objects.get(username = request.session['session_username'])
@@ -90,25 +90,25 @@ def searchUser(request):
         clusters = models.Cluster.objects.filter(user = user)
         print(clusters)
         #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_item_form':AddItemForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form, 'clusters': clusters})
+        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_video_form':AddVideoForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form, 'clusters': clusters})
     else:
         #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_item_form':AddItemForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form})
+        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_video_form':AddVideoForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form})
     
 
 
 def videoPlayer(request):
-    obj = models.Item.objects.all()
+    obj = models.Video.objects.all()
     video_id = request.GET['video_id']
-    video = models.Item.objects.get(id=video_id)
+    video = models.Video.objects.get(id=video_id)
     return render(request, 'anne/video_player.html', {'obj':obj, 'my_video':video})
 
 def searchVideo(request):
     if request.method=='POST':
         form = SearchVideoForm(request.POST)
         desc = form.data['desc']
-        items = models.Item.objects.filter(desc=desc)
-        res = render(request,'anne/search_video.html',{'form':form,'items':items})
+        Videos = models.Video.objects.filter(desc=desc)
+        res = render(request,'anne/search_video.html',{'form':form,'Videos':Videos})
         return res
 
 
@@ -196,21 +196,24 @@ def cluster(request):
     cluster_id = request.GET['cluster_id']
     
     cluster = models.Cluster.objects.get(id = cluster_id)
-    obj = cluster.item_set.all()
+    obj = cluster.video_set.all()
 
     cluster_form = ClusterForm(request.POST or None, instance=cluster)
     return render(request, 'anne/cluster.html', {'cluster_form':cluster_form, 'obj':obj, 'cluster' : cluster})
 
-def addItem(request):
+def addVideo(request):
     
-    item_url = request.GET['item_url']
     cluster_id = request.GET['cluster_id']
-    item = models.Item()
-    item.video = item_url
-    item.cluster = models.Cluster.objects.get(id = cluster_id)
-    item.save()
+    video = models.Video()
+    video.video_platform_id = request.GET['video_platform_id']
+    video.video_title = request.GET['video_title']
+    video.video_url = request.GET['video_url']
+    video.video_thumbnail = request.GET['video_thumbnail']
+    video.video_owner = request.session['session_username']
+    video.cluster = models.Cluster.objects.get(id = cluster_id)
+    video.save()
     cluster = models.Cluster.objects.get(id = cluster_id)
-    obj = cluster.item_set.all()
+    obj = cluster.video_set.all()
     return render(request, 'anne/cluster.html', {'cluster_form':ClusterForm, 'obj':obj, 'cluster' : cluster})
     
 

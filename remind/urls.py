@@ -36,7 +36,8 @@ urlpatterns = [
     path('add-profile/', views.addProfile, name = 'add-profile'), 
     path('add-cluster/', views.addCluster, name = 'add-cluster'),   
     path('cluster/', views.cluster, name = 'cluster'),  
-    path('add-item/', views.addItem, name = 'add-item'), 
+    # path('add-item/', views.addItem, name = 'add-item'), 
+    path('add-video/', views.addVideo, name = 'add-video'), 
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

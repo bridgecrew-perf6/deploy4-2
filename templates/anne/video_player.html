@@ -18,10 +18,13 @@
       top: 0;
       z-index: 1;
     }
+    body {
+    text-align: center;
+  }
     
   </style>
 
-    {% video my_video.video as myvideo %}
+    <!-- {% video my_video.video as myvideo %}
       <div id="sticky">
         {% if "youtube" in myvideo.url %}
         <iframe src="{{myvideo.url}}&autoplay=1&mute=1" style="position: relative; height: 17em;
@@ -36,31 +39,52 @@
           <a href="{{myvideo.url}}">see on official website</a>
         </div>
       </div>
-    {% endvideo %}
-        
+    {% endvideo %} -->
+
+    {% if "vimeo" in my_video.video_url %}
+      <iframe src="https://player.vimeo.com/video/{{my_video.video_platform_id}}"
+      width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    {% elif "dailymotion" in my_video.video_url %}
+      <iframe id="player" frameborder="0" allowfullscreen="true" allow="autoplay" 
+      src="https://www.dailymotion.com/embed/video/{{my_video.video_platform_id}}"
+      width="100%" height="100%"></iframe>
+    {% else %}        
+      <iframe width="420" height="315"
+      src="https://www.youtube.com/embed/{{my_video.video_platform_id}}"
+      width="100%" height="100%">
+      </iframe>      
+    {% endif %}
+   
+    <div class="video_description">
+          {{my_video.video_owner}}
+           <br>
+          {{my_video.video_title}}
+    </div>
 
     <h1 style="text-align: center;">Similar videos</h1>
-   <div class="">
-        {% for i in obj %}
-        {% video i.video as my_video %}
-          <div class="videos_list">
-            <div style="width: 100%; height: auto">
+    <div class="">
+      {% for i in obj %}
+        <div class="videos_list">
+          <!-- <div class = "video-container">
+             {% video my_video  %} 
+            <img src="{{my_video.thumbnail}}" alt="">
+          </div> -->
+          <div style="width: 100%; height: auto">
 
-              <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-                <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
-              </a>
-              
-            </div>
-              {{my_video.backend}}
-              
-            <div class="video_description">
-            {{ i.desc }}, {{ i.added }} 
-            </div>
-            <br> <br> <br>
-          </div> 
-        {% endvideo %}  
-        {% endfor %}
-        </div>
+            <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+              <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
+            </a>
+            
+          </div>
+          <div class="video_description">
+          {{i.video_owner}} 
+              <br>
+          {{i.video_title}}
+          </div>
+          <br> <br> 
+        </div>  
+      {% endfor %}
+      </div>
     <div class="footer">
       <div class="footer_dimensions">
 

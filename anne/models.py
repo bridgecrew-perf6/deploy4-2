@@ -35,7 +35,19 @@ class Cluster(models.Model):
  
 class Item(models.Model):
     cluster = models.ForeignKey(Cluster,on_delete=models.CASCADE)
-    video = EmbedVideoField()  # same like models.URLField()
+    my_video = EmbedVideoField()  # same like models.URLField()
     
     def __str__(self):
         return str(self.video)
+
+class Video(models.Model):
+    cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE)
+    video_platform_id = models.CharField(max_length=200)
+    video_url = models.CharField(max_length=500)
+    video_title = models.CharField(max_length=500)
+    video_thumbnail = models.CharField(max_length=500)
+    video_owner = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.video_title)
+

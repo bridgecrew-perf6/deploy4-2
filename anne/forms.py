@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Cluster
+from .models import Profile, Cluster, Video
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 
@@ -37,3 +37,8 @@ class AddItemForm(forms.Form):
     cluster_id = forms.CharField(max_length=10)
     item_url = forms.CharField(label='Title',max_length=400)
   
+
+class AddVideoForm(forms.ModelForm):
+    class Meta:
+        model = Video
+        fields = {'video_platform_id','video_url', 'video_title', 'video_thumbnail', 'video_owner'}

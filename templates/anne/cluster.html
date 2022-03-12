@@ -12,27 +12,28 @@
 </head>
 <body>
     <button onclick="showPopup()">Edit Cluster</button>
-    {% for i in obj %}
-          {% video i.video as my_video %}
-            <div class="videos_list">
-              <!-- <div class = "video-container">
-                 {% video my_video  %} 
-                <img src="{{my_video.thumbnail}}" alt="">
-              </div> -->
-              <div style="width: 100%; height: auto">
+    <div class="">
+      {% for i in obj %}
+        <div class="videos_list">
+          <!-- <div class = "video-container">
+             {% video my_video  %} 
+            <img src="{{my_video.thumbnail}}" alt="">
+          </div> -->
+          <div style="width: 100%; height: auto">
 
-                <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-                  <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="vimeo">
-                </a>
-                
-              </div>
-              <span class="video_description">
-                aman
-              </span>
-              <br> <br> 
-            </div> 
-          {% endvideo %}  
+            <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+              <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
+            </a>
+            
+          </div>
+          <div class="video_description">
+          {{i.video_owner}}
+          {{i.video_title}}
+          </div>
+          <br> <br> 
+        </div>  
       {% endfor %}
+      </div>
     
     <style>
         .popup { display: none; }

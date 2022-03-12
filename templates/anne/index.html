@@ -284,9 +284,12 @@
            
               <h4>Title</h4>
               <p id="video-title"></p><br><br>
-              <form action="http://kudos02.pythonanywhere.com/add-item/" method="get">
+              <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
                 {% csrf_token %}
-                <input name="item_url" id="item_url" style="display: none;" type="text">
+                <input name="video_url" id="video_url" style="display: none;" type="text">
+                <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
+                <input name="video_title" id="video_title" style="display: none;" type="text">
+                <input name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
           
                 <label for="sel1">Select cluster:</label>
                   <select name="cluster_id" class="form-control">
@@ -299,7 +302,7 @@
                   </select>
                 <p id="clusterid">{{clusters.id}}</p>
                
-                <input type="submit" onclick="addItem()" value="save">
+                <input type="submit" onclick="addVideo()" value="save">
 
                  
 
@@ -327,9 +330,9 @@
   
 
             <script>
-              function addItem(){
+              function addVideo(){
 
-                document.getElementById("item_url").value = document.getElementById("fetch-video-url").value;
+                document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
                 document.getElementById("cluster_id").value = document.getElementById("clusterid").innerHTML;
 
               }
@@ -365,6 +368,29 @@
               // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
               $(".thumbs").attr('src', data.items[0].snippet.thumbnails.high.url)
               console.log(data.items[0].snippet.title);
+              
+              document.getElementById("video_title").value = data.items[0].snippet.title;
+              document.getElementById("video_thumbnail").value = data.items[0].snippet.thumbnails.high.url;
+              document.getElementById("video_platform_id").value = url1;
+            })
+          }
+          else if(str.includes("dailymotion")){
+            let url1 = str.substr(34);
+            console.log(url1);
+            let url2 = "https://api.dailymotion.com/video/"
+            let url = url2.concat(url1);
+            fetch(url).then((response) => {
+              return response.json();
+            }).then((data) => {
+              console.log(data)
+              console.log(data.title);
+              document.getElementById("video-title").innerHTML = data.title;
+              // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
+              $(".thumbs").attr('src', 'https://dailymotion.com/thumbnail/video/' + url1);
+              
+              document.getElementById("video_title").value = data.title;
+              document.getElementById("video_thumbnail").value = 'https://dailymotion.com/thumbnail/video/' + url1;
+              document.getElementById("video_platform_id").value = url1;
 
             })
           }
@@ -373,6 +399,9 @@
               $.getJSON('https://vimeo.com/api/oembed.json?url=https://vimeo.com/' + id, {format: "json"}, function(data) {
                 $(".thumbs").attr('src', data.thumbnail_url)
                 document.getElementById("video-title").innerHTML = data.title;
+              document.getElementById("video_title").value = data.title;
+              document.getElementById("video_thumbnail").value = data.thumbnail_url;
+              document.getElementById("video_platform_id").value = id;
               });
           }
         }
@@ -491,7 +520,6 @@
 
         <div class="">
           {% for i in obj %}
-          {% video i.video as my_video %}
             <div class="videos_list">
               <!-- <div class = "video-container">
                  {% video my_video  %} 
@@ -500,15 +528,16 @@
               <div style="width: 100%; height: auto">
 
                 <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-                  <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
+                  <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
                 </a>
+                
               </div>
-              <span class="video_description">
-                aman
-              </span>
+              <div class="video_description">
+              {{i.video_owner}}
+              {{i.video_title}}
+              </div>
               <br> <br> 
-            </div> 
-          {% endvideo %}  
+            </div>  
           {% endfor %}
           </div>
         <div class="footer">
