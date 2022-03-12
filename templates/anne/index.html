@@ -492,6 +492,13 @@
         <div class="">
           {% for i in obj %}
           {% video i.video as my_video %}
+          <div>
+            vimeo 1:{{i.video.thumbnail}}
+          </div>
+          
+          <div>
+            vimeo 3:{{i.video.thumbnail}}
+          </div>
             <div class="videos_list">
               <!-- <div class = "video-container">
                  {% video my_video  %} 
@@ -502,10 +509,9 @@
                 <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
                   <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
                 </a>
-                  vimeo:{{my_video.thumbnail}}
               </div>
               <div class="video_description">
-              aman
+                vimeo:{{my_video.thumbnail}}
               </div>
               <br> <br> 
             </div> 
