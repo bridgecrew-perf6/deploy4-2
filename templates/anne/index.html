@@ -492,13 +492,6 @@
         <div class="">
           {% for i in obj %}
           {% video i.video as my_video %}
-          <div>
-            vimeo 1:{{i.video.thumbnail}}
-          </div>
-          
-          <div>
-            vimeo 3:{{i.video.thumbnail}}
-          </div>
             <div class="videos_list">
               <!-- <div class = "video-container">
                  {% video my_video  %} 
@@ -510,9 +503,9 @@
                   <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
                 </a>
               </div>
-              <div class="video_description">
+              <span class="video_description">
                 vimeo:{{my_video.thumbnail}}
-              </div>
+              </span>
               <br> <br> 
             </div> 
           {% endvideo %}  
