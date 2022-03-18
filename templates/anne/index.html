@@ -7,70 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pluudo.com</title>
-  <script src="../../static/style.js"></script>
+  <link rel="stylesheet" href="../../static/popUp.css">
+ 
   <link rel="stylesheet" href="../../static/styles.css">
 </head>
 <body onload="myFunction()">
-  <style>
-    body {
-    text-align: center;
-  }
-  .popup { display: none; }
-  .popup.open { display: block; }
-
-  .popup2 { display: none; }
-  .popup2.open { display: block; }
-
-  .blocker {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    content: ' ';
-    background: rgba(0,0,0,.5);
-  }
-
-  .blocker2 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    content: ' ';
-    background: rgba(0,0,0,.5);
-  }
-
-  .popup .contents {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    height: 50%;
-    background: #FFF;
-
-    position: fixed;
-    bottom: 0px;
-  }
-
-  .popup2 .contents2 {
-    margin-top: 20%;
-    margin-left: 15%;
-    margin-right: 15%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 65%;
-    width: 70%;
-    background: #FFF;
-
-    position: fixed;
-  }
-  </style>
-
-
-
-
-
-
+ 
 
      <div class="popup">
         <div class="blocker" onclick="hidePopup()"></div>
@@ -78,11 +20,13 @@
 
           <form id="checkEmailForm" method="post">
             {% csrf_token %}
-            <label for="email">Email</label> <br>
-            <input id="email_entered" type="email" required> <br> <br>
-            <input type="submit" value="Continue">
+            <br>
+            <label for="email">Continue with email</label> <br>
+            <br>
+            <input placeholder="Email" id="email_entered" type="email" required> <br> <br>
+            <input type="submit" value="Next">
           </form>
-          <p id="email_message"></p>
+          <p id="email_message" style="display: none;"></p>
           <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
           
           </script>
@@ -210,10 +154,17 @@
 
             <form id="loginForm" style="display: none;">
               <input type="email" id="login_email" style="display: none;">
-              <label for="password">Password</label>
-              <input type="password" id="password" required>
-
-              <input type="submit" value="Continue">
+              
+              <br>
+              <div>
+                <b>Login Password</b> 
+              </div>
+              <br>
+              
+              <input placeholder="Password" type="password" id="password" required>
+              <br>
+              <br>
+              <input type="submit" value="Login">
               <p id="login_validation"></p>
             </form>
           </div>
@@ -223,13 +174,13 @@
             <form id="registerForm" style="display: none;">
               {% csrf_token %}
               <div id="askPasswordForm">
+                <p>Verify your Password to signup</p>
                 <input type="email" id="email" style="display: none;">
-                <label for="password_1">Password</label> <br>
-                <input id="password_1" type="password" > <br>
-
-                <label for="password_2">Confirm Password</label> <br>
-                <input id="password_2" type="text" > <br>
-
+                <br>  
+                <input placeholder="Password" id="password_1" type="password" > <br>
+                <br>
+                <input placeholder="Confirm Password" id="password_2" type="text" > <br>
+                <br>
                 <button id="askPasswordForm_Button" onclick="verifyPassword()">
                   Next
                 </button>
@@ -237,18 +188,20 @@
               </div>
 
               <div id="askNameForm">
-
-                <label for="first_name">First Name</label> <br>
-                <input id="first_name" type="text" required> <br>
-
-                <label for="last_name">Last Name</label> <br>
-                <input id="last_name" type="text" required> <br>
-
-                <label for="username_entered">Username</label> <br>
-                <input id="username_entered" type="text" required> <br>
+                <h3>Choose your Pluudo handle</h3>
+                <p>This will be your profile's unique URL on Pluudo.</p>
+                <p>It cannot be changed later.</p>
+                <!-- <label for="first_name">First Name</label> <br> -->
+                <input placeholder="First Name" id="first_name" type="text" required> <br>
+                <br>
+                <!-- <label for="last_name">Last Name</label> <br> -->
+                <input placeholder="Last Name" id="last_name" type="text" required> <br>
+                <br>
+                <label for="username_entered">pluudo.com/</label> 
+                <input placeholder="name" id="username_entered" type="text" required> <br>
                 <p id="username_message"></p> <br>
 
-                <input type="submit" id="register_user">
+                <input type="submit" value="signup" id="register_user">
 
               </div>
 
@@ -269,21 +222,33 @@
 
         <div class="blocker2" onclick="hidePopup2()"></div>
         
-        <div class="contents2" style="overflow: scroll;">
+        <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
           <h2>Add a Video</h2>
-          <input id="fetch-video-url" type="text" placeholder="please enter url"> <br> <br>
+          <p>from vimeo, youtube or dailymotion</p> <br>
+
+          <div style="display: flex; margin: 5%">
+          
+            <input  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
+            <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
+
+          </div>
+
+          <!-- <input id="fetch-video-url" type="text" placeholder="please enter url"> <br> <br>
           <input type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
-          <div>
+          <div> -->
             <!-- <iframe width="420" height="315"
             src="https://www.youtube.com/embed/tgbNymZ7vqY">
             </iframe> -->
             
             <div id="video-details" style="opacity: 0;">
-            <img src="" class="thumbs" alt="fetch-video-thumbnail">
+              <br> <br>
+              <div>
+                <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
+              </div>
             
-           
+             <div>
               <h4>Title</h4>
-              <p id="video-title"></p><br><br>
+              <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
               <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
                 {% csrf_token %}
                 <input name="video_url" id="video_url" style="display: none;" type="text">
@@ -307,7 +272,7 @@
                  
 
                 </form>
-
+              </div>
           </div> 
           <script>
             $(document).on('submit', '#addClusterForm', function(e) {
@@ -343,114 +308,10 @@
      
       </div>
      <script>
-       function fetchVideo(){
-         document.getElementById("video-details").style.opacity = 1;
-          let str = String(document.getElementById("fetch-video-url").value);
-          if(str.includes("youtu.be")){
-
-            let url1 = str.substr(17);
-            console.log(url1)
-            let src = document.getElementsByClassName("thumbs").src;
-            console.log(src);
-            document.getElementsByClassName("thumbs").src = str;
-            let s1 = "https://www.youtube.com/embed/".concat(url1);
-            src = document.getElementsByClassName("thumbs").src = s1;
-            console.log(src);
-            let url2 = "https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA6VX3z31ObjBXhbr0JYMwfuftGGqivgaY&part=snippet&id=";
-            let url = url2.concat(url1);
-            
-            fetch(url).then((response) => {
-              return response.json();
-            }).then((data) => {
-              console.log(data)
-              console.log(data.items[0].snippet.description);
-              document.getElementById("video-title").innerHTML = data.items[0].snippet.title;
-              // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
-              $(".thumbs").attr('src', data.items[0].snippet.thumbnails.high.url)
-              console.log(data.items[0].snippet.title);
-              
-              document.getElementById("video_title").value = data.items[0].snippet.title;
-              document.getElementById("video_thumbnail").value = data.items[0].snippet.thumbnails.high.url;
-              document.getElementById("video_platform_id").value = url1;
-            })
-          }
-          else if(str.includes("dailymotion")){
-            let url1 = str.substr(34);
-            console.log(url1);
-            let url2 = "https://api.dailymotion.com/video/"
-            let url = url2.concat(url1);
-            fetch(url).then((response) => {
-              return response.json();
-            }).then((data) => {
-              console.log(data)
-              console.log(data.title);
-              document.getElementById("video-title").innerHTML = data.title;
-              // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
-              $(".thumbs").attr('src', 'https://dailymotion.com/thumbnail/video/' + url1);
-              
-              document.getElementById("video_title").value = data.title;
-              document.getElementById("video_thumbnail").value = 'https://dailymotion.com/thumbnail/video/' + url1;
-              document.getElementById("video_platform_id").value = url1;
-
-            })
-          }
-         else {
-              let id = str.substr(18);
-              $.getJSON('https://vimeo.com/api/oembed.json?url=https://vimeo.com/' + id, {format: "json"}, function(data) {
-                $(".thumbs").attr('src', data.thumbnail_url)
-                document.getElementById("video-title").innerHTML = data.title;
-              document.getElementById("video_title").value = data.title;
-              document.getElementById("video_thumbnail").value = data.thumbnail_url;
-              document.getElementById("video_platform_id").value = id;
-              });
-          }
-        }
-
+      
      </script>
 
-      <script>
-
-      const popup = document.querySelector('.popup');
-      function showPopup() {
-        popup.classList.add('open');
-        var elems = document.getElementsByClassName('footer');
-        for (var i=0;i<elems.length;i+=1){
-          elems[i].style.display = 'none';
-        }
-      }
-      function hidePopup() {
-        popup.classList.remove('open');
-        var elems = document.getElementsByClassName('footer');
-        for (var i=0;i<elems.length;i++){
-          elems[i].style.display = 'block';
-        }
-      }
-
-      </script>
-
-<script>
-  const popup2 = document.querySelector('.popup2');
-  function showPopup2() {
-    popup2.classList.add('open');
-    var elems = document.getElementsByClassName('footer');
-    for (var i=0;i<elems.length;i+=1){
-      elems[i].style.display = 'none';
-    }
-  }
-  function hidePopup2() {
-    popup2.classList.remove('open');
-    var elems = document.getElementsByClassName('footer');
-    for (var i=0;i<elems.length;i++){
-      elems[i].style.display = 'block';
-    }
-  }
-
-  </script>
-      
-
-
-
-
+    
   <style>
   
     #search-page{
@@ -465,6 +326,8 @@
   
   <style>
     #main{
+      width: 100%;
+      margin-left: 15%;
       display: flex;
       align-items: center;
     }
@@ -472,13 +335,13 @@
   
     <div id="search-page">
       <div id="main">
-        <a width="80%" onclick="unMySearch()" class="back_icon" href="#">
+        <a style="float: left;" width="80%" onclick="unMySearch()" class="back_icon" href="#">
           <img style = "width: 40%; "src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
         </a>
         <form class="" action="http://kudos02.pythonanywhere.com/search-video" method="post">
           {% csrf_token %}
           {{form}}
-          <input style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
+          <input style="float: right;" style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
         </form>
         
       </div>
@@ -518,6 +381,18 @@
         </a>
         -->
 
+    
+        <!-- <video width="640" height="360" id="player1" preload="none">
+            <source type="video/youtube" src="https://youtu.be/rDqemu6oisc" />
+        </video>
+         -->
+        <!-- <script>
+            var player = new MediaElementPlayer('#player1');
+        </script> 
+    <script src="jquery.js"></script>
+    <script src="mediaelement-and-player.min.js"></script>
+    <link rel="stylesheet" href="mediaelementplayer.css" /> -->
+    
         <div class="">
           {% for i in obj %}
             <div class="videos_list">
@@ -578,4 +453,8 @@
       </div>  
     </div>
 </body>
+
+<script src="../../static/style.js"></script>
+<script src="../../static/popUp.js"></script> 
+<script src="../../static/fetchVideo.js"></script>
 </html>

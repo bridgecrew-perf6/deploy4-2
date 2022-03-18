@@ -7,146 +7,102 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pluudo.com</title>
-  <script src="../../static/style.js"></script>
+  <link rel="stylesheet" href="../../static/popUp.css">
   <link rel="stylesheet" href="../../static/styles.css">
 </head>
-<script>
-  ////
-// code to count number of times the site is loaded
-
-let bool = 1;
-
-var n = localStorage.getItem('on_load_counter');
-
-if (n === null) {
-    n = 0;
-}
-
-n++;
-
-localStorage.setItem("on_load_counter", n);
-
-//////////////////
-
-//////////////////// 
-
-// code to hide and show videos' description on click
-
-function hide() {
-var list = document.getElementsByClassName("video_description");
-for(var i=0; i<list.length; i++){
-if(bool%2 == 0){
-list[i].style.display = 'block';
-}
-else{
-list[i].style.display = 'none';
-}
-}
-bool++;
-}
-//////////////////////
-
-
-//////////////////////
-//code to identify which description about site need to be shown
-
-function myFunction() {
-//localStorage.setItem(localStorage.getItem("count"), localStorage.getItem("count")+1)
-localStorage.setItem("count",localStorage.getItem("count")+1);
-
-if(n%3 == 0){
-document.getElementById("desc").innerHTML = "Your search engine for visually appealing videos ";
-}
-if(n%3 == 1){
-document.getElementById("desc").innerHTML = "Collect videos from all across & store at one place ";
-}
-if(n%3 == 2){
-document.getElementById("desc").innerHTML = "Find video inspirations quick & easy ";
-}
-}
-////////////////////  
-</script>
 <body onload="myFunction()">
-  
 
-  <script>
 
-    function mySearch(){
-      document.getElementById("search-page").style.display = "inline";
-      document.getElementById("main-page").style.display = "none";
-    }
-  
-    function unMySearch(){
-      document.getElementById("search-page").style.display = "none";
-      document.getElementById("main-page").style.display = "block";
-    }
-    
-  </script>
-  
-  <script>
-  
-    function myProfile(){
-      document.getElementById("profile-page").style.display = "inline";
-      document.getElementById("main-page").style.display = "none";
-    }
-  
-    function unMyProfile(){
-      document.getElementById("profile-page").style.display = "none";
-      document.getElementById("main-page").style.display = "block";
-    }
-    
-  </script>
-  
-  <style>
-  
-    #search-page{
-      display: none;
-    }
-  
-    #profile-page{
-      display: none;
-    }
-  
-  </style>
-  
-  <style>
-    #main{
-      display: flex;
-      align-items: center;
-    }
-  </style>
-  
+      <div class="popup2">
+
+        <div class="blocker2" onclick="hidePopup2()"></div>
+        
+        <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
+          <h2>Add a Video</h2>
+          <p>from vimeo, youtube or dailymotion</p> <br>
+
+          <div style="display: flex; margin: 5%">
+          
+            <input  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
+            <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
+
+          </div>
+
+          <!-- <input id="fetch-video-url" type="text" placeholder="please enter url"> <br> <br>
+          <input type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
+          <div> -->
+            <!-- <iframe width="420" height="315"
+            src="https://www.youtube.com/embed/tgbNymZ7vqY">
+            </iframe> -->
+            
+            <div id="video-details" style="opacity: 0;">
+              <br> <br>
+              <div>
+                <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
+              </div>
+            
+             <div>
+              <h4>Title</h4>
+              <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
+              <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
+                {% csrf_token %}
+                <input name="video_url" id="video_url" style="display: none;" type="text">
+                <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
+                <input name="video_title" id="video_title" style="display: none;" type="text">
+                <input name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
+          
+                <label for="sel1">Select cluster:</label>
+                  <select name="cluster_id" class="form-control">
+                    {% for cluster in clusters %}
+
+                    <option value="{{cluster.id}}">{{cluster.cluster_name}}</option>
+
+                    {% endfor %}
+                    
+                  </select>
+                <p id="clusterid">{{clusters.id}}</p>
+               
+                <input type="submit" onclick="addVideo()" value="save">
+
+                 
+
+                </form>
+              </div>
+          </div> 
+
+            <script>
+              function addVideo(){
+
+                document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
+                document.getElementById("cluster_id").value = document.getElementById("clusterid").innerHTML;
+
+              }
+            </script>
+            </div>
+          </div>
+        </div>
+     
+      </div>
+
+
     <div id="search-page">
       <div id="main">
-        <a width="80%" onclick="unMySearch()" class="back_icon" href="#">
+        <a style="float: left;" width="80%" onclick="unMySearch()" class="back_icon" href="#">
           <img style = "width: 40%; "src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
         </a>
         <form class="" action="http://kudos02.pythonanywhere.com/search-video" method="post">
           {% csrf_token %}
           {{form}}
-          <input style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
+          <input style="float: right;" style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
         </form>
         
       </div>
     </div>
-  
-    <div id="profile-page">
-      <div>
-        
-      <a href="http://kudos02.pythonanywhere.com/register">LogIn</a>
-      <a href="http://kudos02.pythonanywhere.com/login">SignUp</a>
-        
-      </div>
-      <br><br>
-      <a onclick="unMyProfile()" class="back_icon" href="#">
-        <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-      </a>
-    </div>
-  
+ 
     <div id="main-page">
 
        <div class="header" style="color:blue;">
-        <a class="pluudo_logo" href="http://kudos02.pythonanywhere.com">
+        <a class="pluudo_logo" href="http://kudos02.pythonanywhere.com/">
           <img src="../static/anne/logo.png" alt="Pluudo_logo">
         </a>
         
@@ -155,56 +111,49 @@ document.getElementById("desc").innerHTML = "Find video inspirations quick & eas
        </a>
      </div>
 
-         <div id="desc" style="text-align:center; "> </div>
-         
-       <br><br>
-        <!-- <button onclick="hide()">Desc</button> 
-        <a onclick="hide()">
-          <img src="../static/anne/Pluudo_Show_Text.png" alt="">
-        </a>
-        -->
-        <div class="">
-
-          {% if items %}
-            {% for item in items %}
-            {% video item.video as my_video %}
-            <div class="videos_list">
-              <a href="whatsapp://send?text=http://localhost:8000/video-player?id={{my_video.url}}" data-action="share/whatsapp/share">Share via Whatsapp</a>
-              <div style="width: 100%; height: auto">
-                <a href="http://localhost:8000/video-player?video_id={{item.id}}">
-                  <img style="border-radius: 5%; width: 100%; height: auto" src="{{my_video.thumbnail}}" alt="">
-                </a>
-                
-              </div>
-              <h5>{{my_video.url}}</h5>
-              <br>
-                <br>
-                {{my_video.backend}}
-                
-              <div class="video_description">
-              {{ item.desc }}, {{ item.added }} 
-              </div>
-              <br> <br> <br>
-            </div> 
-          {% endvideo %}  
-          {% endfor %}
-          {% endif %}
-          {% if not items %}
-          <h2>No Record Found</h2>
-          {% endif %}
+        <div>
+          <b>{{request.session.desc}}</b>
         </div>
+
+       <br><br>
+    
+    <div class="">
+      {% for i in Videos %}
+        <div class="videos_list">
+          <div style="width: 100%; height: auto">
+
+            <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+              <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
+            </a>
+            
+          </div>
+          <div class="video_description">
+          {{i.video_owner}} 
+              <br>
+          {{i.video_title}}
+          </div>
+          <br> <br> 
+        </div>  
+      {% endfor %}
+      </div>
+
         <div class="footer">
           <div class="footer_dimensions">
 
-            <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
-              <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
-            </a>
-              <a class="pluudo_mid_icons" href="">
-                <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
+            <div class="footer_dimensions">
+
+              <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
+                <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
               </a>
-              <a onclick="myProfile()" class="pluudo_mid_icons" >
-                <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
-              </a>
+               <a onclick="showPopup2()" class="pluudo_mid_icons">
+                  <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
+                </a>
+               
+                <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
+                  <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
+                </a>
+              
+            </div>
 
           </div>
           <div>
@@ -219,4 +168,8 @@ document.getElementById("desc").innerHTML = "Find video inspirations quick & eas
       </div>  
     </div>
 </body>
+<script src="../../static/style.js"></script>
+<script src="../../static/popUp.js"></script> 
+<script src="../../static/fetchVideo.js"></script>
 </html>
+

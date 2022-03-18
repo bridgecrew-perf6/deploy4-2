@@ -29,6 +29,7 @@ urlpatterns = [
     path('check-username/', views.checkUsername),
     path('admin/', admin.site.urls),
     path('login/', views.Login),
+    path('delete-cluster', views.deleteCluster),
     path('logout/', views.userLogout, name = 'logout'),
     path('register/', user_view.register, name ='register'),
     path('edit-profile/', views.editProfile, name ='edit-profile'),

@@ -9,7 +9,7 @@ from .forms import SearchVideoForm #, ProfileForm
 from anne import models
 
 from django.contrib.auth import authenticate,login,logout
-from .forms import LoginForm, RegisterForm, ProfileForm, ClusterForm, AddVideoForm
+from .forms import LoginForm, RegisterForm, ProfileForm, ClusterForm, AddVideoForm, DeleteVideoForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -20,6 +20,16 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
+
+def deleteCluster(request):
+    cluster_id = request.GET['cluster_id']
+    
+    cluster = models.Cluster.objects.get(id = cluster_id)
+    cluster.delete()
+
+    cluster_form = ClusterForm(request.POST or None, instance=cluster)
+    return render(request, 'anne/cluster.html', {'cluster_form':cluster_form, 'cluster' : cluster})
+
 
 def checkUsername(request):
     if request.method == 'POST':
@@ -86,9 +96,7 @@ def searchUser(request):
     site_d = models.SiteDesc.objects.all()
     if 'session_username' in request.session:
         user = models.CustomUser.objects.get(username = request.session['session_username'])
-        print(user)
         clusters = models.Cluster.objects.filter(user = user)
-        print(clusters)
         #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
         return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_video_form':AddVideoForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form, 'clusters': clusters})
     else:
@@ -106,8 +114,24 @@ def videoPlayer(request):
 def searchVideo(request):
     if request.method=='POST':
         form = SearchVideoForm(request.POST)
-        desc = form.data['desc']
-        Videos = models.Video.objects.filter(desc=desc)
+        desc = form.data['desc'].lower()
+        if 'desc' in request.session :
+            del request.session['desc']
+        request.session['desc'] = desc
+
+        Videos = []
+        for vid in models.Video.objects.all():
+            print(vid.video_title.lower())
+            if desc in vid.video_title.lower() or desc in vid.video_owner.lower() :
+                Videos.append(vid)
+
+        if len(Videos) == 0:
+              for cluster in models.Cluster.objects.all():
+                if "cars" or "songs" in cluster.cluster_hashtags :
+                    obj = cluster.video_set.all()
+                    for vid in obj:
+                            Videos.append(vid)
+        print(Videos)       
         res = render(request,'anne/search_video.html',{'form':form,'Videos':Videos})
         return res
 
@@ -132,6 +156,7 @@ def register(request):
 def addProfile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST or None)
+        form = SearchVideoForm()
         if form.is_valid():
             profile = models.Profile()
             username = request.session['session_username']
@@ -141,7 +166,7 @@ def addProfile(request):
             profile.website_name = form.data['website_name']
             profile.save()
             request.session['sess_id'] = profile.id
-            return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm})
+            return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'form' : SearchVideoForm()})
 
 # @login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def editProfile(request):
@@ -151,7 +176,7 @@ def editProfile(request):
             profile = models.Profile.objects.get(id = sess_id)
             form = ProfileForm(request.POST or None, instance=profile)
             form.save()
-            return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm})
+            return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'form' : SearchVideoForm()})
 
 def viewProfile(request):
         clusters = models.Cluster.objects.all()
@@ -164,7 +189,7 @@ def viewProfile(request):
             profile_form = ProfileForm(request.POST or None, instance=profile)
         else:
             profile_form = ProfileForm()
-        return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters})
+        return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters, 'form' : SearchVideoForm()})
 
 # def addCluster(request):
 #     if request.method == 'POST':
@@ -186,6 +211,7 @@ def addCluster(request):
         form = RegisterForm(request.POST or None)
         cluster = models.Cluster()
         cluster.cluster_name = form.data['cluster_name']  
+        cluster.cluster_tags = form.data['cluster_hashtags'] 
         user = models.CustomUser.objects.get(username = request.session['session_username']) 
         cluster.user = user
         cluster.save()
@@ -194,12 +220,14 @@ def addCluster(request):
 
 def cluster(request):
     cluster_id = request.GET['cluster_id']
-    
     cluster = models.Cluster.objects.get(id = cluster_id)
+    delete_form = DeleteVideoForm()
     obj = cluster.video_set.all()
-
+    delete_form.videos = obj
+    user = models.CustomUser.objects.get(username = request.session['session_username'])
+    clusters = models.Cluster.objects.filter(user = user)
     cluster_form = ClusterForm(request.POST or None, instance=cluster)
-    return render(request, 'anne/cluster.html', {'cluster_form':cluster_form, 'obj':obj, 'cluster' : cluster})
+    return render(request, 'anne/cluster.html', {'clusters':clusters,'delete_form':delete_form ,'cluster_form':cluster_form, 'obj':obj, 'cluster' : cluster, 'form' : SearchVideoForm()})
 
 def addVideo(request):
     
@@ -214,7 +242,7 @@ def addVideo(request):
     video.save()
     cluster = models.Cluster.objects.get(id = cluster_id)
     obj = cluster.video_set.all()
-    return render(request, 'anne/cluster.html', {'cluster_form':ClusterForm, 'obj':obj, 'cluster' : cluster})
+    return render(request, 'anne/cluster.html', {'cluster_form':ClusterForm, 'obj':obj, 'cluster' : cluster, 'form' : SearchVideoForm()})
     
 
 

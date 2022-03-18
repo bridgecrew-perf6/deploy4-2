@@ -1,307 +1,470 @@
+{% load static %}
+{% load embed_video_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="../../static/style.js"></script>
-  <link rel="stylesheet" href="../../static/styles.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pluudo.com</title>
+ <link rel="stylesheet" href="../../static/popUp.css">
+ <link rel="stylesheet" href="../../static/styles.css">
 </head>
-<body>
+<body onload="myFunction()">
+
     
-   
-    <div style="text-align: center; margin: 5%;">
+    <script>
+  
+      function popupClose(){
+        let d = document.getElementById("deleteVideosPopup");
+        Object.assign(d.style, {
+          display : "none",
+        });
+        document.getElementsByClassName("footer")[0].style.display = "block";
+        document.getElementsByTagName('body')[0].classList.remove('open-body')
+      }
+    
+      function popUpProfile(){
+        let d = document.getElementById("deleteVideosPopup");
+        Object.assign(d.style, {
+          display : "block",
+        });
+      
+        document.getElementsByClassName("footer")[0].style.display = "none";
+        document.getElementsByTagName('body')[0].classList.add('open-body');
+  
+        
+        document.getElementById('profile-options').style.display = "block";
+  
+        document.getElementById('settings').style.display = "none";
+        document.getElementById('add-profile-form').style.display = "none";
+        document.getElementById('edit-profile-form').style.display = "none";
+      }
+      
+    
+    </script>
+
+
+        <div class="popup2">
+
+        <div class="blocker2" onclick="hidePopup2()"></div>
+        
+        <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
+          <h2>Add a Video</h2>
+          <p>from vimeo, youtube or dailymotion</p>
+          <input id="fetch-video-url" type="text" placeholder="Paste a valid url"> <br> <br>
+          <input type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
+          <div>
+            <!-- <iframe width="420" height="315"
+            src="https://www.youtube.com/embed/tgbNymZ7vqY">
+            </iframe> -->
+            
+            <div id="video-details" style="opacity: 0;">
+              <br> <br>
+              <div>
+                <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
+              </div>
+            
+             <div>
+              <h4>Title</h4>
+              <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
+              <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
+                {% csrf_token %}
+                <input name="video_url" id="video_url" style="display: none;" type="text">
+                <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
+                <input name="video_title" id="video_title" style="display: none;" type="text">
+                <input name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
+          
+                <label for="sel1">Select cluster:</label>
+                  <select name="cluster_id" class="form-control">
+                    {% for cluster in clusters %}
+
+                    <option value="{{cluster.id}}">{{cluster.cluster_name}}</option>
+
+                    {% endfor %}
+                    
+                  </select>
+                <p id="clusterid">{{clusters.id}}</p>
+               
+                <input type="submit" onclick="addVideo()" value="save">
+
+                 
+
+                </form>
+              </div>
+          </div> 
+          <script>
+            $(document).on('submit', '#addClusterForm', function(e) {
+            console.log("inside username verification function");
+            e.preventDefault();
+            var cluster_name = $('#clustername').val();
+            $.ajax({
+              type: 'POST',
+              url: 'http://kudos02.pythonanywhere.com/add-cluster/',
+              data: {
+                'cluster_name': cluster_name,
+                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+              },
+              success:function(response) {
+                  console.log(response.status);
+                }
+            })
+          })
+          </script>
+  
+
+            <script>
+              function addVideo(){
+
+                document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
+                document.getElementById("cluster_id").value = document.getElementById("clusterid").innerHTML;
+
+              }
+            </script>
+            </div>
+          </div>
+        </div>
+     
+      </div>
+
+      
+
+
+
+
+  <style>
+  
+    #search-page{
+      display: none;
+    }
+  
+    #profile-page{
+      display: none;
+    }
+  
+  </style>
+  
+  <style>
+    #main{
+      width: 100%;
+      margin-left: 15%;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  
+    <div id="search-page">
+      <div id="main">
+        <a style="float: left;" width="80%" onclick="unMySearch()" class="back_icon" href="#">
+          <img style = "width: 40%; "src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+        </a>
+        <form class="" action="http://kudos02.pythonanywhere.com/search-video" method="post">
+          {% csrf_token %}
+          {{form}}
+          <input style="float: right;" width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
+        </form>
+        
+      </div>
+    </div>
+    <div id="deleteVideosPopup">
+      <button onclick="popupClose()">close</button>
+      <div class="contents">
+                   
+        <style>
+          input:focus, textarea:focus, select:focus{
+            outline: none;
+          }
+          #profile-options, #add-profile-form, #edit-profile-form, #settings{
+            text-align: center;
+          }
+          #profile-options > div, #add-profile-form > div, #edit-profile-form > div, #settings > div{
+            padding: 5%;
+          }
+        </style>
+        
+      
+    <div id="profile-header">
+    
+      <div id="profile-options">
+          <div>
+            <span onclick="editProfile()">Edit Profile</span>
+          </div>
+          <br>
+          <div>
+            <span onclick="showSettings()">Settings</span>
+          </div>
+          <br>
+          <div>
+            <a href="">Copy Profile Link</a>
+          </div>
+          
+    
+      </div>
+    
+      <div id="settings" style="display: none;">
+        <h3>Settings</h3>
+        <div>
+          <span>Email Id</span> <br>
+          {{user.email}}
+        </div>
+    
+        <div>
+          Version <br>
+           V 2.0
+        </div>
+        
+        
+        <div>
+          <a href="">Change Password</a>
+        </div>
+        
+        <div>
+          <a href="">Privacy & Terms</a>
+        </div>
+        
+        <div>
+          <a href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
+        </div>
+        
+        <div>
+          <a href="">Deactivate Account</a>
+        </div>
+        
+        
+      </div>
+    <div>
+    
+      <form method="post" id="add-profile-form" action="http://kudos02.pythonanywhere.com/add-profile/">
+        {% csrf_token %}
+        add-profile
+        <div>
+          About <br>
+        {{profile_form.about}}
+        </div>
+    
+        <div>
+          Website <br>
+          {{profile_form.website_name}}
+        </div>
+        
+        <div>
+          Country <br>
+          {{profile_form.country}}
+        </div>
+        
+        <input type="submit">
+      </form>
+    
+      <form method="post" id="edit-profile-form" action="http://kudos02.pythonanywhere.com/edit-profile/">
+        {% csrf_token %}
+    
+        edit-profile
+        <div>
+          About <br>
+        {{profile_form.about}}
+        </div>
+    
+        <div>
+          Website <br>
+          {{profile_form.website_name}}
+        </div>
+        
+        <div>
+          Country <br>
+          {{profile_form.country}}
+        </div>
+        
+        <input type="submit">
+      </form>
+      
+    </div>
+    <script>
+    function editProfile(){
+    console.log(sess_id)
+    console.log(sess_id)
+    var sess_id = document.getElementById('sess_id').innerHTML;
+    
+    console.log(sess_id)
+    console.log(sess_id)
+    if(sess_id){
+    document.getElementById('settings').style.display = "none";
+    document.getElementById('add-profile-form').style.display = "none";
+    document.getElementById('edit-profile-form').style.display = "block";
+    document.getElementById('profile-options').style.display = "none";
+    console.log(sess_id);
+    }
+    else{
+    console.log(sess_id);  
+    document.getElementById('settings').style.display = "none";      
+    document.getElementById('add-profile-form').style.display = "block";
+    document.getElementById('profile-options').style.display = "none";
+    document.getElementById('profile-options').style.display = "none";
+    
+    }
+    
+    }
+    
+    function showSettings(){
+    
+    document.getElementById('settings').style.display = "block";
+    document.getElementById('add-profile-form').style.display = "none";
+    document.getElementById('edit-profile-form').style.display = "none";
+    document.getElementById('profile-options').style.display = "none";
+    
+    }
+    
+    </script>
+      <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
+      
+      </iframe>
+    
+      </div>
+    </div>
+    
+    </div>
+      <style>
+        #deleteVideosPopup{
+          display: none;
+          position: fixed;
+          margin-top: 35%;
+          padding: 5%;
+          height: 70vh;
+          background-color: #ffffffff;
+          width: 100%;
+        }
+        .open-body{
+          background: rgba(0,0,0,.5);
+        }
+      </style>
+  
+    <div id="main-page">
+
+      <div style="text-align: center; margin: 5%;">
         <a style="float: left;" href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
        <span style="font-size: 300%;">{{ request.session.session_username }}</span>
        <p id="sess_id" style="display: none;">{{request.session.sess_id}}</p>
-      <button style="float: right;" onclick="showPopup()">popup</button>
+      <button style="float: right;" onclick="popUpProfile()">Popup</button>
     </div>
 
-    <h2>ADD Cluster</h2>     
-    <form id="addClusterForm">
       {% csrf_token %}
-    <input type="text" id="clustername">
-    <input type="submit" name="" id="" value="submit">
-    </form>
-    
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script>
-      $(document).on('submit', '#addClusterForm', function(e) {
-      console.log("inside username verification function");
-      e.preventDefault();
-      var cluster_name = $('#clustername').val();
-      $.ajax({
-        type: 'POST',
-        url: 'http://kudos02.pythonanywhere.com/add-cluster/',
-        data: {
-          'cluster_name': cluster_name,
-          csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
-        },
-        success:function(response) {
-            window.location = "http://kudos02.pythonanywhere.com/view-profile/"
-          }
+      <h2>ADD Cluster</h2>     
+      <form id="addClusterForm">
+        {% csrf_token %}
+      <input type="text" id="clustername" placeholder="Make a Cluster & Save">
+      <input type="submit" name="" id="" value="submit">
+      </form>
+      
+      <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+      <script>
+        $(document).on('submit', '#addClusterForm', function(e) {
+        console.log("inside username verification function");
+        e.preventDefault();
+        var cluster_name = $('#clustername').val();
+        $.ajax({
+          type: 'POST',
+          url: 'http://kudos02.pythonanywhere.com/add-cluster/',
+          data: {
+            'cluster_name': cluster_name,
+            'cluster_hashtags': "#cars #songs",
+            csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+          },
+          success:function(response) {
+              window.location = "http://kudos02.pythonanywhere.com/view-profile/"
+            }
+        })
       })
-    })
-    </script>
-
-    Clusters
-    <ol>
-      
-    {% for cluster in clusters %}
-    
-      <li><a href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">{{cluster.cluster_name}}</a></li>
-
-    {% endfor %}  
+      </script>
   
-  </ol>
+  <style>
+    #clusters{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .cluster{
+      margin-left: 8vh;
+      margin-right: 8vh;  
+      margin-right: 5vh; 
+      height: 14vh;
+      width: 15vw;
+      border: solid;
+      overflow-wrap: break-word;
+    }
+  </style>
 
-    <div class="footer">
-        <div class="footer_dimensions">
-
-          <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
-            <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
-          </a>
-            <a class="pluudo_mid_icons" href="">
-              <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
-            </a>
-            {% if request.session.session_username %}
-            <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
-              <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
-            </a>
-            {% else %}
-            <a onclick="myProfile()" class="pluudo_mid_icons" >
-              <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
-            </a>
-            {% endif %}
-
-        </div>
-        <div>
-          <!-- <a class="back_icon" href="#">
-            <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-          </a> -->
-          <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com">
-            <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
-          </a>
-        </div>
-      </div>
-
-      <style>
-      .popup { display: none; }
-      .popup.open { display: block; }
-    
-      .blocker {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        content: ' ';
-        background: rgba(0,0,0,.5);
-      }
-      .popup .contents {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 100%;
-        height: 65%;
-        background: #FFF;
-    
-        position: fixed;
-        bottom: 0px;
-      }
-      </style>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-         <div class="popup">
-            <div class="blocker" onclick="hidePopup()"></div>
-            <div class="contents" style="overflow: scroll;">
-               
-              <style>
-                input:focus, textarea:focus, select:focus{
-                  outline: none;
-                }
-                #profile-options, #add-profile-form, #edit-profile-form, #settings{
-                  text-align: center;
-                }
-                #profile-options > div, #add-profile-form > div, #edit-profile-form > div, #settings > div{
-                  padding: 5%;
-                }
-              </style>
-              
-            
-          <div id="profile-header">
-
-            <div id="profile-options">
-                <div>
-                  <span onclick="editProfile()">Edit Profile</span>
-                </div>
-                
-                <div>
-                  <span onclick="showSettings()">Settings</span>
-                </div>
-                
-                <div>
-                  <a href="">Copy Profile Link</a>
-                </div>
-                
-                <a onclick="hidePopup()" >close</a>
-
-            </div>
+      
+      <h3>Clusters</h3>
+        <div id="clusters">
           
-            <div id="settings" style="display: none;">
-              <h3>Settings</h3>
-              <div>
-                <span>Email Id</span> <br>
-                {{user.email}}
-              </div>
-
-              <div>
-                Version <br>
-                 V 2.0
-              </div>
-              
-              
-              <div>
-                <a href="">Change Password</a>
-              </div>
-              
-              <div>
-                <a href="">Privacy & Terms</a>
-              </div>
-              
-              <div>
-                <a href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
-              </div>
-              
-              <div>
-                <a href="">Deactivate Account</a>
-              </div>
-              
-              
-            </div>
-          <div>
-
-            <form method="post" id="add-profile-form" action="http://kudos02.pythonanywhere.com/add-profile/">
-              {% csrf_token %}
-              add-profile
-              <div>
-                About <br>
-              {{profile_form.about}}
-              </div>
-
-              <div>
-                Website <br>
-                {{profile_form.website_name}}
-              </div>
-              
-              <div>
-                Country <br>
-                {{profile_form.country}}
-              </div>
-              
-              <input type="submit">
-            </form>
-
-            <form method="post" id="edit-profile-form" action="http://kudos02.pythonanywhere.com/edit-profile/">
-              {% csrf_token %}
-
-              edit-profile
-              <div>
-                About <br>
-              {{profile_form.about}}
-              </div>
-
-              <div>
-                Website <br>
-                {{profile_form.website_name}}
-              </div>
-              
-              <div>
-                Country <br>
-                {{profile_form.country}}
-              </div>
-              
-              <input type="submit">
-            </form>
-            
+          <div class="cluster">
+            <!-- <a href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}"><img src="" alt="{{cluster.id}}"></a> -->
           </div>
-    <script>
-      function editProfile(){
-        console.log(sess_id)
-        console.log(sess_id)
-        var sess_id = document.getElementById('sess_id').innerHTML;
+
+      {% for cluster in clusters %}
+      
+      <div>
+        <div class="cluster">
+          <a href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}"><img src="" alt="{{cluster.id}}"></a>
+        </div>
+       {{cluster.cluster_name}}
+      </div>
+      
         
-        console.log(sess_id)
-        console.log(sess_id)
-        if(sess_id){
-          document.getElementById('settings').style.display = "none";
-          document.getElementById('add-profile-form').style.display = "none";
-          document.getElementById('edit-profile-form').style.display = "block";
-          document.getElementById('profile-options').style.display = "none";
-          console.log(sess_id);
-        }
-        else{
-          console.log(sess_id);  
-          document.getElementById('settings').style.display = "none";      
-          document.getElementById('add-profile-form').style.display = "block";
-          document.getElementById('profile-options').style.display = "none";
-          document.getElementById('profile-options').style.display = "none";
-     
-        }
+      {% endfor %}  
+    
+    </div>
+ 
+
+      
        
-      }
+        <div class="footer">
+          <div class="footer_dimensions">
 
-      function showSettings(){
+            <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
+              <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
+            </a>
+              {% if request.session.session_username %}
+              <a onclick="showPopup2()" class="pluudo_mid_icons">
+                <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
+              </a>
+              {% else %}
+              <a onclick="showPopup()" class="pluudo_mid_icons" >
+                <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
+              </a>
+              {% endif %}
+              {% if request.session.session_username %}
+              <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
+                <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
+              </a>
+              {% else %}
+              <a onclick="showPopup()" class="pluudo_mid_icons" >
+                <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
+              </a>
+              {% endif %}
 
-        document.getElementById('settings').style.display = "block";
-        document.getElementById('add-profile-form').style.display = "none";
-        document.getElementById('edit-profile-form').style.display = "none";
-        document.getElementById('profile-options').style.display = "none";
-        
-      }
-
-    </script>
-            <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
-            
-            </iframe>
-    
-            </div>
           </div>
-    
-          <script>
-            const popup = document.querySelector('.popup');
-            function showPopup() {
-              popup.classList.add('open');
-              
-        document.getElementById('settings').style.display = "none";
-        document.getElementById('edit-profile-form').style.display = "none";
-        document.getElementById('add-profile-form').style.display = "none";
-        document.getElementById('profile-options').style.display = "block";
+          <div>
+            <!-- <a class="back_icon" href="#">
+              <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+            </a> -->
+            <a onclick="history.back()" class="back_icon" href="#">
+              <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+            </a>
+            <a class="pluudo_icon" href="#">
+              <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
+            </a>
+          </div>
+        </div>
+      </div>  
+    </div>
 
-              var elems = document.getElementsByClassName('footer');
-              for (var i=0;i<elems.length;i+=1){
-                elems[i].style.display = 'none';
-              }
-      
-            }
-            function hidePopup() {
-              popup.classList.remove('open');
-              var elems = document.getElementsByClassName('footer');
-              for (var i=0;i<elems.length;i++){
-                elems[i].style.display = 'block';
-              }
-            }
-      
-          </script>
+  </div>
 </body>
+<script src="../../static/style.js"></script>
+<script src="../../static/popUp.js"></script> 
+<script src="../../static/fetchVideo.js"></script>
 </html>
+
+
+
+
