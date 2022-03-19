@@ -7,77 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pluudo.com</title>
-  <script src="../../static/style.js"></script>
+  <link rel="stylesheet" href="../../static/popUp.css">
+ 
   <link rel="stylesheet" href="../../static/styles.css">
 </head>
 <body onload="myFunction()">
-  <style>
-    body {
-    text-align: center;
-  }
-  input {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    text-align: center;
-  }
-
-  .popup { display: none; }
-  .popup.open { display: block; }
-
-  .popup2 { display: none; }
-  .popup2.open { display: block; }
-
-  .blocker {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    content: ' ';
-    background: rgba(0,0,0,.5);
-  }
-
-  .blocker2 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    content: ' ';
-    background: rgba(0,0,0,.5);
-  }
-
-  .popup .contents {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    height: 50%;
-    background: #FFF;
-
-    position: fixed;
-    bottom: 0px;
-  }
-
-  .popup2 .contents2 {
-    margin-top: 20%;
-    margin-left: 15%;
-    margin-right: 15%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 65%;
-    width: 70%;
-    background: #FFF;
-
-    position: fixed;
-  }
-  </style>
-
-
-
-
-
-
+ 
 
      <div class="popup">
         <div class="blocker" onclick="hidePopup()"></div>
@@ -373,114 +308,10 @@
      
       </div>
      <script>
-       function fetchVideo(){
-         document.getElementById("video-details").style.opacity = 1;
-          let str = String(document.getElementById("fetch-video-url").value);
-          if(str.includes("youtu.be")){
-
-            let url1 = str.substr(17);
-            console.log(url1)
-            let src = document.getElementsByClassName("thumbs").src;
-            console.log(src);
-            document.getElementsByClassName("thumbs").src = str;
-            let s1 = "https://www.youtube.com/embed/".concat(url1);
-            src = document.getElementsByClassName("thumbs").src = s1;
-            console.log(src);
-            let url2 = "https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA6VX3z31ObjBXhbr0JYMwfuftGGqivgaY&part=snippet&id=";
-            let url = url2.concat(url1);
-            
-            fetch(url).then((response) => {
-              return response.json();
-            }).then((data) => {
-              console.log(data)
-              console.log(data.items[0].snippet.description);
-              document.getElementById("video-title").innerHTML = data.items[0].snippet.title;
-              // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
-              $(".thumbs").attr('src', data.items[0].snippet.thumbnails.high.url)
-              console.log(data.items[0].snippet.title);
-              
-              document.getElementById("video_title").value = data.items[0].snippet.title;
-              document.getElementById("video_thumbnail").value = data.items[0].snippet.thumbnails.high.url;
-              document.getElementById("video_platform_id").value = url1;
-            })
-          }
-          else if(str.includes("dailymotion")){
-            let url1 = str.substr(34);
-            console.log(url1);
-            let url2 = "https://api.dailymotion.com/video/"
-            let url = url2.concat(url1);
-            fetch(url).then((response) => {
-              return response.json();
-            }).then((data) => {
-              console.log(data)
-              console.log(data.title);
-              document.getElementById("video-title").innerHTML = data.title;
-              // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
-              $(".thumbs").attr('src', 'https://dailymotion.com/thumbnail/video/' + url1);
-              
-              document.getElementById("video_title").value = data.title;
-              document.getElementById("video_thumbnail").value = 'https://dailymotion.com/thumbnail/video/' + url1;
-              document.getElementById("video_platform_id").value = url1;
-
-            })
-          }
-         else {
-              let id = str.substr(18);
-              $.getJSON('https://vimeo.com/api/oembed.json?url=https://vimeo.com/' + id, {format: "json"}, function(data) {
-                $(".thumbs").attr('src', data.thumbnail_url)
-                document.getElementById("video-title").innerHTML = data.title;
-              document.getElementById("video_title").value = data.title;
-              document.getElementById("video_thumbnail").value = data.thumbnail_url;
-              document.getElementById("video_platform_id").value = id;
-              });
-          }
-        }
-
+      
      </script>
 
-      <script>
-
-      const popup = document.querySelector('.popup');
-      function showPopup() {
-        popup.classList.add('open');
-        var elems = document.getElementsByClassName('footer');
-        for (var i=0;i<elems.length;i+=1){
-          elems[i].style.display = 'none';
-        }
-      }
-      function hidePopup() {
-        popup.classList.remove('open');
-        var elems = document.getElementsByClassName('footer');
-        for (var i=0;i<elems.length;i++){
-          elems[i].style.display = 'block';
-        }
-      }
-
-      </script>
-
-<script>
-  const popup2 = document.querySelector('.popup2');
-  function showPopup2() {
-    popup2.classList.add('open');
-    var elems = document.getElementsByClassName('footer');
-    for (var i=0;i<elems.length;i+=1){
-      elems[i].style.display = 'none';
-    }
-  }
-  function hidePopup2() {
-    popup2.classList.remove('open');
-    var elems = document.getElementsByClassName('footer');
-    for (var i=0;i<elems.length;i++){
-      elems[i].style.display = 'block';
-    }
-  }
-
-  </script>
-      
-
-
-
-
+    
   <style>
   
     #search-page{
@@ -622,4 +453,8 @@
       </div>  
     </div>
 </body>
+
+<script src="../../static/style.js"></script>
+<script src="../../static/popUp.js"></script> 
+<script src="../../static/fetchVideo.js"></script>
 </html>
