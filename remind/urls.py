@@ -19,7 +19,7 @@ from anne import views
 from django.conf import settings
 from django.conf.urls.static import static
 from anne import views as user_view
-from django.contrib.auth import views as auth
+from django.contrib.auth import views as auth_views
  
 urlpatterns = [
     path('',views.searchUser),
