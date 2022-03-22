@@ -1,0 +1,43 @@
+/* for login page */
+/* for login page */
+/* for login page */
+/* for login page */
+
+
+
+/* https://www.tutorialrepublic.com/faq/how-to-remove-outline-around-text-input-boxes-in-chrome-using-css.php */
+.text-input:focus, textarea:focus, select:focus{
+  outline: none;
+}
+
+/* https://www.w3schools.com/css/css3_buttons.asp */
+.text-input{
+  padding: 2%;
+  width: 78%;
+  text-align: center;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom-width: 1px;
+}
+
+.email-btn {
+background-color: black; /* Green */
+border: none;
+color: white;
+padding: 12px 28px;
+text-align: center;
+font-size: 12px;
+border-radius: 20px;
+
+}
+.btn-input {
+  background-color: #A8BEC9; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 28px;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 20px;
+  
+  }

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../../static/popUp.css">
  
   <link rel="stylesheet" href="../../static/styles.css">
+  <link rel="stylesheet" href="../../static/login.css">
 </head>
 <body onload="myFunction()">
  
@@ -17,16 +18,18 @@
      <div class="popup">
         <div class="blocker" onclick="hidePopup()"></div>
         <div class="contents" style="overflow: scroll;">
-
+          <img style="float: right;" width="40px" src="../static/anne/vcanlogin.png" onclick="hidePopup()" alt="Pluudo_Search_icon">
+          <br> <br>
           <form id="checkEmailForm" method="post">
             {% csrf_token %}
             <br>
             <label for="email">Continue with email</label> <br>
             <br>
-            <input placeholder="Email" id="email_entered" type="email" required> <br> <br>
-            <input type="submit" value="Next">
+            <input placeholder="Email" class="text-input" id="email_entered" type="email" required> <br> <br>
+            <input type="submit" class="email-btn" class="btn-input" value="Next">
           </form>
           <p id="email_message" style="display: none;"></p>
+  
           <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
           
           </script>
@@ -91,7 +94,7 @@
                   console.log(response.status);
                   $('#username_message').text(response.status)
                   if(response.status == "username registered"){
-                    document.getElementById("username_message").innerHTML = "username already taken";
+                    document.getElementById("username_message").innerHTML = "profile handle name already taken! try another";
                     document.getElementById("entered_username").value = "";
                   }
                   else{
@@ -153,7 +156,7 @@
           <div>
 
             <form id="loginForm" style="display: none;">
-              <input type="email" id="login_email" style="display: none;">
+              <input type="email" class="text-input" id="login_email" style="display: none;">
               
               <br>
               <div>
@@ -161,15 +164,15 @@
               </div>
               <br>
               
-              <input placeholder="Password" type="password" id="password" required>
+              <input class="text-input" placeholder="Password" type="password" id="password" required>
               <br>
               <br>
-              <input type="submit" value="Login">
-              <br>
-              <div>
-                <a href="http://kudos02.pythonanywhere.com/reset_password/">Forgot password</a>
-              </div>
-              <p id="login_validation"></p>
+              <input type="submit"  class="email-btn" value="Login">
+              <b>
+                <br> <br>
+                <a style="text-decoration: none; color:#A8BEC9;" href="http://kudos02.pythonanywhere.com/reset_password/">Forgot password?</a>
+              </b>
+              <p style="display: none;" id="login_validation"></p>
             </form>
           </div>
 
@@ -179,13 +182,13 @@
               {% csrf_token %}
               <div id="askPasswordForm">
                 <p>Verify your Password to signup</p>
-                <input type="email" id="email" style="display: none;">
-                <br>  
-                <input placeholder="Password" id="password_1" type="password" > <br>
-                <br>
-                <input placeholder="Confirm Password" id="password_2" type="text" > <br>
-                <br>
-                <button id="askPasswordForm_Button" onclick="verifyPassword()">
+                <input class="text-input" type="email" id="email" style="display: none;">
+                <br> <br>
+                <input class="text-input" placeholder="Password" id="password_1" type="password" > <br>
+                <br> <br>
+                <input class="text-input" placeholder="Confirm Password" id="password_2" type="text" > <br>
+                <br> <br>
+                <button class="btn-input" id="askPasswordForm_Button" onclick="verifyPassword()">
                   Next
                 </button>
                 <p id="password_matching_validation"></p>
@@ -196,19 +199,23 @@
                 <p>This will be your profile's unique URL on Pluudo.</p>
                 <p>It cannot be changed later.</p>
                 <!-- <label for="first_name">First Name</label> <br> -->
-                <input placeholder="First Name" id="first_name" type="text" required> <br>
-                <br>
+                <input class="text-input" placeholder="First Name" id="first_name" type="text" required> <br>
+                <br> <br>
                 <!-- <label for="last_name">Last Name</label> <br> -->
-                <input placeholder="Last Name" id="last_name" type="text" required> <br>
-                <br>
+                <input class="text-input" placeholder="Last Name" id="last_name" type="text" required> <br>
+                <br> <br>
                 <label for="username_entered">pluudo.com/</label> 
-                <input placeholder="name" id="username_entered" type="text" required> <br>
-                <p id="username_message"></p> <br>
+                <input style="padding: 0%;" class="text-input" placeholder="name" id="username_entered" type="text" required> <br>
+                <p id="username_message" style="color: red;"></p> <br>
 
-                <input type="submit" value="signup" id="register_user">
+                <input type="submit" class="btn-input" value="signup" id="register_user">
 
               </div>
-
+              <style>
+                #askNameForm > input{
+                  text-align: left;
+                }
+              </style>
               
             </form>
           </div>
@@ -232,17 +239,10 @@
 
           <div style="display: flex; margin: 5%">
           
-            <input  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
+            <input class="text-input"  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
             <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
 
           </div>
-
-          <!-- <input id="fetch-video-url" type="text" placeholder="please enter url"> <br> <br>
-          <input type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
-          <div> -->
-            <!-- <iframe width="420" height="315"
-            src="https://www.youtube.com/embed/tgbNymZ7vqY">
-            </iframe> -->
             
             <div id="video-details" style="opacity: 0;">
               <br> <br>
@@ -255,10 +255,10 @@
               <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
               <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
                 {% csrf_token %}
-                <input name="video_url" id="video_url" style="display: none;" type="text">
-                <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
-                <input name="video_title" id="video_title" style="display: none;" type="text">
-                <input name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
+                <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text">
+                <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
+                <input class="text-input" name="video_title" id="video_title" style="display: none;" type="text">
+                <input class="text-input" name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
           
                 <label for="sel1">Select cluster:</label>
                   <select name="cluster_id" class="form-control">
@@ -271,7 +271,7 @@
                   </select>
                 <p id="clusterid">{{clusters.id}}</p>
                
-                <input type="submit" onclick="addVideo()" value="save">
+                <input type="submit" class="btn-input" onclick="addVideo()" value="save">
 
                  
 
@@ -456,88 +456,9 @@
         </div>
       </div>  
     </div>
-    <script>
-      
-  ////
-// code to count number of times the site is loaded
-
-let bool = 1;
-
-var n = localStorage.getItem('on_load_counter');
-
-if (n === null) {
-    n = 0;
-}
-
-n++;
-
-localStorage.setItem("on_load_counter", n);
-
-//////////////////// 
-
-// code to hide and show videos' description on click
-
-function hide() {
-var list = document.getElementsByClassName("video_description");
-for(var i=0; i<list.length; i++){
-if(bool%2 == 0){
-list[i].style.display = 'block';
-}
-else{
-list[i].style.display = 'none';
-}
-}
-bool++;
-}
-//////////////////////
-
-
-//////////////////////
-//code to identify which description about site need to be shown
-
-function myFunction() {
-//localStorage.setItem(localStorage.getItem("count"), localStorage.getItem("count")+1)
-localStorage.setItem("count",localStorage.getItem("count")+1);
-
-if(n%3 == 0){
-document.getElementById("desc").innerHTML = "Your search engine for visually appealing videos ";
-}
-if(n%3 == 1){
-document.getElementById("desc").innerHTML = "Collect videos from all across & store at one place ";
-}
-if(n%3 == 2){
-document.getElementById("desc").innerHTML = "Find video inspirations quick & easy ";
-}
-}
-//////////////////// 
-
-
-function mySearch(){
-    document.getElementById("search-page").style.display = "inline";
-    document.getElementById("main-page").style.display = "none";
-    document.getElementsByClassName("footer")[0].style.display = " none";
-  }
-
-  function unMySearch(){
-    document.getElementById("search-page").style.display = "none";
-    document.getElementById("main-page").style.display = "block";
-    document.getElementsByClassName("footer")[0].style.display = " block";
-  }
-
-
-  function myProfile(){
-    document.getElementById("profile-page").style.display = "inline";
-    document.getElementById("main-page").style.display = "none";
-  }
-
-  function unMyProfile(){
-    document.getElementById("profile-page").style.display = "none";
-    document.getElementById("main-page").style.display = "block";
-  }
-
-    </script>
-    <script src="../../static/popUp.js"></script> 
-    <script src="../../static/fetchVideo.js"></script>
 </body>
 
+<script src="../../static/style.js"></script>
+<script src="../../static/popUp.js"></script> 
+<script src="../../static/fetchVideo.js"></script>
 </html>
