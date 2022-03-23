@@ -7,44 +7,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pluudo.com</title>
- <link rel="stylesheet" href="../../static/popUp.css">
- <link rel="stylesheet" href="../../static/styles.css">
+  <link rel="stylesheet" href="../../static/add-cluster.css">
+  <link rel="stylesheet" href="../../static/popUp.css">
+  <link rel="stylesheet" href="../../static/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body onload="myFunction()">
+<body>
 
-    
-    <script>
-  
-      function popupClose(){
-        let d = document.getElementById("deleteVideosPopup");
-        Object.assign(d.style, {
-          display : "none",
-        });
-        document.getElementsByClassName("footer")[0].style.display = "block";
-        document.getElementsByTagName('body')[0].classList.remove('open-body')
-      }
-    
-      function popUpProfile(){
-        let d = document.getElementById("deleteVideosPopup");
-        Object.assign(d.style, {
-          display : "block",
-        });
-      
-        document.getElementsByClassName("footer")[0].style.display = "none";
-        document.getElementsByTagName('body')[0].classList.add('open-body');
-  
-        
-        document.getElementById('profile-options').style.display = "block";
-  
-        document.getElementById('settings').style.display = "none";
-        document.getElementById('add-profile-form').style.display = "none";
-        document.getElementById('edit-profile-form').style.display = "none";
-      }
-      
-    
-    </script>
-
-
+ 
         <div class="popup2">
 
         <div class="blocker2" onclick="hidePopup2()"></div>
@@ -278,42 +248,6 @@
       </form>
       
     </div>
-    <script>
-    function editProfile(){
-    console.log(sess_id)
-    console.log(sess_id)
-    var sess_id = document.getElementById('sess_id').innerHTML;
-    
-    console.log(sess_id)
-    console.log(sess_id)
-    if(sess_id){
-    document.getElementById('settings').style.display = "none";
-    document.getElementById('add-profile-form').style.display = "none";
-    document.getElementById('edit-profile-form').style.display = "block";
-    document.getElementById('profile-options').style.display = "none";
-    console.log(sess_id);
-    }
-    else{
-    console.log(sess_id);  
-    document.getElementById('settings').style.display = "none";      
-    document.getElementById('add-profile-form').style.display = "block";
-    document.getElementById('profile-options').style.display = "none";
-    document.getElementById('profile-options').style.display = "none";
-    
-    }
-    
-    }
-    
-    function showSettings(){
-    
-    document.getElementById('settings').style.display = "block";
-    document.getElementById('add-profile-form').style.display = "none";
-    document.getElementById('edit-profile-form').style.display = "none";
-    document.getElementById('profile-options').style.display = "none";
-    
-    }
-    
-    </script>
       <iframe name="frame_a" width="100%" title="Iframe Example" target="frame_a" frameborder="0">
       
       </iframe>
@@ -332,7 +266,11 @@
           background-color: #ffffffff;
           width: 100%;
         }
-        .open-body{
+        /* .open-body{
+          background-color: rgba(0,0,0,.5);
+        } */
+        .disable-main{
+          pointer-events: none;
           background: rgba(0,0,0,.5);
         }
       </style>
@@ -347,15 +285,57 @@
     </div>
 
       {% csrf_token %}
-      <h2>ADD Cluster</h2>     
-      <form id="addClusterForm">
+      <button id="add-cluster-show">Add Cluster</button>
+      <button id="arrange-cluster-btn">Arrange Cluster</button>
+    <div class="add-cluster-parent">
+        <div id="add-cluster-child2">
+          <h3>Arrange Clusters</h3>
+          <br>
+          <span>Recently Added</span>
+          <br> <br> <br>
+          <span>A to Z</span> 
+          <br> <br> <br>
+          <button style="background-color: white; border-width: 1px; border-radius: 25px; padding:1.2% 7%;" onclick="arrangeClusterHide()"> <i class="fa fa-close"></i> </button>
+        </div>
+
+        <div class="add-cluster-child">
+            <div>
+
+                <div id="add-cluster-header">
+                    <div class="my">
+                        <img class="add-cluster-img" id="hide-addcluster-popup" src="../static/anne/BACKBUTTON.png" alt="">
+                    </div>
+                    <div class="my">
+                        Cluster
+                    </div>
+                    <div class="my">
+                      <input type="image" form="addClusterForm" class="add-cluster-img" src="../static/anne/popupright.png">
+                        <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
+                    </div>
+                </div>
+               
+                   <h3 style="text-align: center;">Cluster Name</h3>
+              
+                <form id="addClusterForm">
+                  {% csrf_token %}
+                  <input style="border-width:1px; border-radius:4px;margin-left: 12.5%; margin-right: 12.5%; width: 70%; padding: 1%;" type="text" id="clustername" placeholder="Make a Cluster & Save">
+                  <!-- <input type="submit" name="" id="submit-add-cluster" value="submit"> -->
+                  <br>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+      <!-- <form id="addClusterForm">
         {% csrf_token %}
       <input type="text" id="clustername" placeholder="Make a Cluster & Save">
-      <input type="submit" name="" id="" value="submit">
-      </form>
+      
+      </form> -->
       
       <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
       <script>
+        
+
         $(document).on('submit', '#addClusterForm', function(e) {
         console.log("inside username verification function");
         e.preventDefault();
@@ -459,89 +439,12 @@
     </div>
 
   </div>
-  <script>
-      
-    ////
-  // code to count number of times the site is loaded
-  
-  let bool = 1;
-  
-  var n = localStorage.getItem('on_load_counter');
-  
-  if (n === null) {
-      n = 0;
-  }
-  
-  n++;
-  
-  localStorage.setItem("on_load_counter", n);
-  
-  //////////////////// 
-  
-  // code to hide and show videos' description on click
-  
-  function hide() {
-  var list = document.getElementsByClassName("video_description");
-  for(var i=0; i<list.length; i++){
-  if(bool%2 == 0){
-  list[i].style.display = 'block';
-  }
-  else{
-  list[i].style.display = 'none';
-  }
-  }
-  bool++;
-  }
-  //////////////////////
-  
-  
-  //////////////////////
-  //code to identify which description about site need to be shown
-  
-  function myFunction() {
-  //localStorage.setItem(localStorage.getItem("count"), localStorage.getItem("count")+1)
-  localStorage.setItem("count",localStorage.getItem("count")+1);
-  
-  if(n%3 == 0){
-  document.getElementById("desc").innerHTML = "Your search engine for visually appealing videos ";
-  }
-  if(n%3 == 1){
-  document.getElementById("desc").innerHTML = "Collect videos from all across & store at one place ";
-  }
-  if(n%3 == 2){
-  document.getElementById("desc").innerHTML = "Find video inspirations quick & easy ";
-  }
-  }
-  //////////////////// 
-  
-  
-  function mySearch(){
-      document.getElementById("search-page").style.display = "inline";
-      document.getElementById("main-page").style.display = "none";
-      document.getElementsByClassName("footer")[0].style.display = " none";
-    }
-  
-    function unMySearch(){
-      document.getElementById("search-page").style.display = "none";
-      document.getElementById("main-page").style.display = "block";
-      document.getElementsByClassName("footer")[0].style.display = " block";
-    }
-  
-  
-    function myProfile(){
-      document.getElementById("profile-page").style.display = "inline";
-      document.getElementById("main-page").style.display = "none";
-    }
-  
-    function unMyProfile(){
-      document.getElementById("profile-page").style.display = "none";
-      document.getElementById("main-page").style.display = "block";
-    }
-  
-      </script>
-  <script src="../../static/popUp.js"></script> 
-  <script src="../../static/fetchVideo.js"></script>
 </body>
+<script src="../../static/add-cluster.js"></script>
+<script src="../../static/style.js"></script>
+<script src="../../static/popUp.js"></script> 
+<script src="../../static/profile.js"></script>
+<script src="../../static/fetchVideo.js"></script>
 </html>
 
 
