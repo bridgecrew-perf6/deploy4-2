@@ -156,9 +156,6 @@
       </style>
   
     <div id="main-page">
-      <button id="profile-popup-show-child-2">p2</button>
-      <button id="showit">show</button>
-      <button id="profile-popup-hide-child-1">hide</button>
       <div class="profile-popup-parent">
         
           <div class="profile-popup-child1">
@@ -273,7 +270,7 @@
         <a style="float: left;" href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
        <span style="font-size: 300%;">{{ request.session.session_username }}</span>
        <p id="sess_id" style="display: none;">{{request.session.sess_id}}</p>
-      <button style="float: right;" onclick="">Popup</button>
+      <button style="float: right;" id="profile-popup-show-child-2">Popup</button>
     </div>
 
       {% csrf_token %}
