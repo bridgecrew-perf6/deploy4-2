@@ -43,7 +43,7 @@
 
               $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8000/check-email/',
+                url: 'http://kudos02.pythonanywhere.com/check-email/',
                 data: {
                   'email_entered': email_entered,
                   csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
@@ -80,7 +80,7 @@
 
               $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8000/check-username/',
+                url: 'http://kudos02.pythonanywhere.com/check-username/',
                 data: {
                   'username': username_entered,
                   'password1': password_1,
@@ -98,7 +98,7 @@
                     document.getElementById("entered_username").value = "";
                   }
                   else{
-                    window.location = "http://localhost:8000/view-profile/"
+                    window.location = "http://kudos02.pythonanywhere.com/view-profile/"
                   }
                 }
               })
@@ -129,7 +129,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8000/login/',
+                url: 'http://kudos02.pythonanywhere.com/login/',
                 data: {
                   'login_email': login_email,
                   'login_password': login_password,
@@ -141,7 +141,7 @@
                   if(response.status == 'User Login Success'){
                       document.getElementById("checkEmailForm").style.display = "none";
                       $('#login_validation').text(response.status)
-                      window.location = 'http://localhost:8000/view-profile/'
+                      window.location = 'http://kudos02.pythonanywhere.com/view-profile/'
                   } 
                   else{
                       $('#login_validation').text(response.status)
@@ -170,7 +170,7 @@
               <input type="submit"  class="email-btn" value="Login">
               <b>
                 <br> <br>
-                <a style="text-decoration: none; color:#A8BEC9;" href="http://localhost:8000/reset_password/">Forgot password?</a>
+                <a style="text-decoration: none; color:#A8BEC9;" href="http://kudos02.pythonanywhere.com/reset_password/">Forgot password?</a>
               </b>
               <p style="display: none;" id="login_validation"></p>
             </form>
@@ -253,7 +253,7 @@
              <div>
               <h4>Title</h4>
               <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
-              <form action="http://localhost:8000/add-video/" method="get">
+              <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
                 {% csrf_token %}
                 <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text">
                 <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
@@ -285,7 +285,7 @@
             var cluster_name = $('#clustername').val();
             $.ajax({
               type: 'POST',
-              url: 'http://localhost:8000/add-cluster/',
+              url: 'http://kudos02.pythonanywhere.com/add-cluster/',
               data: {
                 'cluster_name': cluster_name,
                 csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
@@ -342,7 +342,7 @@
         <a style="float: left;" width="80%" onclick="unMySearch()" class="back_icon" href="#">
           <img style = "width: 40%; "src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
         </a>
-        <form class="" action="http://localhost:8000/search-video" method="post">
+        <form class="" action="http://kudos02.pythonanywhere.com/search-video" method="post">
           {% csrf_token %}
           {{form}}
           <input style="float: right;" style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
@@ -354,8 +354,8 @@
     <div id="profile-page">
       <div>
         
-      <a href="http://localhost:8000/register">LogIn</a>
-      <a href="http://localhost:8000/login">SignUp</a>
+      <a href="http://kudos02.pythonanywhere.com/register">LogIn</a>
+      <a href="http://kudos02.pythonanywhere.com/login">SignUp</a>
         
       </div>
       <br><br>
@@ -367,7 +367,7 @@
     <div id="main-page">
 
        <div class="header" style="color:blue;">
-        <a class="pluudo_logo" href="http://localhost:8000/">
+        <a class="pluudo_logo" href="http://kudos02.pythonanywhere.com/">
           <img src="../static/anne/logo.png" alt="Pluudo_logo">
         </a>
         
@@ -406,7 +406,7 @@
               </div> -->
               <div style="width: 100%; height: auto">
 
-                <a href="http://localhost:8000/video-player?video_id={{i.id}}">
+                <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
                   <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
                 </a>
                 
@@ -435,7 +435,7 @@
               </a>
               {% endif %}
               {% if request.session.session_username %}
-              <a class="pluudo_mid_icons" href="http://localhost:8000/view-profile">
+              <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
                 <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
               </a>
               {% else %}
