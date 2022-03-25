@@ -1,5 +1,4 @@
-#add-cluster-header{
-
+#add-cluster-header, #profile-popup-header{
     width: 100%;
     display: flex;
     height: 30px;
@@ -8,7 +7,7 @@
 
 }
 
-.add-cluster-img {
+.add-cluster-img, .profile-popup-img {
     max-width:100%;
     max-height:100%;
 }
@@ -16,8 +15,14 @@
 .add-cluster-parent{
     display: none;
 }
+.profile-popup-parent{
+    display: none;
+}
 
 .add-cluster-child{
+    display: none;
+}
+.profile-popup-child2{
     display: none;
 }
 .add-cluster-parent.add-cluster-open{
@@ -28,8 +33,21 @@
     bottom: 0;
     background: rgba(0,0,0,.5);
     display: block;
-    overflow-y: auto;
+    overflow-y:scroll;
+    z-index: 1000;
 }
+.profile-popup-parent.profile-popup-open{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5);
+    display: block;
+    overflow-y: auto;
+    overflow-y:scroll;
+    z-index: 1000;
+}    
 
 .add-cluster-child.add-cluster-open-child{
     display: block;
@@ -42,11 +60,30 @@
     left: 0;
     bottom: 0;
     background-color: white;
+    overflow-y:scroll;
+    z-index: 1000;
+}
+.profile-popup-child2.profile-popup-open-child2{
+    display: block;
+    border: none;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    position: fixed;
+    top: 25%;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: white;
+    overflow-y:scroll;
+    z-index: 1000;
 }
 
 
 /* arrange clusters */
 #add-cluster-child2{
+    display: none;
+}
+.profile-popup-child1{
     display: none;
 }
 
@@ -61,4 +98,18 @@
     left: 0;
     bottom: 0;
     background-color: white;
+    overflow-y:scroll;
+}
+.profile-popup-child1.profile-popup-open-child1{
+    display: block;
+    text-align: center;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    position: fixed;
+    top: 45%;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: white;
+    overflow-y:scroll;
 }

@@ -2,6 +2,7 @@ document.querySelector("#hide-addcluster-popup").addEventListener("click", hide)
 let sho = document.querySelector("#add-cluster-show");
 sho.addEventListener("click", show);
 function show(){
+    console.log("show cluster");
     let child = document.querySelector(".add-cluster-child");
     child.classList.add("add-cluster-open-child");
     let parent = document.querySelector(".add-cluster-parent");
@@ -30,8 +31,6 @@ function hide(){
 
 let btn = document.querySelector("#arrange-cluster-btn");
 btn.addEventListener("click", arrangeClusterShow);
-console.log(btn);
-console.log("amansharma1")
 
 
 function arrangeClusterShow(){
