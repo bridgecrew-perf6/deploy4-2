@@ -34,13 +34,14 @@ urlpatterns = [
     path('register/', user_view.register, name ='register'),
     path('edit-profile/', views.editProfile, name ='edit-profile'),
     path('view-profile/', views.viewProfile, name = 'view-profile'),
+    path('view-profile-arrange-clusters/', views.viewProfileArrangeClusters, name = 'view-profile-arrange-cluster'),
     path('add-profile/', views.addProfile, name = 'add-profile'), 
     path('add-cluster/', views.addCluster, name = 'add-cluster'),   
     path('cluster/', views.cluster, name = 'cluster'),  
     # path('add-item/', views.addItem, name = 'add-item'), 
-    path('add-video/', views.addVideo, name = 'add-video'), 
-    
-     path('reset_password/',
+    path('add-video/', views.addVideo, name = 'add-video'),
+
+      path('reset_password/',
      auth_views.PasswordResetView.as_view(template_name="anne/password_reset.html"),
      name="reset_password"),
 
@@ -55,7 +56,6 @@ urlpatterns = [
     path('reset_password_complete/', 
         auth_views.PasswordResetCompleteView.as_view(template_name="anne/password_reset_done.html"), 
         name="password_reset_complete"),
-
 
 ]
 if settings.DEBUG:

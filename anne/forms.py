@@ -13,7 +13,7 @@ from django.contrib.auth.forms import UserCreationForm
 class ProfileForm(forms.ModelForm):
       class Meta:
           model = Profile
-          fields = {'about', 'website_name', 'country'} 
+          fields = {'image','about', 'website_name', 'country'} 
           widgets={
             'about':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter About'}),
             'website_name':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Website'}),

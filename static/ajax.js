@@ -8,7 +8,7 @@
 
     $.ajax({
       type: 'POST',
-      url: 'http://kudos02.pythonanywhere.com/check-email/',
+      url: 'http://localhost:8000/check-email/',
       data: {
         'email_entered': email_entered,
         csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
@@ -45,7 +45,7 @@
 
     $.ajax({
       type: 'POST',
-      url: 'http://kudos02.pythonanywhere.com/check-username/',
+      url: 'http://localhost:8000/check-username/',
       data: {
         'username': username_entered,
         'password1': password_1,
@@ -63,7 +63,7 @@
           document.getElementById("entered_username").value = "";
         }
         else{
-          window.location = "http://kudos02.pythonanywhere.com/view-profile/"
+          window.location = "http://localhost:8000/view-profile/"
         }
       }
     })
@@ -94,7 +94,7 @@
 
   $.ajax({
       type: 'POST',
-      url: 'http://kudos02.pythonanywhere.com/login/',
+      url: 'http://localhost:8000/login/',
       data: {
         'login_email': login_email,
         'login_password': login_password,
@@ -106,7 +106,7 @@
         if(response.status == 'User Login Success'){
             document.getElementById("checkEmailForm").style.display = "none";
             $('#login_validation').text(response.status)
-            window.location = 'http://kudos02.pythonanywhere.com/view-profile/'
+            window.location = 'http://localhost:8000/view-profile/'
         } 
         else{
             $('#login_validation').text(response.status)

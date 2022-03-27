@@ -155,14 +155,15 @@ def register(request):
 
 def addProfile(request):
     if request.method == 'POST':
-        form = ProfileForm(request.POST or None)
-        form = SearchVideoForm()
+        print("add-profile")
+        form = ProfileForm(request.POST or None, request.FILES)
         if form.is_valid():
             profile = models.Profile()
             username = request.session['session_username']
             user = models.CustomUser.objects.get(username=username)
             profile.user = user
             profile.about = form.data['about']
+            profile.image = request.FILES['image']
             profile.website_name = form.data['website_name']
             profile.save()
             request.session['sess_id'] = profile.id
@@ -171,11 +172,22 @@ def addProfile(request):
 # @login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def editProfile(request):
     if request.method == 'POST':
+        print("edit-profile")
         if 'sess_id' in request.session:
             sess_id = request.session['sess_id']
             profile = models.Profile.objects.get(id = sess_id)
-            form = ProfileForm(request.POST or None, instance=profile)
+            print(profile.image)
+            print(profile.image)
+            print(profile.image)
+            print(profile.image)
+            form = ProfileForm(request.POST or None, request.FILES, instance=profile)
+            
+            
             form.save()
+            print(profile.image)
+            print(profile.image)
+            print(profile.image)
+            print(profile.image)
             return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'form' : SearchVideoForm()})
 
 def viewProfile(request):
@@ -186,11 +198,33 @@ def viewProfile(request):
         if 'sess_id' in request.session: 
             sess_id = request.session['sess_id']
             profile = models.Profile.objects.get(id = sess_id)
+            profile_pic = profile.image
+            print(profile_pic)
             profile_form = ProfileForm(request.POST or None, instance=profile)
+            return render(request,'anne/profile.html', {'profile':profile, 'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters, 'form' : SearchVideoForm()})
+
         else:
             profile_form = ProfileForm()
         return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters, 'form' : SearchVideoForm()})
 
+def viewProfileArrangeClusters(request):
+        my_clusters = []
+        clusters = models.Cluster.objects.all()
+        print(clusters)
+        mylist = [] 
+        for i in clusters:
+            my_clusters.append(i)   
+        my_clusters.sort(key=lambda x: x.cluster_name) 
+        if 'session_username' in request.session:
+            user = models.CustomUser.objects.get(username = request.session['session_username'])
+            clusters = models.Cluster.objects.filter(user = user)
+        if 'sess_id' in request.session: 
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            profile_form = ProfileForm(request.POST or None, instance=profile)
+        else:
+            profile_form = ProfileForm()
+        return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':my_clusters, 'form' : SearchVideoForm()})
 # def addCluster(request):
 #     if request.method == 'POST':
 #         form = ClusterForm(request.POST or None)

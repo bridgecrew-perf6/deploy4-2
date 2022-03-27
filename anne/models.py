@@ -15,6 +15,7 @@ class SiteDesc(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, upload_to='user_images')
     id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=300)
     about = models.CharField(max_length=300)
