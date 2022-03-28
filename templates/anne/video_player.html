@@ -59,10 +59,10 @@
     height="340"
     data-setup="{}">
    <source src="{{my_video.video_url}}" type="video/youtube" /> 
-  
-  </video>     
+      
     {% endif %}
 
+  </video>
     <div class="video_description">
           {{my_video.video_owner}}
            <br>
@@ -96,13 +96,13 @@
     <div class="footer">
       <div class="footer_dimensions">
 
-          <a class="pluudo_mid_icons" href="">
-            <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
-          </a>
-          <a class="pluudo_mid_icons" href="">
+        <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
+          <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
+        </a>
+          <a onclick="showPopup2()" class="pluudo_mid_icons">
             <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
           </a>
-          <a class="pluudo_mid_icons" href="">
+          <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
             <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
           </a>
 
@@ -111,7 +111,7 @@
         <a onclick="history.back()" class="back_icon" href="#">
           <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
         </a>
-        <a class="pluudo_icon" href="#">
+        <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com/">
           <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
         </a>
       </div>

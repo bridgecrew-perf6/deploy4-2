@@ -10,6 +10,59 @@
   <link rel="stylesheet" href="../../static/edit-cluster.css">
   <link rel="stylesheet" href="../../static/popUp.css">
   <link rel="stylesheet" href="../../static/styles.css">
+  <style>
+
+#edit-cluster-header-2{
+    width: 100%;
+    display: flex;
+    height: 25px;
+    justify-content: space-between;
+    margin-top: 2%;
+}
+
+
+.edit-cluster-img{
+    max-width:100%;
+    max-height:100%;
+}
+
+
+.edit-cluster-parent-2{
+    display: none;
+}
+
+.edit-cluster-child-2{
+    display: none;
+}
+
+.edit-cluster-parent-2.edit-cluster-open-2{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5);
+    display: block;
+    overflow-y:scroll;
+    z-index: 1000;
+}   
+
+.edit-cluster-child-2.edit-cluster-open-child-2{
+    display: block;
+    border: none;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    position: fixed;
+    top: 25%;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: white;
+    overflow-y:scroll;
+    z-index: 1000;
+}
+
+  </style>
 </head>
 <body>
   
@@ -103,95 +156,99 @@
   
   <style>
     #main{
-      width: 100%;
-      margin-left: 15%;
+      padding: 2vh;
       display: flex;
-      align-items: center;
+      height: 8vh;
+      justify-content: space-between;
     }
+    #searchForm input:focus, textarea:focus, select:focus{
+      outline: none;
+    }
+    #searchForm input{
+      border: none;
+      font-size: large;
+    }
+    .search-img{
+      max-width: 100%;
+      max-height: 100%;
+    }
+
   </style>
-  
     <div id="search-page">
       <div id="main">
-        <a style="float: left;" width="80%" onclick="unMySearch()" class="back_icon" href="#">
-          <img style = "width: 40%; "src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-        </a>
-        <form class="" action="http://kudos02.pythonanywhere.com/search-video" method="post">
-          {% csrf_token %}
-          {{form}}
-          <input style="float: right;" style = "width: 20%; "width="20%" src="../static/anne/Pluudo_Search.png" type="image" name="" >
-        </form>
+
+        <div>
+          <a onclick="unMySearch()" href="#">
+            <img class="search-img" src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+          </a>
+        </div>
+
+        <div>
+          <form id="searchForm" action="http://kudos02.pythonanywhere.com/search-video" method="post">
+            {% csrf_token %}
+            {{form}}
+            <!-- <input src="../static/anne/Pluudo_Search.png" type="image" name="" > -->
+          </form>
+        </div>
         
+        <div>
+          <input form="searchForm" class="search-img" src="../static/anne/Pluudo_Search.png" type="image" name="" >
+        </div>
       </div>
     </div>
- 
-    <div id="deleteVideosPopup">
-      <button onclick="popupClose()">close</button>
-      {% for i in obj %}
-        <div style="width: 100%; height: auto">
+         <style>
+           #delete-list-css{
+             background-color: aqua;
+             padding: 5vh;
+           }
+         </style>    
+    <div class="edit-cluster-parent-2">
+      <div class="edit-cluster-child-2">
+
+              <div id="edit-cluster-header-2">
+                <div class="my">
+                    <img class="edit-cluster-img" src="../static/anne/deleteIcon.png" alt="">
+                </div>
+                <div class="my">
+                    
+                </div>
+                <div class="my">
+                  <img id="hide-editcluster-popup-2" class="edit-cluster-img" src="../static/anne/cancelpopup.png" alt="">
+                    <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
+                </div>
+            </div>
     
-          <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-            <img style="border-radius: 5%; width: 80%; height: auto" src="{{i.video_thumbnail}}" alt="">
-          </a>
-          
-        </div>
+            <div id="delete-list-css">
+              {% for i in obj %}
+                <div class="videos_list">
+            
+                  <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+                    <img style="border-radius: 5%; width: 100%; height: auto"  src="{{i.video_thumbnail}}" alt="">
+                  </a>
+                  
+                </div>
+            
+                <br> <br>
+              {% endfor %}
+            </div>
     
-        <br> <br>
-    {% endfor %}
+      </div>
     </div>
-             
+    
     
 
     <div id="main-page">
 
-  
-  <style>
-    #deleteVideosPopup{
-      display: none;
-      position: fixed;
-      background-color: aqua;
-      margin-top: 35%;
-      padding: 5%;
-      height: 70vh;
-      overflow: scroll;
-    }
-    .open-body{
-      background: rgba(0,0,0,.5);
-    }
-  </style>
-  
-  <script>
-  
-    function popupClose(){
-      let d = document.getElementById("deleteVideosPopup");
-      Object.assign(d.style, {
-        display : "none",
-      });
-      document.getElementsByClassName("footer")[0].style.display = "block";
-      document.getElementsByTagName('body')[0].classList.remove('open-body')
-    }
-  
-    function deleteVideos(){
-      let d = document.getElementById("deleteVideosPopup");
-      Object.assign(d.style, {
-        display : "block",
-      });
-    
-      document.getElementsByClassName("footer")[0].style.display = "none";
-      document.getElementsByTagName('body')[0].classList.add('open-body');
-    }
-    
-  
-  </script>
       <style>
         #heading-cluster-page{
           display: flex;
-          height: 10vh;
+          height: 7vh;
           justify-content: space-between;
         }
         #heading-cluster-delete-and-desc{
-          padding-right: 10vw;
+          padding-right: 7vw;
           display: flex;
-          height: 10vh;
+          height: 7vh;
           justify-content: space-between;
         }
 
@@ -210,50 +267,28 @@
         </div>
       </div>
       <br> <br> <br> <br>
+
       <div id="heading-cluster-delete-and-desc">
         <div >
-          <img onclick="deleteVideos()" id="edit-cluster-show" class="edit-cluster-img" src="../../static/anne/Pluudo_Video_delete.png" alt="">
+          <img id="edit-cluster-show-2" class="edit-cluster-img" src="../../static/anne/Pluudo_Video_delete.png" alt="">
         </div>
+
         <div>
           
         </div>
 
         <div >
-          <img onclick="hideDesc()" id="edit-cluster-show" class="edit-cluster-img" src="../../static/anne/Pluudo_Show_Text.png" alt="">
+          <img onclick="hideDesc()" class="edit-cluster-img" src="../../static/anne/Pluudo_Show_Text.png" alt="">
         </div>
-        <script>
-          let boolc = 1;
 
 
-//////////////////
-
-//////////////////// 
-
-// code to hide and show videos' description on click
-
-function hideDesc() {
-  let list = document.getElementsByClassName("video_desc");
-  for(var i=0; i<list.length; i++){
-  if(boolc%2 == 0){
-  list[i].style.display = 'block';
-  }
-  else{
-  list[i].style.display = 'none';
-  }
-  }
-  boolc++;
-  }
-        </script>
       </div>
       <!-- <button id="deleteVideos" onclick="deleteVideos()">delete</button> -->
       <div class="">
         {% for i in obj %}
           <div class="videos_list">
-            <!-- <div class = "video-container">
-               {% video my_video  %} 
-              <img src="{{my_video.thumbnail}}" alt="">
-            </div> -->
-            <div style="width: 100%; height: auto">
+
+            <div style="width: 90%; height: auto; margin: 6% 4%">
   
               <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
                 <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
@@ -261,7 +296,7 @@ function hideDesc() {
               
             </div>
             <div class="video_desc">
-            {{i.video_owner}}
+            {{i.video_owner}} <br>
             {{i.video_title}}
             </div>
             <br> <br> 
@@ -333,7 +368,6 @@ function hideDesc() {
     </div>
 </div>
 
-
         <div class="footer">
           <div class="footer_dimensions">
 
@@ -352,7 +386,7 @@ function hideDesc() {
             <a onclick="history.back()" class="back_icon" href="#">
               <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
             </a>
-            <a class="pluudo_icon" href="#">
+            <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com/">
               <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
             </a>
           </div>

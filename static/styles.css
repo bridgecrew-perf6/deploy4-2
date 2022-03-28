@@ -2,17 +2,7 @@
   #search-page{
     display: none;
   }
-
-  #profile-page{
-    display: none;
-  }
-
-
-  #main{
-    display: flex;
-    align-items: center;
-  }
-
+  
   .site_used_for {
     display: block;
     text-align: center;
