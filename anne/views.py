@@ -66,8 +66,11 @@ def Login(request):
             request.session['session_username'] = user.username
             return JsonResponse({'status':'User Login Success'})
         else:
-            return JsonResponse({'status':'Invaid Credentials'})                   
-
+            return JsonResponse({'status':'Invaid Credentials'})  
+    authform = LoginForm()
+    registerform = RegisterForm()        
+    return render(request,'anne/login.html', {'authform':authform, 'registerform':registerform})
+     
 def checkEmail(request):
     if request.method == 'POST':
         email_entered = request.POST.get('email_entered')
@@ -85,7 +88,7 @@ def checkEmail(request):
 
 def userLogout(request):
     logout(request)
-    return HttpResponseRedirect('http://kudos02.pythonanywhere.com/')
+    return HttpResponseRedirect('http://kudos02.pythonanywhere.com/login/')
 
 def searchUser(request):
     form = SearchVideoForm()

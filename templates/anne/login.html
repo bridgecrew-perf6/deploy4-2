@@ -5,131 +5,272 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="../../static/popUp.css">
+ 
+  <link rel="stylesheet" href="../../static/styles.css">
+  <link rel="stylesheet" href="../../static/login.css">
+  <style>
+    *{
+      text-align: inherit;
+    }
+       
+    #login-page-header{
+      display:flex;
+      justify-content: space-between;
+      margin-bottom: 15vh;
+    }
+    #login-page-header > div{
+      display:flex;
+      justify-content: space-between;
+      height: 10vh;
+    }
+    #mainimage > img{
+      max-width: 100%;
+      max-height: 100%;
+    }
+    #backbutton > img{
+      margin-bottom: auto;
+      margin-top: auto;
+      max-width: 50%;
+      max-height: 50%;
+    }
+  </style>
 </head>
 <body>
-  <div class="contents">
-    <div id="emailform">
-      Email 
-      <br>
-      <input id = "emailentered" type="email">
-      <br>
-      <button onclick="emailPopup()" id="submit_email">Next</button>
-      <p id="valid_email"></p>
+  <div id="login-page-header">
+    <div id="backbutton">
+      <img onclick="history.back()" src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
     </div>
-
-
-    <div class="content-section col-md-8 col-md-offset-2">
-     
-      <form id="passwordform" action="http://kudos02.pythonanywhere.com/login/" method="POST">
-        {% csrf_token %}
-        <input id="username" type="email" name="username">
-        password
-        <input id="your_password" type="password" name="password">
-        <button type="submit">login</button>
-      <br/>
-   
-      {% if messages %}
-       {{messages}}
-       <br> OR <br>
-      {% endif %}  
-      </form>
-      
-      <form action="http://kudos02.pythonanywhere.com/register/" id="registerform" method="POST">
-        {% csrf_token %}
-        Email <br>
-        <input style="display: none;"id="email" type="email" name="email">
-        <div id="confirmpassword">
-          password <br>
-          <input id="password1"  name="password1">
-          <br>
-          confirm password <br>
-          <input id="password2"  name="password2">
-          <br>
-          <input value="next" type="button" onclick="confirmPassword()" id="submit_password">
-          <p id="password_not_valid"></p>
-        <br/>
-        </div>
-        <div id="confirmusername">
-          first name <br>
-          <input type="text" name="first_name">
-          <br>
-          last name <br>
-          <input type="text" name="last_name">
-          <br>
-          username <br>
-          <input type="text" name="username">
-          <br>
-          <input type="submit" value="register">
-        </div>
-      </form>
+    <div id="mainimage">
+      <img src="../static/anne/logo.png" alt="Pluudo_logo">
     </div>
+    <div>
+      <p style="visibility: hidden;">noone</p>
+    </div>
+  </div>
 
-
-
-<script>
-
-    document.getElementById("emailform").style.display = "block";
-    document.getElementById("passwordform").style.display = "none";
-    document.getElementById("registerform").style.display = "none";
-
-function emailPopup(){
-    var email_entered = document.getElementById("emailentered").value;
-    console.log(email_entered);
-    if(email_entered.includes(".com") == false || email_entered.includes("@") == false){
-      document.getElementById("valid_email").innerHTML = "please enter a valid email";
-      return
-    }
+  <div>
     
-    let bool = false;
-    
+        <!-- <img style="float: right;" width="40px" src="../static/anne/vcanlogin.png" onclick="hidePopup()" alt="Pluudo_HidePopUp_icon"> -->
+        
+        
+        <form id="checkEmailForm" method="post">
+          <h3>Continue with email</h3>
+          {% csrf_token %}
+          <br>
 
-    document.getElementById("emailform").style.display = "none";
-   
-  let emails = {{ emails|safe }};
-    
-    var email_entered = document.getElementById("emailentered").value;
-    for(let i=0; i<emails.length; i++){
-      if(emails[i] == email_entered){
-        bool = true;
-        break;
-      }
-    }
-    if(bool == true){
-    console.log("yes");  
-    document.getElementById("emailform").style.display = "none";
-    document.getElementById("username").style.display = "none";
-    document.getElementById("username").value = email_entered;
-    document.getElementById("passwordform").style.display = "block";
-    document.getElementById("registerform").style.display = "none";
-   } 
-   else{
-    console.log("no") 
-    document.getElementById("email").value = email_entered;
-    document.getElementById("emailform").style.display = "none";
-    document.getElementById("passwordform").style.display = "none";
-    document.getElementById("registerform").style.display = "block";
-    document.getElementById("confirmusername").style.display = "none";
-    document.getElementById("confirmpassword").style.display = "block";
-   }
-    
-  }
+          <div style="text-align: left; padding-left: 10%;">
+          <label for="email"> Your Email</label> <br>
+          <br>
+          <input style="text-align: left;" placeholder="Email" class="text-input" id="email_entered" type="email" required> <br> <br>
+          </div>
 
-function confirmPassword(){
-  
-     let p1 = document.getElementById("password1").value ;
-     let p2 = document.getElementById("password2").value ;
-     if(p1 === p2 && p1.length >=8 ){
-      document.getElementById("confirmusername").style.display = "block";
-      document.getElementById("confirmpassword").style.display = "none";
-     }
-     else{
-      document.getElementById("password_not_valid").innerHTML = "password not matched or length should of atleast 8 characters";
-     }
-    
-   }
-</script>
+          <input type="submit" class="email-btn" class="btn-input" value="Next">
+        </form>
+        <p id="email_message" style="display: none;"></p>
+
+        <div>
+
+          <form id="loginForm" style="display: none;">
+            <input type="email" class="text-input" id="login_email" style="display: none;">
+            
+            <br>
+            <div>
+              <b>Login Password</b> 
+            </div>
+            <br>
+
+            <div style="text-align: left; padding-left: 10%;">
+              <label for="password">Your Password</label>
+              <input style="text-align: left;" id="password" class="text-input" placeholder="Password" type="password" id="password" required>             
+            </div>
+
+            <br>
+            <br>
+            <input type="submit"  class="email-btn" value="Login">
+            <b>
+              <br> <br>
+              <a style="text-decoration: none; color:#A8BEC9;" href="http://kudos02.pythonanywhere.com/reset_password/">Forgot password?</a>
+            </b>
+            <p style="display: none; color: red;" id="login_validation"></p>
+          </form>
+        </div>
 
 
+        <div>
+          <form id="registerForm" style="display: none;">
+            {% csrf_token %}
+            <div id="askPasswordForm" style="text-align: left; padding-left: 10%;">
+              <p>Verify your Password to signup</p>
+              <b>Password</b>
+              <input class="text-input" type="email" id="email" style="display: none;">
+              <br> <br>
+              <input class="text-input" placeholder="Password" id="password_1" type="password" > <br>
+              <br> <br>
+              <b>Confirm Password</b>
+              <input class="text-input" placeholder="Confirm Password" id="password_2" type="text" > <br>
+              <br> <br>
+              
+              <p id="password_matching_validation"></p>
 
+              <div style="justify-content: center; text-align: center;">
+                <button class="btn-input" id="askPasswordForm_Button" onclick="verifyPassword()">
+                  Next
+                </button>
+              </div>
+              
+            </div>
+
+            <div id="askNameForm"> 
+              <h3>Choose your Pluudo handle</h3>
+              <p>This will be your profile's unique URL on Pluudo.</p>
+              <p>It cannot be changed later.</p>
+              <!-- <label for="first_name">First Name</label> <br> -->
+              <input class="text-input" placeholder="First Name" id="first_name" type="text" required> <br>
+              <br> <br>
+              <!-- <label for="last_name">Last Name</label> <br> -->
+              <input class="text-input" placeholder="Last Name" id="last_name" type="text" required> <br>
+              <br> <br>
+              <label for="username_entered">pluudo.com/</label> 
+              <input style="padding: 0%;" class="text-input" placeholder="name" id="username_entered" type="text" required> <br>
+              <p id="username_message" style="color: red;"></p> <br>
+
+              <input type="submit" class="btn-input" value="signup" id="register_user">
+
+            </div>
+            <style>
+              #askNameForm > input, #askPasswordForm > input{
+                text-align: left;
+              }
+            </style>
+            
+          </form>
+        </div>
+        
+
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        
+        </script>
+
+        <script>
+          // to check whether email registered or not
+          $(document).on('submit', '#checkEmailForm', function(e) {
+
+            e.preventDefault();
+            var email_entered = $('#email_entered').val();
+
+            $.ajax({
+              type: 'POST',
+              url: 'http://kudos02.pythonanywhere.com/check-email/',
+              data: {
+                'email_entered': email_entered,
+                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+              },
+              success:function(response) {
+                console.log(response.status);
+                $('#email_message').text(response.status)
+                if(response.status == "email not registered"){
+                  document.getElementById("email").value = email_entered;
+                  document.getElementById("checkEmailForm").style.display = "none";
+                  document.getElementById("registerForm").style.display = "block";
+                  document.getElementById("askPasswordForm").style.display = "block";
+                  document.getElementById("askNameForm").style.display = "none";
+                }
+                else{
+                  document.getElementById("login_email").value = email_entered;
+                  document.getElementById("checkEmailForm").style.display = "none";  
+                  document.getElementById("loginForm").style.display = "block";
+              }
+              }
+            })
+          })
+
+          // to check whether username available or not
+          $(document).on('submit', '#registerForm', function(e) {
+            console.log("inside username verification function");
+            e.preventDefault();
+            var username_entered = $('#username_entered').val();
+            var password_1 = $('#password_1').val();
+            var password_2 = $('#password_2').val();
+            var first_name = $('#first_name').val();
+            var last_name = $('#last_name').val();
+            var email = $('#email').val();
+
+            $.ajax({
+              type: 'POST',
+              url: 'http://kudos02.pythonanywhere.com/check-username/',
+              data: {
+                'username': username_entered,
+                'password1': password_1,
+                'password2': password_2,
+                'first_name': first_name, 
+                'last_name': last_name,
+                'email': email,
+                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+              },
+              success:function(response) {
+                console.log(response.status);
+                $('#username_message').text(response.status)
+                if(response.status == "username registered"){
+                  document.getElementById("username_message").innerHTML = "profile handle name already taken! try another";
+                  document.getElementById("entered_username").value = "";
+                }
+                else{
+                  window.location = "http://kudos02.pythonanywhere.com/view-profile/"
+                }
+              }
+            })
+          })
+
+          // to check whether password and confirm password matches or not
+          function verifyPassword(){
+            let pswd_1 = document.getElementById("password_1").value ;
+            let pswd_2 = document.getElementById("password_2").value ;
+            if(pswd_1 === pswd_2 && pswd_1.length >=8 ){
+          
+              document.getElementById("askPasswordForm").style.display = "none";
+              document.getElementById("askNameForm").style.display = "block";
+            }
+            else{
+              document.getElementById("password_matching_validation").innerHTML = "password not matched or length should of atleast 8 characters";
+            }
+          }
+
+          // login with authentication
+          $(document).on('submit', '#loginForm', function(e) {
+          console.log("inside login function")
+          e.preventDefault();
+          var login_email = $('#login_email').val();
+          var login_password = $('#password').val();
+
+          $.ajax({
+              type: 'POST',
+              url: 'http://kudos02.pythonanywhere.com/login/',
+              data: {
+                'login_email': login_email,
+                'login_password': login_password,
+                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+              },
+              success:function(response) {
+                console.log(response.status);
+                $('#login_validation').text(response.status)
+                      document.getElementById("login_validation").style.display = "block";
+                if(response.status == 'User Login Success'){
+                    document.getElementById("checkEmailForm").style.display = "none";
+                    $('#login_validation').text(response.status)
+                    window.location = 'http://kudos02.pythonanywhere.com/view-profile/'
+                } 
+                else{
+                    $('#login_validation').text(response.status)
+                }
+              }
+            })
+          })
+          
+
+        </script>
 </body>
 </html>
