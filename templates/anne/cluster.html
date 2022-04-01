@@ -219,9 +219,13 @@
             </div>
     
             <div id="delete-list-css">
+              <button id="select-all">select all</button>
+              <form action="http://kudos02.pythonanywhere.com/delete_videos/" method="POST">
+                {% csrf_token %}
               {% for i in obj %}
                 <div class="videos_list">
             
+                  <input type="checkbox" name="vid" value="{{i.id}}">
                   <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
                     <img style="border-radius: 5%; width: 100%; height: auto"  src="{{i.video_thumbnail}}" alt="">
                   </a>
@@ -230,6 +234,8 @@
             
                 <br> <br>
               {% endfor %}
+              <input type="submit">
+            </form>
             </div>
     
       </div>
@@ -394,6 +400,18 @@
       </div>  
     </div>
 </body>
+<script>
+  //https://www.techiedelight.com/implement-select-all-check-box-html-javascript/
+  document.getElementById('select-all').onclick = function() {
+    var checkboxes = document.getElementsByName('vid');
+    for (var checkbox of checkboxes) {
+      //https://www.w3schools.com/jsref/met_document_createattribute.asp
+      console.log(checkbox)
+      let at = document.createAttribute("checked");
+      checkbox.setAttributeNode(at);
+    }
+}
+</script>
 <script src="../../static/style.js"></script>
 <script src="../../static/popUp.js"></script> 
 <script src="../../static/edit-cluster.js"></script>

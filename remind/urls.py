@@ -38,6 +38,8 @@ urlpatterns = [
     path('add-profile/', views.addProfile, name = 'add-profile'), 
     path('add-cluster/', views.addCluster, name = 'add-cluster'),   
     path('cluster/', views.cluster, name = 'cluster'),  
+    path('delete_videos/', views.deleteVideos, name = 'delete_videos'),  
+    path('share_video/', views.shareVideo, name = 'share_video'),  
     # path('add-item/', views.addItem, name = 'add-item'), 
     path('add-video/', views.addVideo, name = 'add-video'),
 

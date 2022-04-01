@@ -21,6 +21,37 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 
+def shareVideo(request):
+        return render(request, 'anne/share.html')
+
+     
+
+#delete videos done also its select all option
+def deleteVideos(request):
+    if request.method == 'POST':
+        vid_list = request.POST.getlist('vid')
+
+        first_video = models.Video.objects.get(id = int(vid_list[0]))
+
+        print(vid_list)
+        for v in vid_list:
+                vd = models.Video.objects.get(id = int(v))
+                vd.delete()
+
+        cluster_id = first_video.cluster.id
+        cluster = models.Cluster.objects.get(id = cluster_id)
+        delete_form = DeleteVideoForm()
+        obj = cluster.video_set.all()
+        delete_form.videos = obj
+        user = models.CustomUser.objects.get(username = request.session['session_username'])
+        clusters = models.Cluster.objects.filter(user = user)
+        cluster_form = ClusterForm(request.POST or None, instance=cluster)
+        return render(request, 'anne/cluster.html', {'clusters':clusters,'delete_form':delete_form ,'cluster_form':cluster_form, 'obj':obj, 'cluster' : cluster, 'form' : SearchVideoForm()})
+
+        
+
+
+
 def deleteCluster(request):
     cluster_id = request.GET['cluster_id']
     
