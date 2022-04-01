@@ -98,7 +98,7 @@
              <div>
               <h4>Title</h4>
               <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
-              <form action="http://localhost:8000/add-video/" method="get">
+              <form action="http://kudos02.pythonanywhere.com/login//add-video/" method="get">
                 {% csrf_token %}
                 <input name="video_url" id="video_url" style="display: none;" type="text">
                 <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
@@ -184,7 +184,7 @@
         </div>
 
         <div>
-          <form id="searchForm" action="http://localhost:8000/search-video" method="post">
+          <form id="searchForm" action="http://kudos02.pythonanywhere.com/login//search-video" method="post">
             {% csrf_token %}
             {{form}}
             <!-- <input src="../static/anne/Pluudo_Search.png" type="image" name="" > -->
@@ -221,13 +221,13 @@
     
             <div id="delete-list-css">
               <button id="http://kudos02.pythonanywhere.com">select all</button>
-              <form id="delete-vid" action="http://localhost:8000/delete_videos/" method="POST">
+              <form id="delete-vid" action="http://kudos02.pythonanywhere.com/login//delete_videos/" method="POST">
                 {% csrf_token %}
               {% for i in obj %}
                 <div class="videos_list">
             
                   <input type="checkbox" name="vid" value="{{i.id}}">
-                  <a href="http://localhost:8000/video-player?video_id={{i.id}}">
+                  <a href="http://kudos02.pythonanywhere.com/login//video-player?video_id={{i.id}}">
                     <img style="border-radius: 5%; width: 100%; height: auto"  src="{{i.video_thumbnail}}" alt="">
                   </a>
                   
@@ -296,7 +296,7 @@
 
             <div style="width: 90%; height: auto; margin: 6% 4%">
   
-              <a href="http://localhost:8000/video-player?video_id={{i.id}}">
+              <a href="http://kudos02.pythonanywhere.com/login//video-player?video_id={{i.id}}">
                 <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
               </a>
               
@@ -344,7 +344,7 @@
             </div>
            
           
-               <form method="post" id="edit-cluster-form" action="http://localhost:8000/cluster/?cluster_id={{cluster.id}}">
+               <form method="post" id="edit-cluster-form" action="http://kudos02.pythonanywhere.com/login//cluster/?cluster_id={{cluster.id}}">
                 {% csrf_token %}
 
                 <h1>Edit Cluster</h1>
@@ -366,7 +366,7 @@
                 </div>
                 
                 <div>
-                  <a onclick="deleteCluster()" href="http://localhost:8000/delete-cluster?cluster_id={{cluster.id}}">Delete This Cluster</a>
+                  <a onclick="deleteCluster()" href="http://kudos02.pythonanywhere.com/login//delete-cluster?cluster_id={{cluster.id}}">Delete This Cluster</a>
                 </div>
     
               </form>
@@ -383,7 +383,7 @@
               <a onclick="showPopup2()" class="pluudo_mid_icons">
                 <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
               </a>
-              <a class="pluudo_mid_icons" href="http://localhost:8000/view-profile">
+              <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/login//view-profile">
                 <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
               </a>
 
@@ -392,7 +392,7 @@
             <a onclick="history.back()" class="back_icon" href="#">
               <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
             </a>
-            <a class="pluudo_icon" href="http://localhost:8000/">
+            <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com/login//">
               <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
             </a>
           </div>
