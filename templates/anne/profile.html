@@ -1,5 +1,4 @@
 {% load static %}
-{% load embed_video_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,6 +39,7 @@
               <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
                 {% csrf_token %}
                 <input name="video_url" id="video_url" style="display: none;" type="text">
+                <input name="video_description" id="video_description" style="display: none;" type="text">
                 <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
                 <input name="video_title" id="video_title" style="display: none;" type="text">
                 <input name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
@@ -460,7 +460,9 @@
       
           
           <div class="cluster">
-            <a style="z-index: -20000;" href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}"><img style="z-index: -2;" class="cluster-img" src="{{cluster.video_set.all.0.video_thumbnail}}" alt="{{cluster.id}}"></a>
+            <a style="z-index: -20000;" href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">
+              <img style="z-index: -2;" class="cluster-img" src="{{cluster.video_set.all.0.video_thumbnail}}" alt="{{cluster.id}}">
+            </a>
             <p><b>{{cluster.cluster_name}}</b></p>
             <p>{{cluster.video_set.all.count}}</p>
         </div>
@@ -638,6 +640,7 @@ function hideProfileOptions(){
 
 
 </script>
+<script src="../../static/back_page_load.js"></script>
 </html>
 
 

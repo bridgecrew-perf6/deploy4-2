@@ -121,12 +121,26 @@ def userLogout(request):
     logout(request)
     return HttpResponseRedirect('http://kudos02.pythonanywhere.com/login/')
 
+
 def searchUser(request):
+
+    if 'how_many_visits' in request.session:
+        request.session['how_many_visits'] += 1
+
+    else:
+        request.session.setdefault('how_many_visits', 1)
+        
     form = SearchVideoForm()
     authform = LoginForm()
     registerform = RegisterForm()
     cluster_form = ClusterForm()
-    obj = models.Video.objects.all()
+    obj = list(models.Video.objects.all())
+
+    if(len(obj)/5 <= request.session['how_many_visits']):
+        request.session['how_many_visits'] = 1
+
+    obj = obj[5 * (request.session['how_many_visits'] - 1) : 5 * request.session['how_many_visits'] ]
+    print(obj)
     site_d = models.SiteDesc.objects.all()
     if 'session_username' in request.session:
         user = models.CustomUser.objects.get(username = request.session['session_username'])
@@ -140,10 +154,15 @@ def searchUser(request):
 
 
 def videoPlayer(request):
+    clusters = models.Cluster.objects.all()
     obj = models.Video.objects.all()
     video_id = request.GET['video_id']
     video = models.Video.objects.get(id=video_id)
-    return render(request, 'anne/video_player.html', {'obj':obj, 'my_video':video})
+    print(models.Profile.objects.all())
+    for p in models.Profile.objects.all():
+        if video.cluster.user == p.user:
+            return render(request, 'anne/video_player.html', {'profile_pic':p.image, 'obj':obj, 'my_video':video, 'clusters':clusters, 'add_video_form':AddVideoForm, 'form' : SearchVideoForm()})
+    return render(request, 'anne/video_player.html', {'obj':obj, 'my_video':video, 'clusters':clusters, 'add_video_form':AddVideoForm, 'form' : SearchVideoForm()})
 
 def searchVideo(request):
     if request.method=='POST':
@@ -307,6 +326,15 @@ def addVideo(request):
     video.video_thumbnail = request.GET['video_thumbnail']
     video.video_owner = request.session['session_username']
     video.cluster = models.Cluster.objects.get(id = cluster_id)
+
+    for v in models.Video.objects.all():
+        cluster = models.Cluster.objects.get(id = cluster_id)
+        obj = cluster.video_set.all()
+        if(models.Cluster.objects.get(id = cluster_id) and v.video_platform_id == video.video_platform_id): 
+           return render(request, 'anne/cluster.html', {'cluster_form':ClusterForm, 'obj':obj, 'cluster' : cluster, 'form' : SearchVideoForm()})
+    
+
+    
     video.save()
     cluster = models.Cluster.objects.get(id = cluster_id)
     obj = cluster.video_set.all()

@@ -1,5 +1,4 @@
 {% load static %}
-{% load embed_video_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,7 +87,7 @@
             <!-- <iframe width="420" height="315"
             src="https://www.youtube.com/embed/tgbNymZ7vqY">
             </iframe> -->
-
+            
             <div id="video-details" style="opacity: 0;">
               <br> <br>
               <div>
@@ -205,10 +204,10 @@
     <div class="edit-cluster-parent-2">
       <div class="edit-cluster-child-2">
 
-              <div id="edit-cluster-header-2">
+              <div id="edit-cluster-header-2" style="position: sticky; top:2%;">
                 <div class="my">
           <input type="image" form="delete-vid" class="edit-cluster-img" src="../static/anne/deleteIcon.png">
-
+                    
                 </div>
                 <div class="my">
                     
@@ -218,9 +217,15 @@
                     <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
                 </div>
             </div>
-    
+            
+            <div style="text-align: left; background: rgba(0,0,0,.5); margin: 4% 2%;">
+
+              <input style="width: 4%" id="select-all" type="checkbox">  <label for="select-all">select all</label>
+            </div>
+            
             <div id="delete-list-css">
-              <button id="http://kudos02.pythonanywhere.com">select all</button>
+              
+              
               <form id="delete-vid" action="http://kudos02.pythonanywhere.com/delete_videos/" method="POST">
                 {% csrf_token %}
               {% for i in obj %}
@@ -401,21 +406,41 @@
     </div>
 </body>
 <script>
-  //https://www.techiedelight.com/implement-http://kudos02.pythonanywhere.com-check-box-html-javascript/
-  document.getElementById('http://kudos02.pythonanywhere.com').onclick = function() {
+  //https://www.techiedelight.com/implement-select-all-check-box-html-javascript/
+  document.getElementById('select-all').onclick = function() {
+    let select_all_btn = document.getElementById('select-all');
     var checkboxes = document.getElementsByName('vid');
+    if(select_all_btn.hasAttribute("checked")){
+      
+      select_all_btn.removeAttribute("checked");
+      for (var checkbox of checkboxes) {
+      //https://www.w3schools.com/jsref/met_document_createattribute.asp
+      checkbox.removeAttribute("checked")
+    }
+    return;
+
+  }
+  else{
+
     for (var checkbox of checkboxes) {
       //https://www.w3schools.com/jsref/met_document_createattribute.asp
-      console.log(checkbox)
+      let at1 = document.createAttribute("checked");
       let at = document.createAttribute("checked");
+      select_all_btn.setAttributeNode(at1);
       checkbox.setAttributeNode(at);
     }
+    return;
+
+  }
 }
+    
 </script>
 <script src="../../static/style.js"></script>
 <script src="../../static/popUp.js"></script> 
 <script src="../../static/edit-cluster.js"></script>
 <script src="../../static/fetchVideo.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>`
+<script src="../../static/back_page_load.js"></script>`  
+<script></script>
 </html>
 

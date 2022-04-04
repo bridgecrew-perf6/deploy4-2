@@ -1,5 +1,4 @@
 {% load static %}
-{% load embed_video_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +12,50 @@
   <link rel="stylesheet" href="../../static/login.css">
 </head>
 <body onload="myFunction()">
- 
+  <style>
+    #load{
+      width:100%;
+      height:100%;
+      position:fixed;
+      z-index:9999;
+      background:url("https://www.creditmutuel.fr/cmne/fr/banques/webservices/nswr/images/loading.gif") no-repeat center center rgba(0,0,0,0.25)
+  }
+  
+  </style>
+    <div style="background-color: white;" id="load">
+
+      <style>
+        .loader {
+          align-self: center;
+          border: 16px solid rgb(79, 73, 73);
+          border-radius: 50%;
+          border-top: 16px solid white;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite; /* Safari */
+          animation: spin 2s linear infinite;
+        }
+        
+        /* Safari */
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        </style>
+        </head>
+        <body>
+        
+        <div class="loader"></div>
+        
+
+    </div>
+    <div id="contents">
+   
 
      <div class="popup">
         <div class="blocker" onclick="hidePopup()"></div>
@@ -257,6 +299,7 @@
               <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
                 {% csrf_token %}
                 <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text">
+                <input class="text-input" name="video_description" id="video_description" style="display: none;" type="text">
                 <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
                 <input class="text-input" name="video_title" id="video_title" style="display: none;" type="text">
                 <input class="text-input" name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
@@ -403,10 +446,6 @@
         <div class="">
           {% for i in obj %}
             <div class="videos_list">
-              <!-- <div class = "video-container">
-                 {% video my_video  %} 
-                <img src="{{my_video.thumbnail}}" alt="">
-              </div> -->
               <div style="width: 90%; height: auto; margin: 6% 4%">
 
                 <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
@@ -459,9 +498,25 @@
         </div>
       </div>  
     </div>
+  </div>
+  <script>
+    document.onreadystatechange = function () {
+  var state = document.readyState
+  if (state == 'interactive') {
+       document.getElementById('contents').style.visibility="hidden";
+  } else if (state == 'complete') {
+      setTimeout(function(){
+         document.getElementById('interactive');
+         document.getElementById('load').style.visibility="hidden";
+         document.getElementById('contents').style.visibility="visible";
+      },1000);
+  }
+}
+  </script>
 </body>
 
 <script src="../../static/style.js"></script>
 <script src="../../static/popUp.js"></script> 
 <script src="../../static/fetchVideo.js"></script>
+<script src="../../static/back_page_load.js"></script>
 </html>
