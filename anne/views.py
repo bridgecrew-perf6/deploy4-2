@@ -330,22 +330,6 @@ def viewProfileArrangeClusters(request):
         return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':my_clusters, 'form' : SearchVideoForm()})
 
 
-# def addCluster(request):
-#     if request.method == 'POST':
-#         form = ClusterForm(request.POST or None)
-#         cluster = models.Cluster()
-#         cluster.cluster_name = form.data['cluster_name']
-#         user = models.CustomUser.objects.get(username = request.session['session_username']) 
-#         cluster.user = user
-#         cluster.save()
-#         clusters = models.Cluster.objects.filter(user = user)
-#         if 'sess_id' in request.session: 
-#             profile = models.Profile.objects.get(user=user) 
-#             return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'clusters':clusters})
-#         else :
-#             return render(request,'anne/profile.html',{'profile_form':form, 'cluster_form':ClusterForm, 'clusters':clusters})
-
-
 @login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def addCluster(request):
     if request.method == 'POST':
