@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+</head>
+<body>
+
+ 
+    <div class="plyr__video-embed" id="player">
+      <iframe
+        src="https://www.youtube.com/embed/76979871?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1"
+        allowfullscreen
+        allowtransparency
+        allow="autoplay"
+        autoplay
+      ></iframe>
+    </div>
+
+    <script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js"></script>
+     <script>
+      const player = new Plyr('#player');
+    </script>
+    </script>
+    <script src="../../static/back_page_load.js"></script>
+    
+</body>
+</html>
+
+

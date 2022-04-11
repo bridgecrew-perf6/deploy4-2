@@ -5,9 +5,290 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        #select-and-save-cluster-parent{
+            background-color: black;
+            height: 100vh;
+        }
+
+        #select-and-save-cluster-child{
+            position: fixed;
+            top: 15vh;
+            bottom: 15vh;
+            height: 68vh;
+            left: 5vh;
+            right: 5vh;
+            border-radius: 2vh;
+            background-color: white;
+            display: none;
+        }
+    </style>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        .share-option-img{
+            max-width: 100%;
+            max-height: 100%;
+            
+        }
+        #share-option-parent{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+        #share-option-child{
+            display: none;
+            height: 35vh;
+            width: 15vh;
+            text-align: center;
+            align-content: center;
+            background-color: white;
+            border-radius: 15vh;
+        }
+        .share-option-child-img{
+            height: 33%;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="showOptions()">share or save</button>
+    <div id="share-option-parent">
+        <div id="share-option-child">
+            <div class="share-option-child-img"> <img onclick="showSave()"  class="share-option-img" src="../../static/anne/SAVEPOPUP.png" alt="share"> </div>
+            <div class="share-option-child-img"> <img onclick="showShare()" class="share-option-img" src="../../static/anne/SHAREPOPUP.png" alt="share"> </div>
+            <div class="share-option-child-img"> <img class="share-option-img" src="../../static/anne/cancelpopup.png" alt="share"> </div>
+        </div>
+    </div>
+
+<style>
+    .select-and-save-cluster-sub-child{
+        box-shadow: 0 3px 10px rgb(0 0 0 / 40%);
+        border-radius: 4vh;
+        display: flex;
+        justify-content: space-between;
+        margin: 2vh;
+        height: 7vh;
+        padding: 1.5vh;
+    }
+
+    .create-cluster-img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+
+     <div id="select-and-save-cluster-child">
+         <div style="height: 7vh; float: right;">
+            <img class="create-cluster-img" src="../../static/anne/cancelpopup.png" alt="close">
+         </div>
+            
+            <br>
+            <br>
+            <h2 style="text-align: center;">Select & Save in a Cluster</h2>
+
+            <div class="select-and-save-cluster-sub-child">
+                <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+                <div>Make a new Cluster & Save</div>
+            </div>
+
+            <div class="select-and-save-cluster-sub-child">
+                <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+                <div>Make a new Cluster & Save</div>
+            </div>
+
+            <div class="select-and-save-cluster-sub-child">
+                <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+                <div>Make a new Cluster & Save</div>
+            </div>
+            
+        </div>
+
+        <style>
+            #share-parent{
+                display: none;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(0,0,0,.5);
+            }
+        
+            #share-child{
+                position: fixed;
+                top: 20vh;
+                bottom: 20vh;
+                left: 10vh;
+                right: 10vh;
+                background: white;
+            }
+
+            .share-sub-child{
+                display: flex;
+                padding: 2vh;
+                justify-content: center;
+            }
+
+            .share-sub-sub-child{
+                height: 20vh;
+                padding: 2vh;
+            }  
+            
+            .share-img{
+                max-width: 100%;
+                max-height: 100%;
+            } 
+        </style>
+
+        <div id="share-parent">
+
+            <div id="share-child">
+
+                <h1>Share  Video</h1>
+                <div class="share-sub-child">
+                    <div class="share-sub-sub-child">
+                        
+                          <a href="http://www.facebook.com/sharer/sharer.php?text=http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}" target="_blank" class="share-popup">
+                              <img class="share-img" src="../../static/anne/f.png" alt="">
+                         </a>
+    
+    
+                    </div>
+                    <div class="share-sub-sub-child">
+                        <a href="http://www.twitter.com/intent/tweet?text=http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}" target="_blank" class="share-popup">
+                            <img class="share-img" src="../../static/anne/t.png" alt="">
+                        </a>
+                    </div>
+                </div>
+    
+                <div class="share-sub-child">
+    
+                    <div class="share-sub-sub-child">
+                        <a href="whatsapp://send?text=http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}" data-action="share/whatsapp/share">
+                            <img class="share-img" src="../../static/anne/w.png" alt="">
+                        </a>
+                    </div>
+                    <div class="share-sub-sub-child">
+                        
+                        <a class="copy_text"  data-toggle="tooltip" title="Copy to Clipboard" href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+                            <img class="share-img" src="../../static/anne/c.png" alt="">
+                        </a>
+                    </div>
+    
+                </div>
+                
+                 
+                  
+                    <script>
+    
+                        $('.copy_text').click(function (e) {
+                        e.preventDefault();
+                        var copyText = $(this).attr('href');
+                    
+                        document.addEventListener('copy', function(e) {
+                        e.clipboardData.setData('text/plain', copyText);
+                        e.preventDefault();
+                        }, true);
+                    
+                        document.execCommand('copy');  
+                        console.log('copied text : ', copyText);
+                        alert('copied text: ' + copyText); 
+                    });
+    
+                    </script>
+                    
+                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            </div>
+    
+        </div>
+        <script src="../../static/back_page_load.js"></script>   
+
+
+<script>
+    function showOptions(){
+        document.getElementById("share-option-child").style.display = "block";
+        document.getElementById("select-and-save-cluster-child").style.display = "none";
+        document.getElementById("share-parent").style.display = "none";
+    }
+    function showSave(){
+        document.getElementById("share-option-child").style.display = "none";
+        document.getElementById("share-parent").style.display = "none";
+        document.getElementById("select-and-save-cluster-child").style.display = "block";
+    }
+    function showShare(){
+        document.getElementById("share-option-child").style.display = "none";
+        document.getElementById("select-and-save-cluster-child").style.display = "none";
+        document.getElementById("share-parent").style.display = "block";
+    }
+</script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        #select-and-save-cluster-parent{
+            background-color: black;
+            height: 100vh;
+        }
+
+        #select-and-save-cluster-child{
+            position: fixed;
+            top: 15vh;
+            bottom: 15vh;
+            height: 68vh;
+            left: 5vh;
+            right: 5vh;
+            border-radius: 2vh;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="select-and-save-cluster-parent">
+        <div id="select-and-save-cluster-child">
+            <img src="" alt="">
+
+            <h2>Select & Save in a Cluster</h2>
+            <div class="select-and-save-cluster-sub-child">
+                <img src="" alt="">
+                <span>Make a new Cluster & Save</span>
+            </div>
+            <div class="select-and-save-cluster-sub-child">
+                <img src="" alt="">
+                <span>Make a new Cluster & Save</span>
+            </div>
+            <div class="select-and-save-cluster-sub-child">
+                <img src="" alt="">
+                <span>Make a new Cluster & Save</span>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <style>
-    #parent{
+    #share-parent{
         position: fixed;
         top: 0;
         bottom: 0;
@@ -16,19 +297,19 @@
         background: rgba(0,0,0,.5);
     }
 
-    #child{
-        padding : 10vh;
+    #share-child{
         position: fixed;
-        top: 10vh;
-        bottom: 10vh;
+        top: 20vh;
+        bottom: 20vh;
         left: 10vh;
         right: 10vh;
         background: white;
     }
-    .sub-child{
+    .share-sub-child{
+        margin-top: 7vh;
         display: flex;
     }
-    .sub-sub-child{
+    .share-sub-sub-child{
         padding: 1vh;
     }
     img{
@@ -37,7 +318,7 @@
     } 
 </style>
 <body>
-    {% block content %}
+   
     <div id="parent">
 
         <div id="child">
@@ -66,9 +347,7 @@
                     </a>
                 </div>
                 <div class="sub-sub-child">
-                    <!-- <a id="url" href="' + http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}} + '" onclick="copyURI(event)">
-                        <img src="../../static/anne/c.png" alt="">
-                    </a> -->
+                    
                     <a class="copy_text"  data-toggle="tooltip" title="Copy to Clipboard" href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
                         <img src="../../static/anne/c.png" alt="">
                     </a>
@@ -100,7 +379,26 @@
         </div>
 
     </div>
-    {% endblock %}   
     <script src="../../static/back_page_load.js"></script>   
 </body>
-</html>
+</html> -->
+
+ <!-- <div id="sample">
+        Geeksforgeeks is best learning portal.
+    </div>
+    <br />
+      
+    <button onclick="copyText()">Copy</button>
+    <br />
+      
+    <h1>Copied Text:</h1><br />
+    <textarea id="textbox"></textarea>
+      
+    <script>
+        function copyText() {
+      
+            /* Copy text into clipboard */
+            navigator.clipboard.writeText
+                (document.getElementById("sample").innerHTML);
+        }
+    </script> -->
