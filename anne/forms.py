@@ -48,7 +48,7 @@ class ClusterForm(forms.ModelForm):
 class AddVideoForm(forms.ModelForm):
     class Meta:
         model = Video
-        fields = {'video_description', 'video_platform_id','video_url', 'video_title', 'video_thumbnail', 'video_owner'}
+        fields = {'video_owner_thumbnail', 'video_description', 'video_platform_id','video_url', 'video_title', 'video_thumbnail', 'video_owner'}
 
 
 class DeleteVideoForm(forms.Form):

@@ -27,6 +27,7 @@ def shareVideo(request):
      
 
 #delete videos done also its select all option
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def deleteVideos(request):
     if request.method == 'POST':
         vid_list = request.POST.getlist('vid')
@@ -51,7 +52,7 @@ def deleteVideos(request):
         
 
 
-
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def deleteCluster(request):
     cluster_id = request.GET['cluster_id']
     
@@ -83,6 +84,7 @@ def checkUsername(request):
 
         else:
             return JsonResponse({"status":"username registered"})        
+
 
 def Login(request):
     if request.method == 'POST':
@@ -117,6 +119,7 @@ def checkEmail(request):
         else:
             return JsonResponse({"status":"email registered"})        
 
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def userLogout(request):
     logout(request)
     return HttpResponseRedirect('http://kudos02.pythonanywhere.com/login/')
@@ -188,6 +191,13 @@ def searchVideo(request):
         res = render(request,'anne/search_video.html',{'form':form,'Videos':Videos})
         return res
 
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
+def deleteUser(request):
+        if 'session_username' in request.session:
+            user = models.CustomUser.objects.get(username = request.session['session_username'])
+            user.delete()
+        return render(request, 'anne/login.html')
+
 
 def register(request):
     if request.method == 'POST':
@@ -206,6 +216,7 @@ def register(request):
         return render(request, 'anne/register.html', {'form': form, 'title':'register here'})
 
 
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def addProfile(request):
     if request.method == 'POST':
         print("add-profile")
@@ -219,32 +230,10 @@ def addProfile(request):
             profile.image = request.FILES['image']
             profile.website_name = form.data['website_name']
             profile.save()
+            request.session['sess_profile_pic'] = profile.image.url
             request.session['sess_id'] = profile.id
             return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'form' : SearchVideoForm()})
-
-# @login_required(login_url='http://kudos02.pythonanywhere.com/login/')
-def editProfile(request):
-    if request.method == 'POST':
-        print("edit-profile")
-        if 'sess_id' in request.session:
-            sess_id = request.session['sess_id']
-            profile = models.Profile.objects.get(id = sess_id)
-            print(profile.image)
-            print(profile.image)
-            print(profile.image)
-            print(profile.image)
-            form = ProfileForm(request.POST or None, request.FILES, instance=profile)
-            
-            
-            form.save()
-            print(profile.image)
-            print(profile.image)
-            print(profile.image)
-            print(profile.image)
-            return render(request,'anne/profile.html',{'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'form' : SearchVideoForm()})
-
-def viewProfile(request):
-        clusters = models.Cluster.objects.all()
+    else:
         if 'session_username' in request.session:
             user = models.CustomUser.objects.get(username = request.session['session_username'])
             clusters = models.Cluster.objects.filter(user = user)
@@ -260,24 +249,87 @@ def viewProfile(request):
             profile_form = ProfileForm()
         return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters, 'form' : SearchVideoForm()})
 
-def viewProfileArrangeClusters(request):
-        my_clusters = []
-        clusters = models.Cluster.objects.all()
-        print(clusters)
-        mylist = [] 
-        for i in clusters:
-            my_clusters.append(i)   
-        my_clusters.sort(key=lambda x: x.cluster_name) 
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
+def editProfile(request):
+    if request.method == 'POST':
+        print("edit-profile")
+        if 'sess_id' in request.session:
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            clusters = models.Cluster.objects.filter(user = profile.user)
+            form = ProfileForm(request.POST or None, request.FILES, instance=profile)
+            
+            
+            form.save()
+            return render(request,'anne/profile.html',{'clusters':clusters, 'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'form' : SearchVideoForm()})
+    else:
+        print("else")
+        print("else")
+        print("else")
+        print("else")
+        print("else")
+        if 'sess_id' in request.session:
+            print("else2")
+            print("else2")
+            print("else2")
+            print("else2")
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            clusters = models.Cluster.objects.filter(user = profile.user)
+            form = ProfileForm(request.POST or None, request.FILES, instance=profile)
+            return render(request,'anne/profile.html',{'clusters':clusters, 'profile':profile, 'profile_form':form, 'cluster_form':ClusterForm, 'form' : SearchVideoForm()})
+
+
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
+def viewProfile(request):
         if 'session_username' in request.session:
             user = models.CustomUser.objects.get(username = request.session['session_username'])
             clusters = models.Cluster.objects.filter(user = user)
         if 'sess_id' in request.session: 
             sess_id = request.session['sess_id']
             profile = models.Profile.objects.get(id = sess_id)
+            profile_pic = profile.image
+            print(profile_pic)
             profile_form = ProfileForm(request.POST or None, instance=profile)
+            return render(request,'anne/profile.html', {'profile':profile, 'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters, 'form' : SearchVideoForm()})
+
+        else:
+            profile_form = ProfileForm()
+        return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':clusters, 'form' : SearchVideoForm()})
+
+def viewPublicProfile(request):
+        
+        user = models.CustomUser.objects.get(username = request.GET['handle'])
+        clusters = models.Cluster.objects.filter(user = user)
+        profile = models.Profile.objects.filter(user = user)
+        profile = profile[:1].get()
+        print(user, profile)
+        return render(request,'anne/public_profile.html', {'profile':profile, 'clusters':clusters, 'form' : SearchVideoForm()})
+
+
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
+def viewProfileArrangeClusters(request):
+        if 'session_username' in request.session:
+            user = models.CustomUser.objects.get(username = request.session['session_username'])
+            clusters = models.Cluster.objects.filter(user = user)
+        
+        print(clusters)
+        my_clusters = [] 
+        for i in clusters:
+            my_clusters.append(i)   
+        my_clusters.sort(key=lambda x: x.cluster_name) 
+
+        if 'sess_id' in request.session: 
+            sess_id = request.session['sess_id']
+            profile = models.Profile.objects.get(id = sess_id)
+            profile_form = ProfileForm(request.POST or None, instance=profile)
+            return render(request,'anne/profile.html', {'profile':profile, 'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':my_clusters, 'form' : SearchVideoForm()})
+
         else:
             profile_form = ProfileForm()
         return render(request,'anne/profile.html', {'profile_form':profile_form, 'cluster_form':ClusterForm, 'clusters':my_clusters, 'form' : SearchVideoForm()})
+
+
 # def addCluster(request):
 #     if request.method == 'POST':
 #         form = ClusterForm(request.POST or None)
@@ -293,6 +345,8 @@ def viewProfileArrangeClusters(request):
 #         else :
 #             return render(request,'anne/profile.html',{'profile_form':form, 'cluster_form':ClusterForm, 'clusters':clusters})
 
+
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def addCluster(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST or None)
@@ -305,6 +359,7 @@ def addCluster(request):
         clusters = models.Cluster.objects.filter(user = user)
         return JsonResponse({"status":"cluster created"}) 
 
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def cluster(request):
     cluster_id = request.GET['cluster_id']
     cluster = models.Cluster.objects.get(id = cluster_id)
@@ -316,6 +371,7 @@ def cluster(request):
     cluster_form = ClusterForm(request.POST or None, instance=cluster)
     return render(request, 'anne/cluster.html', {'clusters':clusters,'delete_form':delete_form ,'cluster_form':cluster_form, 'obj':obj, 'cluster' : cluster, 'form' : SearchVideoForm()})
 
+@login_required(login_url='http://kudos02.pythonanywhere.com/login/')
 def addVideo(request):
     
     cluster_id = request.GET['cluster_id']
@@ -325,6 +381,8 @@ def addVideo(request):
     video.video_url = request.GET['video_url']
     video.video_thumbnail = request.GET['video_thumbnail']
     video.video_owner = request.session['session_username']
+    if 'sess_profile_pic' in request.session:
+        video.video_owner_thumbnail = request.session['sess_profile_pic']
     video.cluster = models.Cluster.objects.get(id = cluster_id)
 
     for v in models.Video.objects.all():

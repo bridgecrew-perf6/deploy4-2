@@ -186,7 +186,18 @@
             <br> <br> <br>
             <span id="profile-popup-show-child-1-settings">Settings</span>
             <br> <br> <br>
-            <span>Copy Profile Link</span> 
+            <span style="display: none; cursor: pointer;" id="profile-link">http://kudos02.pythonanywhere.com/view-public-profile/?handle={{ request.session.session_username }}</span>
+            <span style="cursor: pointer;" onclick="copyText()" id="copy-profile-link">Copy Profile Link</span>
+
+            <script>
+              function copyText() {
+            
+                  /* Copy text into clipboard */
+                  navigator.clipboard.writeText
+                      (document.getElementById("profile-link").innerHTML);
+              }
+          </script> 
+          
             <br> <br> <br>
             <button style="background-color: white; border-width: 1px; border-radius: 25px; padding:1.2% 7%;" onclick="hideProfileOptions()"> <i class="fa fa-close"></i> </button>
           </div>
@@ -223,7 +234,7 @@
                     
                     
                     <div>
-                      <a href="">Change Password</a>
+                      <a href="http://kudos02.pythonanywhere.com/reset_password">Change Password</a>
                     </div>
                     
                     <div>
@@ -235,7 +246,7 @@
                     </div>
                     
                     <div>
-                      <a href="">Deactivate Account</a>
+                      <a href="http://kudos02.pythonanywhere.com/delete-user">Deactivate Account</a>
                     </div>
                     
                     
@@ -326,7 +337,11 @@
           <div>
   
             <p style="display: none;" id="sess_id">{{request.session.sess_id}}</p>
+            {% if profile.image %}
             <img class="user-img " src="{{ profile.image.url }}" alt="profile pic"> <br>
+            {% else %}
+            <img class="user-img " src="" alt="profile pic"> <br>
+            {% endif %}
             <span style="font-size: 100%;">@{{ request.session.session_username }}</span>
   
           </div>

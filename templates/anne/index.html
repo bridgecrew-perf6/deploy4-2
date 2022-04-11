@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pluudo.com</title>
+  <link rel="stylesheet" href="../../static/share.css">
   <link rel="stylesheet" href="../../static/popUp.css">
  
   <link rel="stylesheet" href="../../static/styles.css">
@@ -47,13 +48,12 @@
           100% { transform: rotate(360deg); }
         }
         </style>
-        </head>
-        <body>
-        
         <div class="loader"></div>
         
 
     </div>
+    <div id="select-save-share-outer">
+
     <div id="contents">
    
 
@@ -322,25 +322,6 @@
                 </form>
               </div>
           </div> 
-          <!-- <script>
-            $(document).on('submit', '#addClusterForm', function(e) {
-            console.log("inside username verification function");
-            e.preventDefault();
-            var cluster_name = $('#clustername').val();
-            $.ajax({
-              type: 'POST',
-              url: 'http://kudos02.pythonanywhere.com/add-cluster/',
-              data: {
-                'cluster_name': cluster_name,
-                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
-              },
-              success:function(response) {
-                  console.log(response.status);
-                }
-            })
-          })
-          </script>
-   -->
 
             <script>
               function addVideo(){
@@ -354,7 +335,6 @@
           </div>
         </div>
      
-      </div>
      <script>
       
      </script>
@@ -411,53 +391,51 @@
     </div>
   
     <div id="main-page">
-
-       <div class="header" style="color:blue;">
-        <a class="pluudo_logo" href="http://kudos02.pythonanywhere.com/">
-          <img src="../static/anne/logo.png" alt="Pluudo_logo">
-        </a>
+       
+       <div class="header" style="height: 12vh; display:flex; color:blue;">
         
-        <a class="show_hide_desc" onclick="hide()">
-         <img src="../static/anne/Pluudo_Show_Text.png" alt="videos_description">
-       </a>
-     </div>
+        <div style="visibility: hidden; width: 27%;">
+          for enhancement purpose only
+        </div>
 
+        <div style="width: 48%;">
+            <img style="max-height: 100%; max-width: 100%;" src="../static/anne/logo.png" alt="Pluudo_logo">
+        </div>
+          
+        <div style="width: 25%; padding-top: 3.5vh; padding-bottom: 3.5vh; ">
+            <img onclick="hide()"  style="height: 5vh;" src="../static/anne/Pluudo_Show_Text.png" alt="videos_description">
+        </div>
+
+        
+        </div>
+
+     </div>
          <div id="desc" style="text-align:center; "> </div>
          
        <br><br>
-        <!-- <button onclick="hide()">Desc</button> 
-        <a onclick="hide()">
-          <img src="../static/anne/Pluudo_Show_Text.png" alt="">
-        </a>
-        -->
-
-    
-        <!-- <video width="640" height="360" id="player1" preload="none">
-            <source type="video/youtube" src="https://youtu.be/rDqemu6oisc" />
-        </video>
-         -->
-        <!-- <script>
-            var player = new MediaElementPlayer('#player1');
-        </script> 
-    <script src="jquery.js"></script>
-    <script src="mediaelement-and-player.min.js"></script>
-    <link rel="stylesheet" href="mediaelementplayer.css" /> -->
     
         <div class="">
           {% for i in obj %}
-            <div class="videos_list">
-              <div style="width: 90%; height: auto; margin: 6% 4%">
+            <div class="videos_list" style="margin: 4vh;">
+              <div>
 
                 <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
                   <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
                 </a>
                 
               </div>
-              <div class="video_description">
-              {{i.video_owner}} <br>
-              {{i.video_title}}
+              <div class="video_description" style="text-align: justify; height: 7vh; display: flex; justify-content: space-between; margin: 1vh;">
+                <div style="font-size: 2vh;">
+                  {{i.video_title}} <br>
+                  {{i.video_owner}}
+                  {{i.video_platform_id}}
+                </div>
+
+                <div>
+                  <img onclick="descFunc(this)" name="{{i.id}}" style="height: 5vh; " src="../../static/anne/icon6.png" alt="">
+                </div>
               </div>
-              <br> <br> 
+
             </div>  
           {% endfor %}
           </div>
@@ -498,7 +476,96 @@
         </div>
       </div>  
     </div>
+
+</div>
+
+
+  <div id="select-save-share" style="display: none;">
+    
+  <div id="share-option-parent">
+      <div id="share-option-child">
+          <div class="share-option-child-img"> <img onclick="showSave()"  class="share-option-img" src="../../static/anne/SAVEPOPUP.png" alt="share"> </div>
+          <div class="share-option-child-img"> <img onclick="showShare()" class="share-option-img" src="../../static/anne/SHAREPOPUP.png" alt="share"> </div>
+          <div class="share-option-child-img"> <img onclick="descFuncHide()" class="share-option-img" src="../../static/anne/cancelpopup.png" alt="share"> </div>
+      </div>
   </div>
+
+
+
+   <div id="select-and-save-cluster-child">
+       <div style="height: 7vh; float: right;">
+          <img onclick="descFuncHide()" class="create-cluster-img" src="../../static/anne/cancelpopup.png" alt="close">
+       </div>
+          
+          <br>
+          <br>
+          <h2 style="text-align: center;">Select & Save in a Cluster</h2>
+
+          <div class="select-and-save-cluster-sub-child">
+              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+              <div>Make a new Cluster & Save</div>
+          </div>
+
+          <div class="select-and-save-cluster-sub-child">
+              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+              <div>Make a new Cluster & Save</div>
+          </div>
+
+          <div class="select-and-save-cluster-sub-child">
+              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+              <div>Make a new Cluster & Save</div>
+          </div>
+          
+      </div>
+
+      
+
+      <div id="share-parent">
+
+          <div id="share-child">
+            <div style="height: 7vh; float: right;">
+              <img onclick="descFuncHide()" class="create-cluster-img" src="../../static/anne/Cross2.png" alt="close">
+           </div>
+           <br> <br>
+              <h1>Share  Video</h1>
+              <div class="share-sub-child">
+                  <div class="share-sub-sub-child">
+                      
+                        <a id="change-facebook-url" href="" target="_blank" class="share-popup">
+                            <img class="share-img" src="../../static/anne/f.png" alt="">
+                       </a>
+  
+  
+                  </div>
+                  <div class="share-sub-sub-child">
+                      <a id="change-twitter-url" href="" target="_blank" class="share-popup">
+                          <img class="share-img" src="../../static/anne/t.png" alt="">
+                      </a>
+                  </div>
+              </div>
+  
+              <div class="share-sub-child">
+  
+                  <div class="share-sub-sub-child">
+                      <a id="change-whatsapp-url" href="" data-action="share/whatsapp/share">
+                          <img class="share-img" src="../../static/anne/w.png" alt="">
+                      </a>
+                  </div>
+                  <div class="share-sub-sub-child">
+                      
+                      <a id="change-copy-link-url" class="copy_text"  data-toggle="tooltip" title="Copy to Clipboard" href="">
+                          <img class="share-img" src="../../static/anne/c.png" alt="">
+                      </a>
+                  </div>
+  
+              </div>
+              
+               
+          </div>
+  
+      </div>
+  </div>
+  
   <script>
     document.onreadystatechange = function () {
   var state = document.readyState
@@ -513,10 +580,34 @@
   }
 }
   </script>
+
+<script>
+  function descFunc(clicked_object){
+    document.getElementById("select-save-share-outer").style.display="none";
+    document.getElementById("select-save-share").style.display="block";
+    var val = clicked_object.getAttribute('name');
+    console.log(val);
+    showOptions();
+    document.getElementById("change-facebook-url").setAttribute("href", "http://www.facebook.com/sharer/sharer.php?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+    document.getElementById("change-twitter-url").setAttribute("href", "http://www.twitter.com/intent/tweet?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+    document.getElementById("change-whatsapp-url").setAttribute("href", "whatsapp://send?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+    document.getElementById("change-copy-link-url").setAttribute("href", "http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+  }
+</script>
+
+<script>
+  function descFuncHide(){
+    document.getElementById("select-save-share-outer").style.display="block";
+    document.getElementById("select-save-share").style.display="none";
+  }
+</script>
+
 </body>
 
+<script src="../../static/share.js"></script>
 <script src="../../static/style.js"></script>
 <script src="../../static/popUp.js"></script> 
 <script src="../../static/fetchVideo.js"></script>
 <script src="../../static/back_page_load.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </html>

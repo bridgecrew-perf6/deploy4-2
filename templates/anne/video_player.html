@@ -82,8 +82,6 @@
 
           </div>
 
-        
-            
             <div id="video-details" style="opacity: 0;">
               <br> <br>
               <div>
@@ -238,11 +236,20 @@
   {% if "vimeo" in my_video.video_url %}
   <div class="plyr__video-embed" id="player">
     <iframe
-      src="https://player.vimeo.com/video/76979871?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media"
+      src="https://player.vimeo.com/video/{{my_video.video_platform_id}}?autoplay=1&muted=1&loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media"
       allowfullscreen
       allowtransparency
       allow="autoplay"
     ></iframe>
+  </div>
+  <div class="video_description">
+    <span><a href="{{my_video.video_url}}">SEE ON VIMEO.COM</a></span>
+    <h2>{{my_video.video_title}}</h2>
+    <br>
+    {{my_video.video_owner}} 
+    <br>
+    
+    <img src="{{my_video.video_owner_thumbnail}}" alt="owner">
   </div>
   {% elif "dailymotion" in my_video.video_url %}
     <iframe id="player" frameborder="0" allowfullscreen="true" allow="autoplay" 
@@ -259,25 +266,46 @@
       allow="autoplay"
     ></iframe>
   </div>
-  
-  {% endif %}
-
-</video>
   <div class="video_description">
-    
-    {{my_video.video_title}}
+    <span><a href="{{my_video.video_url}}">SEE ON YOUTUBE.COM</a></span>
+    <h2>{{my_video.video_title}}</h2>
     <br>
     {{my_video.video_owner}} 
     <br>
     
-    <img src="{{profile_pic}}" alt="owner">
+    <img src="{{my_video.video_owner_thumbnail}}" alt="owner">
   </div>
+  {% endif %}
 
-  <h1 style="text-align: center;">Similar videos</h1>
+</video>
+  
+<style>
+  #heading-desc{
+          padding-right: 7vw;
+          display: flex;
+          height: 12vh;
+          justify-content: space-between;
+        }
+</style>
+  <div id="heading-desc">
+    <div style="visibility: hidden;">
+      nothing nothing
+      <!-- <img id="edit-cluster-show-2" class="edit-cluster-img" src="../../static/anne/Pluudo_Video_delete.png" alt=""> -->
+    </div>
+
+    <div>
+      <h1>Similar Videos</h1>
+    </div>
+
+    <div >
+      <img onclick="hideDesc()" style="max-width: 100%; max-height:100%;" src="../../static/anne/Pluudo_Show_Text.png" alt="">
+    </div>
+</div>
+
   <div class="">
     {% for i in obj %}
       <div class="videos_list">
-      
+    
         <div style="width: 100%; height: auto">
 
           <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
@@ -285,12 +313,14 @@
           </a>
           
         </div>
-        <div class="video_description">
-        {{i.video_owner}} 
+        
+        <div class="video_desc">
+          {{i.video_owner}} 
             <br>
         {{i.video_title}}
-        <img src="{{profile_pic}}" alt="">
         </div>
+
+          </div>
         <br> <br> 
       </div>  
     {% endfor %}
