@@ -1,0 +1,98 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+#select-and-save-cluster-parent{
+    background-color: black;
+    height: 100vh;
+}
+
+#select-and-save-cluster-child{
+    position: fixed;
+    top: 15vh;
+    bottom: 15vh;
+    height: 68vh;
+    left: 5vh;
+    right: 5vh;
+    border-radius: 2vh;
+    background-color: white;
+    display: none;
+}
+
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+        .share-option-img{
+            max-width: 100%;
+            max-height: 100%;
+            
+        }
+        #share-option-parent{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+        #share-option-child{
+            display: none;
+            height: 35vh;
+            width: 15vh;
+            text-align: center;
+            align-content: center;
+            background-color: white;
+            border-radius: 15vh;
+        }
+        .share-option-child-img{
+            height: 33%;
+        }
+
+
+        .select-and-save-cluster-sub-child{
+            box-shadow: 0 3px 10px rgb(0 0 0 / 40%);
+            border-radius: 4vh;
+            display: flex;
+            justify-content: space-between;
+            margin: 2vh;
+            height: 7vh;
+            padding: 1.5vh;
+        }
+    
+        .create-cluster-img{
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+
+
+        #share-parent{
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,.5);
+        }
+    
+        #share-child{
+            position: fixed;
+            top: 20vh;
+            bottom: 20vh;
+            left: 10vh;
+            right: 10vh;
+            background: white;
+        }
+
+        .share-sub-child{
+            display: flex;
+            padding: 2vh;
+            justify-content: center;
+        }
+
+        .share-sub-sub-child{
+            height: 20vh;
+            padding: 2vh;
+        }  
+        
+        .share-img{
+            max-width: 100%;
+            max-height: 100%;
+        } 

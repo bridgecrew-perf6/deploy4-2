@@ -24,7 +24,7 @@ function hide() {
 var list = document.getElementsByClassName("video_description");
 for(var i=0; i<list.length; i++){
 if(bool%2 == 0){
-list[i].style.display = 'block';
+list[i].style.display = 'flex';
 }
 else{
 list[i].style.display = 'none';
