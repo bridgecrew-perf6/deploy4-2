@@ -1,0 +1,82 @@
+<form id="checkEmailForm" method="post">
+    {% csrf_token %}
+    <br>
+    <label for="email">Continue with email</label> <br>
+    <br>
+    <input placeholder="Email" class="text-input" id="email_entered" type="email" required> <br> <br>
+    <input type="submit" class="email-btn" class="btn-input" value="Next">
+  </form>
+  <p id="email_message" style="display: none;"></p>
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  
+  </script>
+
+  {% include "anne/email_registration.html" %}
+
+  <div>
+
+    <form id="loginForm" style="display: none;">
+      <input type="email" class="text-input" id="login_email" style="display: none;">
+      
+      <br>
+      <div>
+        <b>Login Password</b> 
+      </div>
+      <br>
+      
+      <input class="text-input" placeholder="Password" type="password" id="password" required>
+      <br>
+      <br>
+      <input type="submit"  class="email-btn" value="Login">
+      <b>
+        <br> <br>
+        <a style="text-decoration: none; color:#A8BEC9;" href="http://kudos02.pythonanywhere.com/reset_password/">Forgot password?</a>
+      </b>
+      <p style="display: none;" id="login_validation"></p>
+    </form>
+  </div>
+
+
+  <div>
+    <form id="registerForm" style="display: none;">
+      {% csrf_token %}
+      <div id="askPasswordForm">
+        <p>Verify your Password to signup</p>
+        <input class="text-input" type="email" id="email" style="display: none;">
+        <br> <br>
+        <input class="text-input" placeholder="Password" id="password_1" type="password" > <br>
+        <br> <br>
+        <input class="text-input" placeholder="Confirm Password" id="password_2" type="text" > <br>
+        <br> <br>
+        <button class="btn-input" id="askPasswordForm_Button" onclick="verifyPassword()">
+          Next
+        </button>
+        <p id="password_matching_validation"></p>
+      </div>
+
+      <div id="askNameForm">
+        <h3>Choose your Pluudo handle</h3>
+        <p>This will be your profile's unique URL on Pluudo.</p>
+        <p>It cannot be changed later.</p>
+        <!-- <label for="first_name">First Name</label> <br> -->
+        <input class="text-input" placeholder="First Name" id="first_name" type="text" required> <br>
+        <br> <br>
+        <!-- <label for="last_name">Last Name</label> <br> -->
+        <input class="text-input" placeholder="Last Name" id="last_name" type="text" required> <br>
+        <br> <br>
+        <label for="username_entered">pluudo.com/</label> 
+        <input style="padding: 0%;" class="text-input" placeholder="name" id="username_entered" type="text" required> <br>
+        <p id="username_message" style="color: red;"></p> <br>
+
+        <input type="submit" class="btn-input" value="signup" id="register_user">
+
+      </div>
+      <style>
+        #askNameForm > input{
+          text-align: left;
+        }
+      </style>
+      
+    </form>
+  </div>

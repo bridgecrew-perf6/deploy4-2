@@ -9,137 +9,7 @@
   <link rel="stylesheet" href="../../static/edit-cluster.css">
   <link rel="stylesheet" href="../../static/popUp.css">
   <link rel="stylesheet" href="../../static/styles.css">
-  <style>
-
-#edit-cluster-header-2{
-    width: 100%;
-    display: flex;
-    height: 25px;
-    justify-content: space-between;
-    margin-top: 2%;
-}
-
-
-.edit-cluster-img{
-    max-width:100%;
-    max-height:100%;
-}
-
-
-.edit-cluster-parent-2{
-    display: none;
-}
-
-.edit-cluster-child-2{
-    display: none;
-}
-
-.edit-cluster-parent-2.edit-cluster-open-2{
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background: rgba(0,0,0,.5);
-    display: block;
-    overflow-y:scroll;
-    z-index: 1000;
-}   
-
-.edit-cluster-child-2.edit-cluster-open-child-2{
-    display: block;
-    border: none;
-    border-top-left-radius: 5%;
-    border-top-right-radius: 5%;
-    position: fixed;
-    top: 25%;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background-color: white;
-    overflow-y:scroll;
-    z-index: 1000;
-}
-
-  </style>
-</head>
-<body>
   
-
-      <div class="popup2">
-
-        <div class="blocker2" onclick="hidePopup2()"></div>
-        
-        <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
-          <h2>Add a Video</h2>
-          <p>from vimeo, youtube or dailymotion</p> <br>
-
-          <div style="display: flex; margin: 5%">
-          
-            <input  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
-            <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
-
-          </div>
-
-          <!-- <input id="fetch-video-url" type="text" placeholder="please enter url"> <br> <br>
-          <input type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
-          <div> -->
-            <!-- <iframe width="420" height="315"
-            src="https://www.youtube.com/embed/tgbNymZ7vqY">
-            </iframe> -->
-            
-            <div id="video-details" style="opacity: 0;">
-              <br> <br>
-              <div>
-                <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
-              </div>
-            
-             <div>
-              <h4>Title</h4>
-              <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
-              <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
-                {% csrf_token %}
-                <input name="video_url" id="video_url" style="display: none;" type="text">
-                <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
-                <input name="video_title" id="video_title" style="display: none;" type="text">
-                <input name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
-          
-                <label for="sel1">Select cluster:</label>
-                  <select name="cluster_id" class="form-control">
-                    {% for cluster in clusters %}
-
-                    <option value="{{cluster.id}}">{{cluster.cluster_name}}</option>
-
-                    {% endfor %}
-                    
-                  </select>
-                <p id="clusterid">{{clusters.id}}</p>
-               
-                <input type="submit" onclick="addVideo()" value="save">
-
-                 
-
-                </form>
-              </div>
-          </div> 
-  
-
-            <script>
-              function addVideo(){
-
-                document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
-                document.getElementById("cluster_id").value = document.getElementById("clusterid").innerHTML;
-
-              }
-            </script>
-            </div>
-          </div>
-        </div>
-     
-      </div>
-
-
-
 
   <style>
   
@@ -154,116 +24,50 @@
   </style>
   
   <style>
-    #main{
-      padding: 2vh;
-      display: flex;
-      height: 8vh;
-      justify-content: space-between;
-    }
-    #searchForm input:focus, textarea:focus, select:focus{
+    input:focus, textarea:focus, select:focus{
       outline: none;
     }
-    #searchForm input{
-      border: none;
-      font-size: large;
+    #profile-options, #add-profile-form, #edit-cluster-form, #settings{
+      text-align: center;
     }
-    .search-img{
-      max-width: 100%;
-      max-height: 100%;
+    #profile-options > div, #add-profile-form > div, #edit-cluster-form > div, #settings > div{
+      padding: 5%;
     }
-
   </style>
-    <div id="search-page">
-      <div id="main">
 
-        <div>
-          <a onclick="unMySearch()" href="#">
-            <img class="search-img" src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-          </a>
-        </div>
+<style>
+  #heading-cluster-page{
+    display: flex;
+    height: 7vh;
+    justify-content: space-between;
+  }
+  #heading-cluster-delete-and-desc{
+    padding-right: 7vw;
+    display: flex;
+    height: 7vh;
+    justify-content: space-between;
+  }
 
-        <div>
-          <form id="searchForm" action="http://kudos02.pythonanywhere.com/search-video" method="post">
-            {% csrf_token %}
-            {{form}}
-            <!-- <input src="../static/anne/Pluudo_Search.png" type="image" name="" > -->
-          </form>
-        </div>
-        
-        <div>
-          <input form="searchForm" class="search-img" src="../static/anne/Pluudo_Search.png" type="image" name="" >
-        </div>
-      </div>
-    </div>
-         <style>
-           #delete-list-css{
-             background-color: aqua;
-             padding: 5vh;
-           }
-         </style>    
-    <div class="edit-cluster-parent-2">
-      <div class="edit-cluster-child-2">
+</style>
 
-              <div id="edit-cluster-header-2" style="position: sticky; top:2%;">
-                <div class="my">
-          <input type="image" form="delete-vid" class="edit-cluster-img" src="../static/anne/deleteIcon.png">
-                    
-                </div>
-                <div class="my">
-                    
-                </div>
-                <div class="my">
-                  <img id="hide-editcluster-popup-2" class="edit-cluster-img" src="../static/anne/cancelpopup.png" alt="">
-                    <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
-                </div>
-            </div>
-            
-            <div style="text-align: left; background: rgba(0,0,0,.5); margin: 4% 2%;">
+</head>
+<body>
+  
+ 
+  {% include "anne/add_video.html" %}
+  
+  <div id="select-save-share-outer">
 
-              <input style="width: 4%" id="select-all" type="checkbox">  <label for="select-all">select all</label>
-            </div>
-            
-            <div id="delete-list-css">
-              
-              
-              <form id="delete-vid" action="http://kudos02.pythonanywhere.com/delete_videos/" method="POST">
-                {% csrf_token %}
-              {% for i in obj %}
-                <div class="videos_list">
-            
-                  <input type="checkbox" name="vid" value="{{i.id}}">
-                  <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-                    <img style="border-radius: 5%; width: 100%; height: auto"  src="{{i.video_thumbnail}}" alt="">
-                  </a>
-                  
-                </div>
-            
-                <br> <br>
-              {% endfor %}
-            </form>
-            </div>
-    
-      </div>
-    </div>
-    
-    
+
+
+
+  {% include "anne/search_page.html" %}
+
+
+  {% include "anne/edit_cluster_parent_2.html" %}
 
     <div id="main-page">
 
-      <style>
-        #heading-cluster-page{
-          display: flex;
-          height: 7vh;
-          justify-content: space-between;
-        }
-        #heading-cluster-delete-and-desc{
-          padding-right: 7vw;
-          display: flex;
-          height: 7vh;
-          justify-content: space-between;
-        }
-
-      </style>
       <div id="heading-cluster-page">
         <div>
           <p style="visibility: hidden;">nothing</p>
@@ -295,146 +99,22 @@
 
       </div>
       <!-- <button id="deleteVideos" onclick="deleteVideos()">delete</button> -->
-      <div class="">
-        {% for i in obj %}
-          <div class="videos_list">
-
-            <div style="width: 90%; height: auto; margin: 6% 4%">
-  
-              <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-                <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
-              </a>
-              
-            </div>
-            <div class="video_desc">
-            {{i.video_owner}} <br>
-            {{i.video_title}}
-            </div>
-            <br> <br> 
-          </div>  
-        {% endfor %}
-        </div>
       
-     <style>
-      input:focus, textarea:focus, select:focus{
-        outline: none;
-      }
-      #profile-options, #add-profile-form, #edit-cluster-form, #settings{
-        text-align: center;
-      }
-      #profile-options > div, #add-profile-form > div, #edit-cluster-form > div, #settings > div{
-        padding: 5%;
-      }
-    </style>
- 
+      {% include "anne/videos_list.html" %}
+      
+
   
-  
-  <div class="edit-cluster-parent">
-    
+{% include "anne/edit_cluster_parent_1.html" %}
 
-    <div class="edit-cluster-child">
-        <div>
-
-            <div id="edit-cluster-header">
-                <div class="my">
-                    <img class="edit-cluster-img" id="hide-editcluster-popup" src="../static/anne/BACKBUTTON.png" alt="">
-                </div>
-                <div class="my">
-                    
-                </div>
-                <div class="my">
-                  <input type="image" form="edit-cluster-form" class="edit-cluster-img" src="../static/anne/popupright.png">
-                    <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
-                </div>
-            </div>
-           
-          
-               <form method="post" id="edit-cluster-form" action="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">
-                {% csrf_token %}
-
-                <h1>Edit Cluster</h1>
-
-                <div>
-                    <b>Cluster Name</b> <br>
-                    {{cluster_form.cluster_name}}
-                </div>
-    
-                
-                <div>
-                  <b>Description</b> <br> 
-                  {{cluster_form.cluster_desc}}
-                </div>
-            
-                <div>
-                  <b>Hash Tags</b> <br>
-                  {{cluster_form.cluster_hashtags}}
-                </div>
-                
-                <div>
-                  <a onclick="deleteCluster()" href="http://kudos02.pythonanywhere.com/delete-cluster?cluster_id={{cluster.id}}">Delete This Cluster</a>
-                </div>
-    
-              </form>
-        </div>
-    </div>
-</div>
-
-        <div class="footer">
-          <div class="footer_dimensions">
-
-            <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
-              <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
-            </a>
-              <a onclick="showPopup2()" class="pluudo_mid_icons">
-                <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
-              </a>
-              <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
-                <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
-              </a>
-
-          </div>
-          <div>
-            <a onclick="history.back()" class="back_icon" href="#">
-              <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-            </a>
-            <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com/">
-              <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
-            </a>
-          </div>
-        </div>
+{% include "anne/footer.html" %}
       </div>  
     </div>
-</body>
-<script>
-  //https://www.techiedelight.com/implement-select-all-check-box-html-javascript/
-  document.getElementById('select-all').onclick = function() {
-    let select_all_btn = document.getElementById('select-all');
-    var checkboxes = document.getElementsByName('vid');
-    if(select_all_btn.hasAttribute("checked")){
-      
-      select_all_btn.removeAttribute("checked");
-      for (var checkbox of checkboxes) {
-      //https://www.w3schools.com/jsref/met_document_createattribute.asp
-      checkbox.removeAttribute("checked")
-    }
-    return;
-
-  }
-  else{
-
-    for (var checkbox of checkboxes) {
-      //https://www.w3schools.com/jsref/met_document_createattribute.asp
-      let at1 = document.createAttribute("checked");
-      let at = document.createAttribute("checked");
-      select_all_btn.setAttributeNode(at1);
-      checkbox.setAttributeNode(at);
-    }
-    return;
-
-  }
-}
     
-</script>
+</div>
+
+{% include "anne/share_save.html" %}
+
+</body>
 <script src="../../static/style.js"></script>
 <script src="../../static/popUp.js"></script> 
 <script src="../../static/edit-cluster.js"></script>

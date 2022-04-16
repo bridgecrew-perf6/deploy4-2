@@ -1,0 +1,121 @@
+<div class="profile-popup-parent">
+        
+    <div class="profile-popup-child1">
+      <br> <br>
+      <span id="profile-popup-show-child-1">Edit Profile</span> 
+      <br> <br> <br>
+      <span id="profile-popup-show-child-1-settings">Settings</span>
+      <br> <br> <br>
+      <span style="display: none; cursor: pointer;" id="profile-link">http://kudos02.pythonanywhere.com/view-public-profile/?handle={{ request.session.session_username }}</span>
+      <span style="cursor: pointer;" onclick="copyText()" id="copy-profile-link">Copy Profile Link</span>
+
+    <br> <br> <br>
+      <button style="background-color: white; border-width: 1px; border-radius: 25px; padding:1.2% 7%;" onclick="hideProfileOptions()"> <i class="fa fa-close"></i> </button>
+    </div>
+
+    <div class="profile-popup-child2" style="overflow-y: scroll; height: 75%;">
+        <div>
+
+            <div id="profile-popup-header">
+                <div class="my">
+                    <img onclick="hideProfile()" class="add-cluster-img" id="hide-profile-popup" src="../static/anne/BACKBUTTON.png" alt="">
+                </div>
+                <div class="my">
+                    
+                </div>
+                <div class="my">
+                  <input id="set" form="settings" style="display: none;" type="image"  class="add-cluster-img" src="../static/anne/popupright.png">
+                  <input id="add" form="add-profile-form" style="display: none;" type="image"  class="add-cluster-img" src="../static/anne/popupright.png">
+                  <input id="edit" form="edit-profile-form" style="display: none;" type="image"  class="add-cluster-img" src="../static/anne/popupright.png">
+                    <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
+                </div>
+            </div>
+            
+            <div id="settings">
+              <h3>Settings</h3>
+              <div>
+                <span>Email Id</span> <br>
+                {{user.email}}
+              </div>
+          
+              <div>
+                Version <br>
+                 V 2.0
+              </div>
+              
+              
+              <div>
+                <a href="http://kudos02.pythonanywhere.com/reset_password">Change Password</a>
+              </div>
+              
+              <div>
+                <a href="">Privacy & Terms</a>
+              </div>
+              
+              <div>
+                <a href="http://kudos02.pythonanywhere.com/logout"> Logout </a>
+              </div>
+              
+              <div>
+                <a href="http://kudos02.pythonanywhere.com/delete-user">Deactivate Account</a>
+              </div>
+              
+              
+            </div>
+          <div>
+            <form  id="add-profile-form" method="post" action="http://kudos02.pythonanywhere.com/add-profile/" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              {{profle_form.media}}
+              Add Profile
+              <div class="profile-updation">
+                <b>Profile Pic</b>  <br>
+              {{profile_form.image}}
+              </div>
+              <div class="profile-updation">
+                <b>About</b> <br>
+              {{profile_form.about}}
+              </div>
+          
+              <div class="profile-updation">
+               <b>Website</b>  <br>
+                {{profile_form.website_name}}
+              </div>
+              
+              <div class="profile-updation">
+               <b>Country</b>  <br>
+                {{profile_form.country}}
+              </div>
+             </form> 
+
+          </div>
+            
+            <form method="post" id="edit-profile-form"  action="http://kudos02.pythonanywhere.com/edit-profile/" enctype="multipart/form-data">
+              {% csrf_token %}
+          
+              {{profle_form.media}}
+              Edit Profile
+              <div class="profile-updation">
+                <b>Profile Pic</b>  <br>
+              {{profile_form.image}}
+              </div>
+              <div class="profile-updation">
+                <b>About</b> <br>
+              {{profile_form.about}}
+              </div>
+          
+              <div class="profile-updation">
+               <b>Website</b>  <br>
+                {{profile_form.website_name}}
+              </div>
+              
+              <div class="profile-updation">
+               <b>Country</b>  <br>
+                {{profile_form.country}}
+              </div>
+              
+            </form>
+             
+        </div>
+    </div>
+</div>

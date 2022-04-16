@@ -1,0 +1,42 @@
+<style>
+    #main{
+      padding: 2vh;
+      display: flex;
+      height: 8vh;
+      justify-content: space-between;
+    }
+    #searchForm input:focus, textarea:focus, select:focus{
+      outline: none;
+    }
+    #searchForm input{
+      border: none;
+      font-size: large;
+    }
+    .search-img{
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+  </style>
+    <div id="search-page">
+      <div id="main">
+
+        <div>
+          <a onclick="unMySearch()" href="#">
+            <img class="search-img" src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
+          </a>
+        </div>
+
+        <div>
+          <form id="searchForm" action="http://kudos02.pythonanywhere.com/search-video" method="post">
+            {% csrf_token %}
+            {{form}}
+            <!-- <input src="../static/anne/Pluudo_Search.png" type="image" name="" > -->
+          </form>
+        </div>
+        
+        <div>
+          <input form="searchForm" class="search-img" src="../static/anne/Pluudo_Search.png" type="image" name="" >
+        </div>
+      </div>
+    </div>

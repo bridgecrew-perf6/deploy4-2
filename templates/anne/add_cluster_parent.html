@@ -1,0 +1,38 @@
+<div class="add-cluster-parent">
+    <div id="add-cluster-child2">
+      <h3>Arrange Clusters</h3>
+      <br>
+      <span><a style="text-decoration: none; color:black" href="http://kudos02.pythonanywhere.com/view-profile"> Recently Added </a></span> 
+      <br> <br> <br>
+      <span><a style="text-decoration: none; color:black" href="http://kudos02.pythonanywhere.com/view-profile-arrange-clusters"> A to Z </a></span> 
+      <br> <br> <br>
+      <button style="background-color: white; border-width: 1px; border-radius: 25px; padding:1.2% 7%;" onclick="arrangeClusterHide()"> <i class="fa fa-close"></i> </button>
+    </div>
+
+    <div class="add-cluster-child">
+        <div>
+
+            <div id="add-cluster-header">
+                <div class="my">
+                    <img class="add-cluster-img" id="hide-addcluster-popup" src="../static/anne/BACKBUTTON.png" alt="">
+                </div>
+                <div class="my">
+                    Cluster
+                </div>
+                <div class="my">
+                  <input type="image" form="addClusterForm" class="add-cluster-img" src="../static/anne/popupright.png">
+                    <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
+                </div>
+            </div>
+           
+               <h3 style="text-align: center;">Cluster Name</h3>
+          
+            <form id="addClusterForm">
+              {% csrf_token %}
+              <input type="text" id="clustername" placeholder="Make a Cluster & Save">
+              <!-- <input type="submit" name="" id="submit-add-cluster" value="submit"> -->
+              <br>
+            </form>
+        </div>
+    </div>
+</div>

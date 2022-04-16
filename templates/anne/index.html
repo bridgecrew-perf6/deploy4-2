@@ -13,45 +13,8 @@
   <link rel="stylesheet" href="../../static/login.css">
 </head>
 <body onload="myFunction()">
-  <style>
-    #load{
-      width:100%;
-      height:100%;
-      position:fixed;
-      z-index:9999;
-      background:url("https://www.creditmutuel.fr/cmne/fr/banques/webservices/nswr/images/loading.gif") no-repeat center center rgba(0,0,0,0.25)
-  }
-  
-  </style>
-    <div style="background-color: white;" id="load">
 
-      <style>
-        .loader {
-          align-self: center;
-          border: 16px solid rgb(79, 73, 73);
-          border-radius: 50%;
-          border-top: 16px solid white;
-          width: 120px;
-          height: 120px;
-          -webkit-animation: spin 2s linear infinite; /* Safari */
-          animation: spin 2s linear infinite;
-        }
-        
-        /* Safari */
-        @-webkit-keyframes spin {
-          0% { -webkit-transform: rotate(0deg); }
-          100% { -webkit-transform: rotate(360deg); }
-        }
-        
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        </style>
-        <div class="loader"></div>
-        
-
-    </div>
+  <!-- {% include "anne/loader.html" %} -->
     <div id="select-save-share-outer">
 
     <div id="contents">
@@ -62,206 +25,8 @@
         <div class="contents" style="overflow: scroll;">
           <img style="float: right;" width="40px" src="../static/anne/vcanlogin.png" onclick="hidePopup()" alt="Pluudo_HidePopUp_icon">
           <br> <br>
-          <form id="checkEmailForm" method="post">
-            {% csrf_token %}
-            <br>
-            <label for="email">Continue with email</label> <br>
-            <br>
-            <input placeholder="Email" class="text-input" id="email_entered" type="email" required> <br> <br>
-            <input type="submit" class="email-btn" class="btn-input" value="Next">
-          </form>
-          <p id="email_message" style="display: none;"></p>
-  
-          <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-          
-          </script>
-
-          <script>
-            // to check whether email registered or not
-            $(document).on('submit', '#checkEmailForm', function(e) {
-
-              e.preventDefault();
-              var email_entered = $('#email_entered').val();
-
-              $.ajax({
-                type: 'POST',
-                url: 'http://kudos02.pythonanywhere.com/check-email/',
-                data: {
-                  'email_entered': email_entered,
-                  csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
-                },
-                success:function(response) {
-                  console.log(response.status);
-                  $('#email_message').text(response.status)
-                  if(response.status == "email not registered"){
-                    document.getElementById("email").value = email_entered;
-                    document.getElementById("checkEmailForm").style.display = "none";
-                    document.getElementById("registerForm").style.display = "block";
-                    document.getElementById("askPasswordForm").style.display = "block";
-                    document.getElementById("askNameForm").style.display = "none";
-                  }
-                  else{
-                    document.getElementById("login_email").value = email_entered;
-                    document.getElementById("checkEmailForm").style.display = "none";  
-                    document.getElementById("loginForm").style.display = "block";
-                }
-                }
-              })
-            })
-
-            // to check whether username available or not
-            $(document).on('submit', '#registerForm', function(e) {
-              console.log("inside username verification function");
-              e.preventDefault();
-              var username_entered = $('#username_entered').val();
-              var password_1 = $('#password_1').val();
-              var password_2 = $('#password_2').val();
-              var first_name = $('#first_name').val();
-              var last_name = $('#last_name').val();
-              var email = $('#email').val();
-
-              $.ajax({
-                type: 'POST',
-                url: 'http://kudos02.pythonanywhere.com/check-username/',
-                data: {
-                  'username': username_entered,
-                  'password1': password_1,
-                  'password2': password_2,
-                  'first_name': first_name, 
-                  'last_name': last_name,
-                  'email': email,
-                  csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
-                },
-                success:function(response) {
-                  console.log(response.status);
-                  $('#username_message').text(response.status)
-                  if(response.status == "username registered"){
-                    document.getElementById("username_message").innerHTML = "profile handle name already taken! try another";
-                    document.getElementById("entered_username").value = "";
-                  }
-                  else{
-                    window.location = "http://kudos02.pythonanywhere.com/view-profile/"
-                  }
-                }
-              })
-            })
-
-            // to check whether password and confirm password matches or not
-            function verifyPassword(){
-              let pswd_1 = document.getElementById("password_1").value ;
-              let pswd_2 = document.getElementById("password_2").value ;
-              if(pswd_1 === pswd_2 && pswd_1.length >=8 ){
-            
-                document.getElementById("askPasswordForm").style.display = "none";
-                document.getElementById("askNameForm").style.display = "block";
-              }
-              else{
-                document.getElementById("password_matching_validation").innerHTML = "password not matched or length should of atleast 8 characters";
-              }
-            }
-
-            // login with authentication
-            $(document).on('submit', '#loginForm', function(e) {
-            console.log("inside login function")
-            e.preventDefault();
-            var login_email = $('#login_email').val();
-            var login_password = $('#password').val();
-            console.log(login_email)
-            console.log(login_password)
-
-            $.ajax({
-                type: 'POST',
-                url: 'http://kudos02.pythonanywhere.com/login/',
-                data: {
-                  'login_email': login_email,
-                  'login_password': login_password,
-                  csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
-                },
-                success:function(response) {
-                  console.log(response.status);
-                  $('#login_validation').text(response.status)
-                      document.getElementById("login_validation").style.display = "block";
-                  if(response.status == 'User Login Success'){
-                      document.getElementById("checkEmailForm").style.display = "none";
-                      $('#login_validation').text(response.status)
-                      window.location = 'http://kudos02.pythonanywhere.com/view-profile/'
-                  } 
-                  else{
-                      $('#login_validation').text(response.status)
-                  }
-                }
-              })
-            })
-            
-
-          </script>
-
-          <div>
-
-            <form id="loginForm" style="display: none;">
-              <input type="email" class="text-input" id="login_email" style="display: none;">
-              
-              <br>
-              <div>
-                <b>Login Password</b> 
-              </div>
-              <br>
-              
-              <input class="text-input" placeholder="Password" type="password" id="password" required>
-              <br>
-              <br>
-              <input type="submit"  class="email-btn" value="Login">
-              <b>
-                <br> <br>
-                <a style="text-decoration: none; color:#A8BEC9;" href="http://kudos02.pythonanywhere.com/reset_password/">Forgot password?</a>
-              </b>
-              <p style="display: none;" id="login_validation"></p>
-            </form>
-          </div>
-
-
-          <div>
-            <form id="registerForm" style="display: none;">
-              {% csrf_token %}
-              <div id="askPasswordForm">
-                <p>Verify your Password to signup</p>
-                <input class="text-input" type="email" id="email" style="display: none;">
-                <br> <br>
-                <input class="text-input" placeholder="Password" id="password_1" type="password" > <br>
-                <br> <br>
-                <input class="text-input" placeholder="Confirm Password" id="password_2" type="text" > <br>
-                <br> <br>
-                <button class="btn-input" id="askPasswordForm_Button" onclick="verifyPassword()">
-                  Next
-                </button>
-                <p id="password_matching_validation"></p>
-              </div>
-
-              <div id="askNameForm">
-                <h3>Choose your Pluudo handle</h3>
-                <p>This will be your profile's unique URL on Pluudo.</p>
-                <p>It cannot be changed later.</p>
-                <!-- <label for="first_name">First Name</label> <br> -->
-                <input class="text-input" placeholder="First Name" id="first_name" type="text" required> <br>
-                <br> <br>
-                <!-- <label for="last_name">Last Name</label> <br> -->
-                <input class="text-input" placeholder="Last Name" id="last_name" type="text" required> <br>
-                <br> <br>
-                <label for="username_entered">pluudo.com/</label> 
-                <input style="padding: 0%;" class="text-input" placeholder="name" id="username_entered" type="text" required> <br>
-                <p id="username_message" style="color: red;"></p> <br>
-
-                <input type="submit" class="btn-input" value="signup" id="register_user">
-
-              </div>
-              <style>
-                #askNameForm > input{
-                  text-align: left;
-                }
-              </style>
-              
-            </form>
-          </div>
+       
+          {% include "anne/email_registration_forms.html" %}
           
 
 
@@ -272,67 +37,8 @@
         </div>
       </div>
 
-      <div class="popup2">
-
-        <div class="blocker2" onclick="hidePopup2()"></div>
-        
-        <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
-          <h2>Add a Video</h2>
-          <p>from vimeo, youtube or dailymotion</p> <br>
-
-          <div style="display: flex; margin: 5%">
-          
-            <input class="text-input"  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
-            <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
-
-          </div>
-            
-            <div id="video-details" style="opacity: 0;">
-              <br> <br>
-              <div>
-                <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
-              </div>
-            
-             <div>
-              <h4>Title</h4>
-              <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
-              <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
-                {% csrf_token %}
-                <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text">
-                <input class="text-input" name="video_description" id="video_description" style="display: none;" type="text">
-                <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
-                <input class="text-input" name="video_title" id="video_title" style="display: none;" type="text">
-                <input class="text-input" name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
-          
-                <label for="sel1">Select cluster:</label>
-                  <select name="cluster_id" class="form-control">
-                    {% for cluster in clusters %}
-
-                    <option value="{{cluster.id}}">{{cluster.cluster_name}}</option>
-
-                    {% endfor %}
-                    
-                  </select>
-                <p id="clusterid">{{clusters.id}}</p>
-               
-                <input type="submit" class="btn-input" onclick="addVideo()" value="save">
-
-                 
-
-                </form>
-              </div>
-          </div> 
-
-            <script>
-              function addVideo(){
-
-                document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
-                document.getElementById("cluster_id").value = document.getElementById("clusterid").innerHTML;
-
-              }
-            </script>
-            </div>
-          </div>
+      {% include "anne/add_video.html" %}
+      
         </div>
      
      <script>
@@ -347,48 +53,7 @@
     }
   </style>
   
-  <style>
-    #main{
-      padding: 2vh;
-      display: flex;
-      height: 8vh;
-      justify-content: space-between;
-    }
-    #searchForm input:focus, textarea:focus, select:focus{
-      outline: none;
-    }
-    #searchForm input{
-      border: none;
-      font-size: large;
-    }
-    .search-img{
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-  </style>
-    <div id="search-page">
-      <div id="main">
-
-        <div>
-          <a onclick="unMySearch()" href="#">
-            <img class="search-img" src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-          </a>
-        </div>
-
-        <div>
-          <form id="searchForm" action="http://kudos02.pythonanywhere.com/search-video" method="post">
-            {% csrf_token %}
-            {{form}}
-            <!-- <input src="../static/anne/Pluudo_Search.png" type="image" name="" > -->
-          </form>
-        </div>
-        
-        <div>
-          <input form="searchForm" class="search-img" src="../static/anne/Pluudo_Search.png" type="image" name="" >
-        </div>
-      </div>
-    </div>
+{% include "anne/search_page.html" %}
   
     <div id="main-page">
        
@@ -414,30 +79,8 @@
          
        <br><br>
     
-        <div class="">
-          {% for i in obj %}
-            <div class="videos_list" style="margin: 4vh;">
-              <div>
+        {% include "anne/videos_list.html" %}
 
-                <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-                  <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
-                </a>
-                
-              </div>
-              <div class="video_description" style="text-align: justify; height: 7vh; display: flex; justify-content: space-between; margin: 1vh;">
-                <div style="font-size: 2vh;">
-                  {{i.video_title}} <br>
-                  {{i.video_owner}}
-                </div>
-
-                <div>
-                  <img onclick="descFunc(this)" name="{{i.id}}" style="height: 5vh; " src="../../static/anne/icon6.png" alt="">
-                </div>
-              </div>
-
-            </div>  
-          {% endfor %}
-          </div>
         <div class="footer">
           <div class="footer_dimensions">
 
@@ -473,135 +116,10 @@
             </a>
           </div>
         </div>
+
       </div>  
-    </div>
 
-</div>
-
-
-  <div id="select-save-share" style="display: none;">
-    
-  <div id="share-option-parent">
-      <div id="share-option-child">
-          <div class="share-option-child-img"> <img onclick="showSave()"  class="share-option-img" src="../../static/anne/SAVEPOPUP.png" alt="share"> </div>
-          <div class="share-option-child-img"> <img onclick="showShare()" class="share-option-img" src="../../static/anne/SHAREPOPUP.png" alt="share"> </div>
-          <div class="share-option-child-img"> <img onclick="descFuncHide()" class="share-option-img" src="../../static/anne/cancelpopup.png" alt="share"> </div>
-      </div>
-  </div>
-
-
-
-   <div id="select-and-save-cluster-child">
-       <div style="height: 7vh; float: right;">
-          <img onclick="descFuncHide()" class="create-cluster-img" src="../../static/anne/cancelpopup.png" alt="close">
-       </div>
-          
-          <br>
-          <br>
-          <h2 style="text-align: center;">Select & Save in a Cluster</h2>
-
-          <div class="select-and-save-cluster-sub-child">
-              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
-              <div>Make a new Cluster & Save</div>
-          </div>
-
-          <div class="select-and-save-cluster-sub-child">
-              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
-              <div>Make a new Cluster & Save</div>
-          </div>
-
-          <div class="select-and-save-cluster-sub-child">
-              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
-              <div>Make a new Cluster & Save</div>
-          </div>
-          
-      </div>
-
-      
-
-      <div id="share-parent">
-
-          <div id="share-child">
-            <div style="height: 7vh; float: right;">
-              <img onclick="descFuncHide()" class="create-cluster-img" src="../../static/anne/Cross2.png" alt="close">
-           </div>
-           <br> <br>
-              <h1>Share  Video</h1>
-              <div class="share-sub-child">
-                  <div class="share-sub-sub-child">
-                      
-                        <a id="change-facebook-url" href="" target="_blank" class="share-popup">
-                            <img class="share-img" src="../../static/anne/f.png" alt="">
-                       </a>
-  
-  
-                  </div>
-                  <div class="share-sub-sub-child">
-                      <a id="change-twitter-url" href="" target="_blank" class="share-popup">
-                          <img class="share-img" src="../../static/anne/t.png" alt="">
-                      </a>
-                  </div>
-              </div>
-  
-              <div class="share-sub-child">
-  
-                  <div class="share-sub-sub-child">
-                      <a id="change-whatsapp-url" href="" data-action="share/whatsapp/share">
-                          <img class="share-img" src="../../static/anne/w.png" alt="">
-                      </a>
-                  </div>
-                  <div class="share-sub-sub-child">
-                      
-                      <a id="change-copy-link-url" class="copy_text"  data-toggle="tooltip" title="Copy to Clipboard" href="">
-                          <img class="share-img" src="../../static/anne/c.png" alt="">
-                      </a>
-                  </div>
-  
-              </div>
-              
-               
-          </div>
-  
-      </div>
-  </div>
-  
-  <script>
-    document.onreadystatechange = function () {
-  var state = document.readyState
-  if (state == 'interactive') {
-       document.getElementById('contents').style.visibility="hidden";
-  } else if (state == 'complete') {
-      setTimeout(function(){
-         document.getElementById('interactive');
-         document.getElementById('load').style.visibility="hidden";
-         document.getElementById('contents').style.visibility="visible";
-      },1000);
-  }
-}
-  </script>
-
-<script>
-  function descFunc(clicked_object){
-    document.getElementById("select-save-share-outer").style.display="none";
-    document.getElementById("select-save-share").style.display="block";
-    var val = clicked_object.getAttribute('name');
-    console.log(val);
-    showOptions();
-    document.getElementById("change-facebook-url").setAttribute("href", "http://www.facebook.com/sharer/sharer.php?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
-    document.getElementById("change-twitter-url").setAttribute("href", "http://www.twitter.com/intent/tweet?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
-    document.getElementById("change-whatsapp-url").setAttribute("href", "whatsapp://send?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
-    document.getElementById("change-copy-link-url").setAttribute("href", "http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
-  }
-</script>
-
-<script>
-  function descFuncHide(){
-    document.getElementById("select-save-share-outer").style.display="block";
-    document.getElementById("select-save-share").style.display="none";
-  }
-</script>
-
-</body>
+{% include "anne/share_save.html" %}
 
 <script src="../../static/share.js"></script>
 <script src="../../static/style.js"></script>
@@ -609,4 +127,5 @@
 <script src="../../static/fetchVideo.js"></script>
 <script src="../../static/back_page_load.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</body>
 </html>

@@ -1,0 +1,23 @@
+<div id="user-details">
+
+    <div style="float: left;">
+      <a href=""> <img class="user-details-img" src="../static/anne/Pluudo_Notification_Red.png" alt=""> </a>
+    </div>
+
+    <div>
+
+      <p style="display: none;" id="sess_id">{{request.session.sess_id}}</p>
+      {% if profile.image %}
+      <img class="user-img " src="{{ profile.image.url }}" alt="profile pic"> <br>
+      {% else %}
+      <img class="user-img " src="" alt="profile pic"> <br>
+      {% endif %}
+      <span style="font-size: 100%;">@{{ request.session.session_username }}</span>
+
+    </div>
+
+   <div style="float: right;">
+     <img class="user-details-img"  id="profile-popup-show-child-2" src="../static/anne/121.png" alt="">
+   </div>
+
+  </div>

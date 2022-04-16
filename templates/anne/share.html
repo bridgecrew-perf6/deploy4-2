@@ -23,6 +23,20 @@
             background-color: white;
             display: none;
         }
+
+        #select-and-save-cluster-child-saved{
+            padding-top: 10vh;
+            padding-left: 10vh;
+            position: fixed;
+            top: 15vh;
+            bottom: 25vh;
+            height: 58vh;
+            left: 5vh;
+            right: 5vh;
+            border-radius: 2vh;
+            background-color: white;
+            display: none;
+        }
     </style>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,7 +56,7 @@
         #share-option-child{
             display: none;
             height: 35vh;
-            width: 15vh;
+            width: 12vh;
             text-align: center;
             align-content: center;
             background-color: white;
@@ -65,7 +79,7 @@
     </div>
 
 <style>
-    .select-and-save-cluster-sub-child{
+    .select-and-save-cluster-sub-child, .select-and-save-cluster-sub-child-create-cluster{
         box-shadow: 0 3px 10px rgb(0 0 0 / 40%);
         border-radius: 4vh;
         display: flex;
@@ -81,6 +95,17 @@
     }
 </style>
 
+        <div id="select-and-save-cluster-child-saved">
+
+            <h1>Record Saved</h1>
+            <div style="margin-top: 7vh; height: 7vh; float: left;">
+                <img class="create-cluster-img" src="../../static/anne/ok.png" alt="close">
+            </div>
+            
+                            
+        </div>   
+   
+
      <div id="select-and-save-cluster-child">
          <div style="height: 7vh; float: right;">
             <img class="create-cluster-img" src="../../static/anne/cancelpopup.png" alt="close">
@@ -90,22 +115,78 @@
             <br>
             <h2 style="text-align: center;">Select & Save in a Cluster</h2>
 
-            <div class="select-and-save-cluster-sub-child">
-                <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
-                <div>Make a new Cluster & Save</div>
+            <div class="select-and-save-cluster-sub-child-create-cluster">
+                <div>
+                    <input id="create-cluster" type="image" form="addClusterForm" class="create-cluster-img" src="../../static/anne/addioicn.png">
+                </div>
+
+                <div>
+                    <form id="addClusterForm">
+                        {% csrf_token %}
+                        <input type="text" id="clustername" placeholder="Make a new Cluster & Save">
+                    </form>
+                </div>
             </div>
 
-            <div class="select-and-save-cluster-sub-child">
+            <!-- <div class="select-and-save-cluster-sub-child">
                 <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
                 <div>Make a new Cluster & Save</div>
-            </div>
+            </div> -->
+            <div id="list_of_clusters">
+                {% for cluster in clusters %}
 
-            <div class="select-and-save-cluster-sub-child">
-                <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
-                <div>Make a new Cluster & Save</div>
+                <div name="{{cluster.id}}" onclick="addVideo(this)" class="select-and-save-cluster-sub-child">
+                  <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+                  <div>{{cluster.cluster_name}}</div>
+                </div>
+    
+                {% endfor %}
             </div>
-            
+           
+
+                        
         </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+        <script>
+
+            $(document).on('submit', '#addClusterForm', function(e) {
+            e.preventDefault();
+            var cluster_name = $('#clustername').val();
+            $.ajax({
+            type: 'POST',
+            url: 'http://kudos02.pythonanywhere.com/add-cluster/',
+            data: {
+                'cluster_name': cluster_name,
+                'cluster_hashtags': "#cars #songs",
+                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+            },
+            success:function(response) {
+                data = response.clusters;
+                $('#list_of_clusters').empty()
+                $('#addClusterForm').trigger("reset");
+                for(let i=0; i<data.length; i++){
+                    $('#list_of_clusters').append(
+                        `
+                        <div name="${data[i].id}" onclick="addVideo(this)" class="select-and-save-cluster-sub-child">
+                            <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+                            <div>${data[i].cluster_name}</div>
+                        </div>
+                        `
+                    )
+                    
+                }
+
+                document.getElementById("share-option-child").style.display = "none";
+                document.getElementById("share-parent").style.display = "none";
+                document.getElementById("select-and-save-cluster-child").style.display = "block";
+                document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
+                }
+            })
+        })
+
+            </script>
 
         <style>
             #share-parent{
@@ -195,7 +276,6 @@
                         }, true);
                     
                         document.execCommand('copy');  
-                        console.log('copied text : ', copyText);
                         alert('copied text: ' + copyText); 
                     });
     
@@ -213,21 +293,40 @@
         document.getElementById("share-option-child").style.display = "block";
         document.getElementById("select-and-save-cluster-child").style.display = "none";
         document.getElementById("share-parent").style.display = "none";
+        document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
     }
     function showSave(){
         document.getElementById("share-option-child").style.display = "none";
         document.getElementById("share-parent").style.display = "none";
         document.getElementById("select-and-save-cluster-child").style.display = "block";
+        document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
     }
     function showShare(){
         document.getElementById("share-option-child").style.display = "none";
         document.getElementById("select-and-save-cluster-child").style.display = "none";
         document.getElementById("share-parent").style.display = "block";
+        document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
     }
+      
 </script>
+
+<script>
+    function addVideo(get_id){
+      
+      document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
+      var v = get_id.getAttribute("name");
+      document.getElementById("cluster_id").value = v;
+      document.getElementById("add-video-save-btn").click();
+      document.getElementById("share-option-child").style.display = "none";
+      document.getElementById("share-parent").style.display = "none";
+      document.getElementById("select-and-save-cluster-child").style.display = "none";
+      document.getElementById("select-and-save-cluster-child-saved").style.display = "block";
+
+    }
+  </script>
+
 </body>
 </html>
-
 
 <!-- <!DOCTYPE html>
 <html lang="en">
@@ -369,7 +468,6 @@
                     }, true);
                 
                     document.execCommand('copy');  
-                    console.log('copied text : ', copyText);
                     alert('copied text: ' + copyText); 
                 });
 

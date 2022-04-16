@@ -1,0 +1,115 @@
+<script>
+
+let sh = document.querySelector("#profile-popup-show-child-1");
+sh.addEventListener("click", showProfile);
+function showProfile(){
+    let child2 = document.querySelector(".profile-popup-child2");
+    child2.classList.add("profile-popup-open-child2");
+    let parent = document.querySelector(".profile-popup-parent");
+    parent.classList.add("profile-popup-open");
+
+    var elems = document.getElementsByClassName('footer');
+    for (var i=0;i<elems.length;i++){
+        elems[i].style.display = 'none';
+    }
+    var sess_id = document.getElementById('sess_id').innerHTML;
+    
+    if(sess_id){
+
+    document.getElementById('settings').style.display = "none";
+    document.getElementById('set').style.display="none";
+
+    document.getElementById('add-profile-form').style.display = "none";
+    document.getElementById('add').style.display="none";
+    
+    document.getElementById('edit-profile-form').style.display = "block";
+    document.getElementById('edit').style.display="block";
+    }
+    else{
+      
+    document.getElementById('settings').style.display = "none";
+    document.getElementById('set').style.display="none";
+
+    document.getElementById('add-profile-form').style.display = "block";
+    document.getElementById('add').style.display="block";
+    
+    document.getElementById('edit-profile-form').style.display = "none";
+    document.getElementById('edit').style.display="none";
+  
+    }
+}
+
+
+let sih = document.querySelector("#profile-popup-show-child-1-settings");
+sih.addEventListener("click", showSettings);
+function showSettings(){
+    let child2 = document.querySelector(".profile-popup-child2");
+    child2.classList.add("profile-popup-open-child2");
+    let parent = document.querySelector(".profile-popup-parent");
+    parent.classList.add("profile-popup-open");
+
+    var elems = document.getElementsByClassName('footer');
+    for (var i=0;i<elems.length;i++){
+        elems[i].style.display = 'none';
+    }
+    var sess_id = document.getElementById('sess_id').innerHTML;
+    
+    document.getElementById('settings').style.display = "block";
+    document.getElementById('set').style.display="block";
+
+    document.getElementById('add-profile-form').style.display = "none";
+    document.getElementById('add').style.display="none";
+
+    document.getElementById('edit-profile-form').style.display = "none";
+    document.getElementById('edit').style.display="none";
+
+   
+}
+
+function hideProfile(){
+    let child2 = document.querySelector(".profile-popup-child2");
+    child2.classList.remove("profile-popup-open-child2");
+    let parent = document.querySelector(".profile-popup-parent");
+    parent.classList.remove("profile-popup-open");
+
+    var elems = document.getElementsByClassName('footer');
+    for (var i=0;i<elems.length;i++){
+        elems[i].style.display = 'block';
+    }
+}
+
+////
+///  manage profile options
+////
+
+let bt = document.querySelector("#profile-popup-show-child-2");
+bt.addEventListener("click", showProfileOptions);
+
+
+function showProfileOptions(){
+    let child1 = document.querySelector(".profile-popup-child1");
+    child1.classList.add("profile-popup-open-child1");
+    let parent = document.querySelector(".profile-popup-parent");
+    parent.classList.add("profile-popup-open");
+    
+    var elems = document.getElementsByClassName('footer');
+    for (var i=0;i<elems.length;i++){
+        elems[i].style.display = 'none';
+    }
+}
+
+function hideProfileOptions(){
+  let child1 = document.querySelector(".profile-popup-child1");
+  child1.classList.remove("profile-popup-open-child1");
+    let parent = document.querySelector(".profile-popup-parent");
+    parent.classList.remove("profile-popup-open");
+
+    var elems = document.getElementsByClassName('footer');
+    for (var i=0;i<elems.length;i++){
+        elems[i].style.display = 'block';
+    }
+}
+
+
+
+</script>

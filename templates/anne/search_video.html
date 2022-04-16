@@ -12,73 +12,9 @@
 <body onload="myFunction()">
 
 
-      <div class="popup2">
-
-        <div class="blocker2" onclick="hidePopup2()"></div>
+      
+        {% include "anne/add_video.html" %}
         
-        <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
-          <h2>Add a Video</h2>
-          <p>from vimeo, youtube or dailymotion</p> <br>
-
-          <div style="display: flex; margin: 5%">
-          
-            <input  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
-            <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
-
-          </div>
-
-          <!-- <input id="fetch-video-url" type="text" placeholder="please enter url"> <br> <br>
-          <input type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
-          <div> -->
-            <!-- <iframe width="420" height="315"
-            src="https://www.youtube.com/embed/tgbNymZ7vqY">
-            </iframe> -->
-            
-            <div id="video-details" style="opacity: 0;">
-              <br> <br>
-              <div>
-                <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
-              </div>
-            
-             <div>
-              <h4>Title</h4>
-              <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
-              <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
-                {% csrf_token %}
-                <input name="video_url" id="video_url" style="display: none;" type="text">
-                <input name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
-                <input name="video_title" id="video_title" style="display: none;" type="text">
-                <input name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
-          
-                <label for="sel1">Select cluster:</label>
-                  <select name="cluster_id" class="form-control">
-                    {% for cluster in clusters %}
-
-                    <option value="{{cluster.id}}">{{cluster.cluster_name}}</option>
-
-                    {% endfor %}
-                    
-                  </select>
-                <p id="clusterid">{{clusters.id}}</p>
-               
-                <input type="submit" onclick="addVideo()" value="save">
-
-                 
-
-                </form>
-              </div>
-          </div> 
-
-            <script>
-              function addVideo(){
-
-                document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
-                document.getElementById("cluster_id").value = document.getElementById("clusterid").innerHTML;
-
-              }
-            </script>
-            </div>
-          </div>
         </div>
      
       </div>

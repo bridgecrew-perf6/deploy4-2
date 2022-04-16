@@ -43,6 +43,7 @@ urlpatterns = [
     path('delete_videos/', views.deleteVideos, name = 'delete_videos'),  
     path('share_video/', views.shareVideo, name = 'share_video'),  
     # path('add-item/', views.addItem, name = 'add-item'), 
+    path('add-video-index/', views.addVideoIndex, name = 'add-video-index'),
     path('add-video/', views.addVideo, name = 'add-video'),
 
     path('reset_password/',

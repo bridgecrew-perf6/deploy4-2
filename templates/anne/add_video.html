@@ -1,0 +1,70 @@
+<style>
+      .create-cluster-img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<div class="popup2">
+
+  <div class="blocker2" onclick="hidePopup2()"></div>
+  
+  <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
+    <h2>Add a Video</h2>
+    <p>from vimeo, youtube or dailymotion</p> <br>
+
+    <div style="display: flex; margin: 5%">
+    
+      <input class="text-input"  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
+      <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
+
+    </div>
+      
+      <div id="video-details" style="opacity: 0;">
+        <br> <br>
+        <div>
+          <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
+        </div>
+      
+       <div>
+        <h4>Title</h4>
+        <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
+        <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
+          {% csrf_token %}
+          <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text">
+          <input class="text-input" name="video_description" id="video_description" style="display: none;" type="text">
+          <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
+          <input class="text-input" name="video_title" id="video_title" style="display: none;" type="text">
+          <input class="text-input" name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
+    
+          <input style="display: none;" type="text" id="cluster_id" name="cluster_id">
+          <h2 style="text-align: center;">Select & Save in a Cluster</h2>
+          {% for cluster in clusters %}
+
+            <div name="{{cluster.id}}" onclick="addVideo(this)" class="select-and-save-cluster-sub-child">
+              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+              <div>{{cluster.cluster_name}}</div>
+          </div>
+  
+            
+
+          {% endfor %}
+         
+          <input id="add-video-save-btn" style="display: none;" type="submit" class="btn-input" onclick="addVideo()" value="save">
+
+           
+
+          </form>
+        </div>
+    </div> 
+
+      <script>
+        function addVideo(get_id){
+          document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
+          var v = get_id.getAttribute("name");
+          document.getElementById("cluster_id").value = v;
+          document.getElementById("add-video-save-btn").click();
+
+        }
+      </script>
+      </div>
+    </div>

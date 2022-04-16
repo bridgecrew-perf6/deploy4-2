@@ -1,0 +1,362 @@
+  <link rel="stylesheet" href="../../static/share.css">
+  <link rel="stylesheet" href="../../static/popUp.css">
+ 
+  <link rel="stylesheet" href="../../static/styles.css">
+  <link rel="stylesheet" href="../../static/login.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    #select-and-save-cluster-child{
+        position: fixed;
+        top: 15vh;
+        bottom: 15vh;
+        height: 68vh;
+        left: 5vh;
+        right: 5vh;
+        border-radius: 2vh;
+        background-color: white;
+        display: none;
+    }
+
+    #select-and-save-cluster-child-saved{
+        padding-top: 10vh;
+        padding-left: 10vh;
+        position: fixed;
+        top: 15vh;
+        bottom: 25vh;
+        height: 58vh;
+        left: 5vh;
+        right: 5vh;
+        border-radius: 2vh;
+        background-color: white;
+        display: none;
+    }
+</style>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .share-option-img{
+        max-width: 100%;
+        max-height: 100%;
+        
+    }
+    #share-option-parent{
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+    }
+    #share-option-child{
+        display: none;
+        height: 35vh;
+        width: 12vh;
+        text-align: center;
+        align-content: center;
+        background-color: white;
+        border-radius: 15vh;
+    }
+    .share-option-child-img{
+        height: 33%;
+    }
+</style>
+<div id="select-save-share" style="display: none;">
+    
+    <div id="share-option-parent">
+        <div id="share-option-child">
+            <div class="share-option-child-img"> <img onclick="showSave()"  class="share-option-img" src="../../static/anne/SAVEPOPUP.png" alt="share"> </div>
+            <div class="share-option-child-img"> <img onclick="showShare()" class="share-option-img" src="../../static/anne/SHAREPOPUP.png" alt="share"> </div>
+            <div class="share-option-child-img"> <img onclick="descFuncHide()" class="share-option-img" src="../../static/anne/cancelpopup.png" alt="share"> </div>
+        </div>
+    </div>
+  
+    <style>
+        .select-and-save-cluster-sub-child, .select-and-save-cluster-sub-child-create-cluster{
+            box-shadow: 0 3px 10px rgb(0 0 0 / 40%);
+            border-radius: 4vh;
+            display: flex;
+            justify-content: space-between;
+            margin: 2vh;
+            height: 7vh;
+            padding: 1.5vh;
+        }
+    
+        .create-cluster-img{
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>  
+
+<div id="select-and-save-cluster-child-saved">
+
+    <h1>Record Saved</h1>
+    <div style="margin-top: 7vh; height: 7vh; float: left;">
+        <img class="create-cluster-img" src="../../static/anne/ok.png" onclick="hideAllPopups()" alt="close">
+    </div>
+    <script>
+        function hideAllPopups(){
+            document.getElementById("share-option-child").style.display = "none";
+    
+            document.getElementById("select-save-share-outer").style.display="block";
+            document.getElementById("select-save-share").style.display="none";
+        }
+        
+    </script>
+                    
+</div>   
+
+  
+     <div id="select-and-save-cluster-child" style="overflow-y: scroll;">
+         <div style="height: 7vh; float: right;">
+            <img onclick="descFuncHide()" class="create-cluster-img" src="../../static/anne/cancelpopup.png" alt="close">
+         </div>
+            
+            <br>
+            <br>
+            <h2 style="text-align: center;">Select & Save in a Cluster</h2>
+
+            <div class="select-and-save-cluster-sub-child-create-cluster">
+                <div>
+                    <input id="create-cluster" type="image" form="addClusterForm" class="create-cluster-img" src="../../static/anne/addioicn.png">
+                </div>
+
+                <div>
+                    <form id="addClusterForm">
+                        {% csrf_token %}
+                        <input required type="text" id="clustername" placeholder="Make a new Cluster & Save">
+                    </form>
+                </div>
+            </div>
+
+            <form id="addVideoForm">
+                {% csrf_token %}
+                <div id="list_of_clusters">
+                    {% for cluster in clusters %}
+                    <div style="display: none;" >
+                    
+                        <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text" value="">
+                        <input class="text-input" name="video_description" id="video_description" style="display: none;" type="text">
+                        <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
+                        <input class="text-input" name="video_title" id="video_title" style="display: none;" type="text">
+                        <input class="text-input" name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
+                        <input style="display: none;" type="text" id="cluster_id" name="cluster_id">
+                        
+                    </div>
+
+                    <div name="{{cluster.id}}" onclick="addVideo(this)" class="select-and-save-cluster-sub-child">
+                      <div><img style="border-radius: 50%;" class="create-cluster-img" src="{{cluster.video_set.all.0.video_thumbnail}}" alt="koi na"></div>
+                      <div>{{cluster.cluster_name}}</div>
+                    </div>
+                    <input id="add-video-save-btn" style="display: none;" type="submit" class="btn-input" value="save">
+      
+                    {% endfor %}
+                   
+                </div>
+                
+                 
+      
+                </form>
+        </div>
+  
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+        <script>
+
+            $(document).on('submit', '#addClusterForm', function(e) {
+            e.preventDefault();
+            var cluster_name = $('#clustername').val();
+            $.ajax({
+            type: 'POST',
+            url: 'http://kudos02.pythonanywhere.com/add-cluster/',
+            data: {
+                'cluster_name': cluster_name,
+                'cluster_hashtags': "#cars #songs",
+                csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+            },
+            success:function(response) {
+                data = response.clusters;
+                $('#list_of_clusters').empty()
+                $('#addClusterForm').trigger("reset");
+                for(let i=0; i<data.length; i++){
+                    $('#list_of_clusters').append(
+                        `
+                        <div name="${data[i].id}" onclick="addVideo(this)" class="select-and-save-cluster-sub-child">
+                            <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
+                            <div>${data[i].cluster_name}</div>
+                        </div>
+                        `
+                    )
+                    
+                }
+
+                document.getElementById("share-option-child").style.display = "none";
+                document.getElementById("share-parent").style.display = "none";
+                document.getElementById("select-and-save-cluster-child").style.display = "block";
+                document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
+                }
+            })
+        })
+
+            </script>
+        
+  
+        <div id="share-parent">
+  
+            <div id="share-child">
+              <div style="height: 7vh; float: right;">
+                <img onclick="descFuncHide()" class="create-cluster-img" src="../../static/anne/Cross2.png" alt="close">
+             </div>
+             <br> <br>
+                <h1>Share  Video</h1>
+                <div class="share-sub-child">
+                    <div class="share-sub-sub-child">
+                        
+                          <a id="change-facebook-url" href="" target="_blank" class="share-popup">
+                              <img class="share-img" src="../../static/anne/f.png" alt="">
+                         </a>
+    
+    
+                    </div>
+                    <div class="share-sub-sub-child">
+                        <a id="change-twitter-url" href="" target="_blank" class="share-popup">
+                            <img class="share-img" src="../../static/anne/t.png" alt="">
+                        </a>
+                    </div>
+                </div>
+    
+                <div class="share-sub-child">
+    
+                    <div class="share-sub-sub-child">
+                        <a id="change-whatsapp-url" href="" data-action="share/whatsapp/share">
+                            <img class="share-img" src="../../static/anne/w.png" alt="">
+                        </a>
+                    </div>
+                    <div class="share-sub-sub-child">
+                        
+                        <a id="change-copy-link-url" class="copy_text"  data-toggle="tooltip" title="Copy to Clipboard" href="">
+                            <img class="share-img" src="../../static/anne/c.png" alt="">
+                        </a>
+                    </div>
+    
+                </div>
+                
+                 
+            </div>
+    
+        </div>
+    </div>
+    
+     
+  <script>
+    function descFunc(clicked_object){
+      document.getElementById("select-save-share-outer").style.display="none";
+      document.getElementById("select-save-share").style.display="block";
+      var val = clicked_object.getAttribute('name');
+      showOptions();
+      document.getElementById("change-facebook-url").setAttribute("href", "http://www.facebook.com/sharer/sharer.php?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+      document.getElementById("change-twitter-url").setAttribute("href", "http://www.twitter.com/intent/tweet?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+      document.getElementById("change-whatsapp-url").setAttribute("href", "whatsapp://send?text=http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+      document.getElementById("change-copy-link-url").setAttribute("href", "http://kudos02.pythonanywhere.com/video-player?video_id=" + val);
+
+ 
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://kudos02.pythonanywhere.com/add-video-index/',
+                    data: {
+                        'video_id': val,
+                   },
+                success:function(response) {
+                    var video_ins = response.videos[0];
+             
+                    document.getElementById("video_url").value = video_ins.video_url;
+                    document.getElementById("video_title").value = video_ins.video_title;
+                    document.getElementById("video_description").value = video_ins.video_description;
+                    document.getElementById("video_thumbnail").value = video_ins.video_thumbnail;
+                    document.getElementById("video_platform_id").value = video_ins.video_platform_id;
+                
+                }
+            })
+
+
+    }
+
+  </script>
+  
+  <script>
+    function descFuncHide(){
+      document.getElementById("select-save-share-outer").style.display="block";
+      document.getElementById("select-save-share").style.display="none";
+    }
+  </script>
+
+  
+<script>
+    function addVideo(get_id){
+      document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
+      var v = get_id.getAttribute("name");
+      document.getElementById("cluster_id").value = v;
+      console.log("inside addvideo js fn");
+      document.getElementById("add-video-save-btn").click();
+    }
+  </script>
+
+
+<script>
+    $(document).on('click', '#add-video-save-btn', function(e) {
+        console.log("inside addvideo ajax fn");
+        console.log("inside addvideo ajax fn");
+      e.preventDefault();
+
+      $.ajax({
+        type: 'GET',
+        url: 'http://kudos02.pythonanywhere.com/add-video/',
+        data: {
+          'cluster_id': document.getElementById("cluster_id").value, 
+          'video_title': document.getElementById("video_title").value,
+          'video_description': document.getElementById("video_description").value,
+          'video_thumbnail': document.getElementById("video_thumbnail").value,
+          'video_platform_id': document.getElementById("video_platform_id").value,
+          'video_url': document.getElementById("video_url").value,
+         
+          csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+        },
+        success:function(response) {
+          $('#username_message').text(response.status)
+          console.log(response)
+        document.getElementById("share-option-child").style.display = "none";
+        document.getElementById("select-and-save-cluster-child").style.display = "none";
+        document.getElementById("share-parent").style.display = "none";
+        document.getElementById("select-and-save-cluster-child-saved").style.display = "block";
+        }
+      })
+    })
+</script>
+
+<script>
+    function showOptions(){
+        document.getElementById("share-option-child").style.display = "block";
+        document.getElementById("select-and-save-cluster-child").style.display = "none";
+        document.getElementById("share-parent").style.display = "none";
+        document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
+    }
+    function showSave(){
+        document.getElementById("share-option-child").style.display = "none";
+        document.getElementById("share-parent").style.display = "none";
+        document.getElementById("select-and-save-cluster-child").style.display = "block";
+        document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
+    }
+    function showShare(){
+        document.getElementById("share-option-child").style.display = "none";
+        document.getElementById("select-and-save-cluster-child").style.display = "none";
+        document.getElementById("share-parent").style.display = "block";
+        document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
+    }
+      
+</script>
+  
+<script src="../../static/share.js"></script>
+<script src="../../static/style.js"></script>
+<script src="../../static/popUp.js"></script> 
+<script src="../../static/fetchVideo.js"></script>
+<script src="../../static/back_page_load.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

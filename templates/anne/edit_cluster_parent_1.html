@@ -1,0 +1,58 @@
+<style>
+
+    .edit-cluster-img{
+        max-width:100%;
+        max-height:100%;
+    }
+    
+</style>
+
+<div class="edit-cluster-parent">
+    
+
+    <div class="edit-cluster-child">
+        <div>
+
+            <div id="edit-cluster-header">
+                <div class="my">
+                    <img class="edit-cluster-img" id="hide-editcluster-popup" src="../static/anne/BACKBUTTON.png" alt="">
+                </div>
+                <div class="my">
+                    
+                </div>
+                <div class="my">
+                  <input type="image" form="edit-cluster-form" class="edit-cluster-img" src="../static/anne/popupright.png">
+                    <!-- <img type="submit" form="addClusterForm" class="add-cluster-img" id="submit-btn-addcluster" src="../static/anne/Pluudo_Hide_Text.png" alt=""> -->
+                </div>
+            </div>
+           
+          
+               <form method="post" id="edit-cluster-form" action="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">
+                {% csrf_token %}
+
+                <h1>Edit Cluster</h1>
+
+                <div>
+                    <b>Cluster Name</b> <br>
+                    {{cluster_form.cluster_name}}
+                </div>
+    
+                
+                <div>
+                  <b>Description</b> <br> 
+                  {{cluster_form.cluster_desc}}
+                </div>
+            
+                <div>
+                  <b>Hash Tags</b> <br>
+                  {{cluster_form.cluster_hashtags}}
+                </div>
+                
+                <div>
+                  <a onclick="deleteCluster()" href="http://kudos02.pythonanywhere.com/delete-cluster?cluster_id={{cluster.id}}">Delete This Cluster</a>
+                </div>
+    
+              </form>
+        </div>
+    </div>
+</div>
