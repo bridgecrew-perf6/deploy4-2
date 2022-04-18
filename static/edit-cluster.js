@@ -12,10 +12,10 @@ let boolc = 1;
 // code to hide and show videos' description on click
 
 function hideDesc() {
-  let list = document.getElementsByClassName("video_desc");
+  let list = document.getElementsByClassName("video_description");
   for(var i=0; i<list.length; i++){
   if(boolc%2 == 0){
-  list[i].style.display = 'block';
+  list[i].style.display = 'flex';
   }
   else{
   list[i].style.display = 'none';

@@ -16,9 +16,6 @@
     display: none;
 }
 
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
         .share-option-img{
             max-width: 100%;
             max-height: 100%;
@@ -75,7 +72,7 @@
         #share-child{
             position: fixed;
             top: 20vh;
-            bottom: 20vh;
+            bottom: 22vh;
             left: 10vh;
             right: 10vh;
             background: white;
@@ -83,14 +80,14 @@
 
         .share-sub-child{
             display: flex;
-            padding: 2vh;
-            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .share-sub-sub-child{
-            height: 20vh;
-            padding: 2vh;
-        }  
+            text-align: center;
+            width: 30%;
+            margin: 2% 10%;
+        }
         
         .share-img{
             max-width: 100%;

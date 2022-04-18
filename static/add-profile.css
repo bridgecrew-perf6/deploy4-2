@@ -83,7 +83,7 @@ input:focus, textarea:focus, select:focus{
     padding: 1%;
    }
 
-  input{
+   .edit-input, .edit-input-div > input{
     padding: 2%;
     width: 78%;
     text-align: center;
@@ -91,7 +91,6 @@ input:focus, textarea:focus, select:focus{
     border-bottom-width: 1px;
   }
 
-  
 
   b{
       margin: 1vh;

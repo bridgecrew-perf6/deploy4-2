@@ -60,19 +60,19 @@
 
 .pluudo_mid_icons > img{ 
   object-fit: contain;
-  width: 12%;
+  width: 10vh;
   padding-left: 4%;
   padding-right: 4%;
 }
 
 .pluudo_icon > img { 
-  width: 12%;
+  width: 10vh;
   padding-right: 4%;
   padding-bottom: 3%;
   float:right;
 }
 .back_icon > img { 
-  width: 12%;
+  width: 10vh;
   padding-left: 4%;
   padding-bottom: 3%;
   float:left;

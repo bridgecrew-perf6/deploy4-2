@@ -366,6 +366,10 @@ def addVideo(request):
         cluster = models.Cluster.objects.get(id = cluster_id)
         video.cluster = cluster
         video.save()
+        print("add video func")
+        print("add video func")
+        print("add video func")
+        print("add video func")
         obj = cluster.video_set.all()
         
         return JsonResponse({'video':"video_saved"})

@@ -1,70 +1,284 @@
+
 <style>
-      .create-cluster-img{
-        max-width: 100%;
-        max-height: 100%;
+  .create-cluster-img_av{
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
+}
+
+.select-and-save-cluster-sub-child{
+        box-shadow: 0 3px 10px rgb(0 0 0 / 40%);
+        border-radius: 4vh;
+        display: flex;
+        justify-content: space-between;
+        margin: 2vh;
+        height: 7vh;
+        padding: 1.5vh;
     }
+
 </style>
 <div class="popup2">
 
-  <div class="blocker2" onclick="hidePopup2()"></div>
-  
-  <div class="contents2" style="overflow: scroll; overflow-x: hidden;">
-    <h2>Add a Video</h2>
-    <p>from vimeo, youtube or dailymotion</p> <br>
+<div class="blocker2" onclick="hidePopup2()"></div>
 
-    <div style="display: flex; margin: 5%">
-    
-      <input class="text-input"  required id="fetch-video-url" type="text" placeholder="Paste a valid url">
-      <input  type="button" onclick="fetchVideo()" name="" id="fetch-video" value="Search">
+<div class="contents2" style="overflow: scroll; overflow-x: hidden; border-radius: 2vh;">
+<h2>Add a Video</h2>
+<p>from Youtube, Vimeo, Dailymotion</p> <br>
 
+<form id="searchVideoForm">
+  <div style="border: 1px solid; border-radius: 2vh; display: flex; justify-content: space-between; margin-left: 5%; margin-right: 5%;">
+
+    <div>
+        <input style="border: none;" class="text-input" required id="fetch-video-url" type="text" placeholder="Paste a valid url">
     </div>
-      
-      <div id="video-details" style="opacity: 0;">
-        <br> <br>
-        <div>
-          <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="fetch-video-thumbnail" width="70%">
-        </div>
-      
-       <div>
-        <h4>Title</h4>
-        <p style="margin-left: 17%; margin-right: 17%;" id="video-title"></p><br>
-        <form action="http://kudos02.pythonanywhere.com/add-video/" method="get">
-          {% csrf_token %}
-          <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text">
-          <input class="text-input" name="video_description" id="video_description" style="display: none;" type="text">
-          <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
-          <input class="text-input" name="video_title" id="video_title" style="display: none;" type="text">
-          <input class="text-input" name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
+
+    <div style="background-color: grey; border: 1px solid; border-radius: 2vh; padding: 0.8vh;">
+        <input  style="border: none; background-color: grey" type="submit" name="" id="fetch-video" value="Search">
+    </div>
     
-          <input style="display: none;" type="text" id="cluster_id" name="cluster_id">
-          <h2 style="text-align: center;">Select & Save in a Cluster</h2>
+  </div>
+</form>
+  
+  <div id="video-details" style="opacity: 0;">
+    <br> <br>
+    <div>
+      <img style="width: 250px; border-radius: 7%;" src="" class="thumbs" alt="" width="70%">
+    </div>
+  
+   <div>
+    <h4>Title</h4>
+    <form id="addVideoForm_av">
+      {% csrf_token %}
+      <input class="text-input" name="video_url" id="video_url" style="display: none;" type="text">
+      <input class="text-input" name="video_description" id="video_description" style="display: none;" type="text">
+      <input class="text-input" name="video_thumbnail" id="video_thumbnail" style="display: none;" type="text">
+      <input class="text-input" name="video_title" id="video-title" type="text">
+      <input class="text-input" name="video_platform_id" id="video_platform_id" style="display: none;" type="text">
+
+      <input style="display: none;" type="text" id="cluster_id" name="cluster_id">
+      
+
+      <input id="add-video-save-btn_av" style="display: none;" type="submit" class="btn-input" value="save">
+
+
+      </form>
+      
+      <div id="response_error" style="display: none;">
+
+      <h2 style="text-align: center;">Select & Save in a Cluster</h2>
+
+        <div class="select-and-save-cluster-sub-child">
+            <div>
+                <input type="image" form="addClusterForm_av" class="create-cluster-img_av" src="../../static/anne/addioicn.png">
+            </div>
+
+            <div>
+                <form id="addClusterForm_av">
+                    {% csrf_token %}
+                    <input required type="text" id="clustername_av" placeholder="Make a new Cluster & Save">
+                </form>
+            </div>
+        </div>
+
+        <div id="list_of_clusters_av">
+                
           {% for cluster in clusters %}
 
-            <div name="{{cluster.id}}" onclick="addVideo(this)" class="select-and-save-cluster-sub-child">
-              <div><img class="create-cluster-img" src="../../static/anne/addioicn.png" alt="koi na"></div>
-              <div>{{cluster.cluster_name}}</div>
-          </div>
-  
+          <div name="{{cluster.id}}" onclick="addVideo_av(this)" class="select-and-save-cluster-sub-child">
             
+            <div><img class="create-cluster-img_av" src="{{cluster.video_set.all.0.video_thumbnail}}" alt=" "></div>
+            <div>{{cluster.cluster_name}}</div>
+
+          </div>
 
           {% endfor %}
          
-          <input id="add-video-save-btn" style="display: none;" type="submit" class="btn-input" onclick="addVideo()" value="save">
+          </div>
 
-           
-
-          </form>
-        </div>
-    </div> 
-
-      <script>
-        function addVideo(get_id){
-          document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
-          var v = get_id.getAttribute("name");
-          document.getElementById("cluster_id").value = v;
-          document.getElementById("add-video-save-btn").click();
-
-        }
-      </script>
-      </div>
     </div>
+
+      </div>
+
+</div> 
+
+  <script>
+    function addVideo_av(get_id){
+      document.getElementById("video_url").value = document.getElementById("fetch-video-url").value;
+      var v = get_id.getAttribute("name");
+      document.getElementById("cluster_id").value = v;
+      document.getElementById("add-video-save-btn_av").click();
+
+    }
+  </script>
+  </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+
+    $(document).on('submit', '#addClusterForm_av', function(e) {
+    e.preventDefault();
+    
+    var cluster_name = $('#clustername_av').val();
+    $.ajax({
+    type: 'POST',
+    url: 'http://kudos02.pythonanywhere.com/add-cluster/',
+    data: {
+        'cluster_name': cluster_name,
+        'cluster_hashtags': "#cars #songs",
+        csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+    },
+    success:function(response) {
+        data = response.clusters;
+        $('#list_of_clusters_av').empty()
+        $('#addClusterForm_av').trigger("reset");
+        for(let i=0; i<data.length; i++){
+            $('#list_of_clusters_av').append(
+                `
+                <div name="${data[i].id}" onclick="addVideo_av(this)" class="select-and-save-cluster-sub-child">
+                    <div><img class="create-cluster-img_av" src="../../static/anne/addioicn.png" alt=" "></div>
+                    <div>${data[i].cluster_name}</div>
+                </div>
+                `
+            )
+            
+        }
+
+            // document.getElementById("share-option-child").style.display = "none";
+            // document.getElementById("share-parent").style.display = "none";
+            // document.getElementById("select-and-save-cluster-child").style.display = "block";
+            // document.getElementById("select-and-save-cluster-child-saved").style.display = "none";
+
+         }
+    })
+})
+
+    </script>
+
+
+<script>
+$(document).on('submit', '#searchVideoForm', function(e) {
+
+e.preventDefault();
+document.getElementById("video-details").style.opacity = 1;
+let str = String(document.getElementById("fetch-video-url").value);
+if(str.includes("youtu.be")){
+
+let url1 = str.substr(17);
+let src = document.getElementsByClassName("thumbs").src;
+document.getElementsByClassName("thumbs").src = str;
+let s1 = "https://www.youtube.com/embed/".concat(url1);
+src = document.getElementsByClassName("thumbs").src = s1;
+let url2 = "https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA6VX3z31ObjBXhbr0JYMwfuftGGqivgaY&part=snippet&id=";
+let url = url2.concat(url1);
+
+fetch(url).then((response) => {
+ return response.json();
+}).then((data) => {
+ if(data.items[0]){
+ document.getElementById("response_error").style.display = "block";
+ console.log(data.items[0].snippet.description);
+ console.log(data.items[0].snippet.description);
+ console.log(data.items[0].snippet.description);
+ document.getElementById("video-title").value = data.items[0].snippet.title;
+ // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
+ $(".thumbs").attr('src', data.items[0].snippet.thumbnails.high.url)
+ 
+ document.getElementById("video_description").value = data.items[0].snippet.description;
+ document.getElementById("video_title").value = data.items[0].snippet.title;
+ document.getElementById("video_thumbnail").value = data.items[0].snippet.thumbnails.high.url;
+ document.getElementById("video_platform_id").value = url1;
+ }
+ else{
+    document.getElementById("response_error").style.display = "none";
+ }
+console.log(data.items[0].snippet.description);
+console.log(data.items[0].snippet.description);
+ console.log(data.items[0].snippet.description);
+ document.getElementById("video-title").value = data.items[0].snippet.title;
+ // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
+ $(".thumbs").attr('src', data.items[0].snippet.thumbnails.high.url)
+ 
+ document.getElementById("video_description").value = data.items[0].snippet.description;
+ document.getElementById("video_title").value = data.items[0].snippet.title;
+ document.getElementById("video_thumbnail").value = data.items[0].snippet.thumbnails.high.url;
+ document.getElementById("video_platform_id").value = url1;
+})
+
+}
+else if(str.includes("dailymotion")){
+let url1 = str.substr(34);
+let url2 = "https://api.dailymotion.com/video/"
+let url = url2.concat(url1);
+fetch(url).then((response) => {
+ return response.json();
+}).then((data) => {
+ document.getElementById("video-title").value = data.title;
+ // document.getElementById("video-desc").innerHTML = data.items[0].snippet.description;
+ $(".thumbs").attr('src', 'https://dailymotion.com/thumbnail/video/' + url1);
+ 
+ document.getElementById("video_title").value = data.title;
+ document.getElementById("video_thumbnail").value = 'https://dailymotion.com/thumbnail/video/' + url1;
+ document.getElementById("video_platform_id").value = url1;
+
+})
+}
+else {
+ let id = str.substr(18);
+ $.getJSON('https://vimeo.com/api/oembed.json?url=https://vimeo.com/' + id, {format: "json"}, function(data) {
+
+   if(data.thumbnail_url){
+    $(".thumbs").attr('src', data.thumbnail_url)
+    document.getElementById("video-title").value = data.title;
+    document.getElementById("video_title").value = data.title;
+    document.getElementById("video_thumbnail").value = data.thumbnail_url;
+    document.getElementById("video_platform_id").value = id;
+   }
+   
+ else{
+    document.getElementById("response_error").style.display = "none";
+ }
+ });
+}
+
+});
+
+</script>
+
+
+
+<script>
+  $(document).on('submit', '#addVideoForm_av', function(e) {
+      console.log("savhfjwdhysfwdigfw")
+      console.log("savhfjwdhysfwdigfw")
+      console.log("savhfjwdhysfwdigfw")
+      console.log("savhfjwdhysfwdigfw")
+    e.preventDefault();
+
+    $.ajax({
+      type: 'GET',
+      url: 'http://kudos02.pythonanywhere.com/add-video/',
+      data: {
+        'cluster_id': document.getElementById("cluster_id").value, 
+        'video_title': document.getElementById("video_title").value,
+        'video_description': document.getElementById("video_description").value,
+        'video_thumbnail': document.getElementById("video_thumbnail").value,
+        'video_platform_id': document.getElementById("video_platform_id").value,
+        'video_url': document.getElementById("video_url").value,
+       
+        csrfmiddlewaretoken: $('input[name = csrfmiddlewaretoken]').val(),
+      },
+      success:function(response) {
+        console.log("asfuhcdashgovdshgaman")
+        console.log("asfuhcdashgovdshgaman")
+        console.log("asfuhcdashgovdshgaman")
+        console.log("asfuhcdashgovdshgaman")
+        $('#username_message').text(response.status)
+        console.log(response)
+        document.getElementById("contents2").style.display = "none";
+      // document.getElementById("select-and-save-cluster-child").style.display = "none";
+      }
+    })
+  })
+</script>

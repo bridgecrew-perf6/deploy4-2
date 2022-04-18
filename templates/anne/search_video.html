@@ -8,60 +8,41 @@
   <title>pluudo.com</title>
   <link rel="stylesheet" href="../../static/popUp.css">
   <link rel="stylesheet" href="../../static/styles.css">
+  <style>
+    #main{
+      padding: 2vh;
+      display: flex;
+      height: 8vh;
+      justify-content: space-between;
+    }
+    #searchForm input:focus, textarea:focus, select:focus{
+      outline: none;
+    }
+    #searchForm input{
+      border: none;
+      font-size: large;
+    }
+    .search-img{
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+  </style>
 </head>
-<body onload="myFunction()">
+
+<body>
+
+  {% include "anne/add_video.html" %}
+  
+  <div id="select-save-share-outer">
 
 
-      
-        {% include "anne/add_video.html" %}
-        
-        </div>
-     
-      </div>
 
 
-      <style>
-        #main{
-          padding: 2vh;
-          display: flex;
-          height: 8vh;
-          justify-content: space-between;
-        }
-        #searchForm input:focus, textarea:focus, select:focus{
-          outline: none;
-        }
-        #searchForm input{
-          border: none;
-          font-size: large;
-        }
-        .search-img{
-          max-width: 100%;
-          max-height: 100%;
-        }
-    
-      </style>
-        <div id="search-page">
-          <div id="main">
-    
-            <div>
-              <a onclick="unMySearch()" href="#">
-                <img class="search-img" src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-              </a>
-            </div>
-    
-            <div>
-              <form id="searchForm" action="http://kudos02.pythonanywhere.com/search-video" method="post">
-                {% csrf_token %}
-                {{form}}
-                <!-- <input src="../static/anne/Pluudo_Search.png" type="image" name="" > -->
-              </form>
-            </div>
-            
-            <div>
-              <input form="searchForm" class="search-img" src="../static/anne/Pluudo_Search.png" type="image" name="" >
-            </div>
-          </div>
-        </div>
+  {% include "anne/search_page.html" %}
+
+
+  {% include "anne/edit_cluster_parent_2.html" %}
  
     <div id="main-page">
 
@@ -70,7 +51,7 @@
           <img src="../static/anne/logo.png" alt="Pluudo_logo">
         </a>
         
-        <a class="show_hide_desc" onclick="hide()">
+        <a class="show_hide_desc" onclick="hideDesc()">
          <img src="../static/anne/Pluudo_Show_Text.png" alt="videos_description">
        </a>
      </div>
@@ -81,63 +62,47 @@
 
        <br><br>
     
-    <div class="">
-      {% for i in Videos %}
-        <div class="videos_list">
-          <div style="width: 100%; height: auto">
-
-            <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-              <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
-            </a>
-            
-          </div>
-          <div class="video_description">
-          {{i.video_owner}} 
-              <br>
-          {{i.video_title}}
-          </div>
-          <br> <br> 
-        </div>  
-      {% endfor %}
-      </div>
-
-        <div class="footer">
-          <div class="footer_dimensions">
-
-            <div class="footer_dimensions">
-
-              <a onclick="mySearch()" class="pluudo_mid_icons" id="search_icon">
-                <img src="../static/anne/Pluudo_Search.png" alt="Pluudo_Search_icon">
+       <div class="">
+        {% for i in Videos %}
+          <div class="videos_list" style="margin: 4vh;">
+            <div>
+    
+              <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+                <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
               </a>
-               <a onclick="showPopup2()" class="pluudo_mid_icons">
-                  <img src="../static/anne/Pluudo_Add_Video.png" alt="Pluudo_Search_icon">
-                </a>
-               
-                <a class="pluudo_mid_icons" href="http://kudos02.pythonanywhere.com/view-profile">
-                  <img src="../static/anne/Pluudo_Profile.png" alt="Pluudo_Profile_icon">
-                </a>
               
             </div>
-
-          </div>
-          <div>
-            <!-- <a class="back_icon" href="#">
-              <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-            </a> -->
-            <a onclick="history.back()" class="back_icon" href="#">
-              <img src="../static/anne/BACKBUTTON.png" alt="Pluudo_Home">
-            </a>
-            <a class="pluudo_icon" href="http://kudos02.pythonanywhere.com/">
-              <img src="../static/anne/Pluudo_Home.png" alt="Pluudo_Home">
-            </a>
-          </div>
+            <div class="video_description" style="text-align: justify; height: 7vh; display: flex; justify-content: space-between; margin: 1vh;">
+              <div style="font-size: 2vh;">
+                {{i.video_title}} <br>
+                {{i.video_owner}}
+              </div>
+    
+              <div>
+                <img onclick="descFunc(this)" name="{{i.id}}" style="height: 5vh; " src="../../static/anne/icon6.png" alt="">
+              </div>
+            </div>
+    
+          </div>  
+        {% endfor %}
         </div>
-      </div>  
-    </div>
-</body>
-<script src="../../static/style.js"></script>
-<script src="../../static/popUp.js"></script> 
-<script src="../../static/fetchVideo.js"></script>
-<script src="../../static/back_page_load.js"></script>
-</html>
 
+      {% include "anne/footer.html" %}
+            </div>  
+          </div>
+          
+      </div>
+      
+      {% include "anne/share_save.html" %}
+      
+      </body>
+      <script src="../../static/style.js"></script>
+      <script src="../../static/popUp.js"></script> 
+      <script src="../../static/edit-cluster.js"></script>
+      <script src="../../static/fetchVideo.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <script src="../../static/back_page_load.js"></script>
+      <script></script>
+      </html>
+      
+      

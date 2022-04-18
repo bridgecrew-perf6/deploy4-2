@@ -47,12 +47,6 @@
 
     {% include "anne/add_cluster_parent.html" %}
     
-      <!-- <form id="addClusterForm">
-        {% csrf_token %}
-      <input type="text" id="clustername" placeholder="Make a Cluster & Save">
-      
-      </form> -->
-      
       <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
   
     <div>
@@ -82,9 +76,19 @@
       
           
           <div class="cluster">
+
+            {% if not cluster.video_set.all.0.video_thumbnail %}
+              <div style="margin-left: 12.5%; border: 1px solid; width: 70%; height: 52%; text-align: left;">
+                <a style="z-index: -20000;" href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">
+                  <img style="z-index: -2;" src="{{cluster.video_set.all.0.video_thumbnail}}" alt=" ">
+                </a>
+              </div>
+            {% else %}  
             <a style="z-index: -20000;" href="http://kudos02.pythonanywhere.com/cluster/?cluster_id={{cluster.id}}">
               <img style="z-index: -2;" class="cluster-img" src="{{cluster.video_set.all.0.video_thumbnail}}" alt="{{cluster.id}}">
             </a>
+            {% endif %}
+            
             <p><b>{{cluster.cluster_name}}</b></p>
             <p>{{cluster.video_set.all.count}}</p>
         </div>
@@ -141,16 +145,6 @@
 {% include "anne/JS_for_profile.html" %}
 
 <script src="../../static/back_page_load.js"></script>
-
-<!-- https://stackoverflow.com/questions/8556933/screen-styling-when-virtual-keyboard-is-active -->
-
-<script type="text/javascript">
-  var isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1; //&& ua.indexOf("mobile");
-  if(isAndroid) {
-      document.write('<meta name="viewport" content="width=device-width,height='+window.innerHeight+', initial-scale=1.0">');
-  }
-  </script> 
-
 </body>
 
 </html>

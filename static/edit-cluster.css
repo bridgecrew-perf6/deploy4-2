@@ -63,7 +63,6 @@ input:focus, textarea:focus, select:focus{
    } */
 
   input{
-    padding: 2%;
     width: 78%;
     text-align: center;
     border: none;
