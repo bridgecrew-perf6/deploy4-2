@@ -6,7 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pluudo.com</title>
-  <link rel="stylesheet" href="../../static/edit-cluster.css">
   <link rel="stylesheet" href="../../static/popUp.css">
   <link rel="stylesheet" href="../../static/styles.css">
   <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
@@ -135,9 +134,9 @@
       allow="autoplay"
     ></iframe>
   </div>
-  <div class="video_description">
+  <div class="video_player_description">
     <span><a href="{{my_video.video_url}}">SEE ON VIMEO.COM</a></span>
-    <h2>{{my_video.video_title}}</h2>
+    {{my_video.video_title}}
     <br>
     {{my_video.video_owner}} 
     <br>
@@ -159,14 +158,28 @@
       allow="autoplay"
     ></iframe>
   </div>
-  <div class="video_description">
-    <span><a href="{{my_video.video_url}}">SEE ON YOUTUBE.COM</a></span>
-    <h2>{{my_video.video_title}}</h2>
-    <br>
-    {{my_video.video_owner}} 
-    <br>
+  <div class="video_player_description">
+    <span style="font-size: 1.5vh; display: block; padding: 1vh;">
+      <a href="{{my_video.video_url}}">SEE ON YOUTUBE.COM</a>
+    </span>
     
-    <img src="{{my_video.video_owner_thumbnail}}" alt="owner">
+    <span style="font-size: 3vh; display: block; padding: 4vh;">
+      {{my_video.video_title}}
+    </span>
+    
+    <div>
+      <img src="{{my_video.video_owner_thumbnail}}" alt="owner">
+    </div>
+
+    <div>
+
+      <a href="http://kudos02.pythonanywhere.com/view-public-profile?handle={{my_video.video_owner}}">
+        {{my_video.video_owner}}
+      </a>
+      
+    </div>
+    
+    <br>
   </div>
   {% endif %}
 
@@ -176,7 +189,7 @@
   #heading-desc{
           padding-right: 7vw;
           display: flex;
-          height: 12vh;
+          height: 7vh;
           justify-content: space-between;
         }
 </style>
@@ -187,7 +200,7 @@
     </div>
 
     <div>
-      <h1>Similar Videos</h1>
+      <span style="font-size: 5vh; margin-top: 1vh;">Similar</span>
     </div>
 
     <div >
@@ -225,6 +238,7 @@
     });
 
 </script>
+<script src="../../static/universal.js"></script>
 <script src="../../static/style.js"></script>
 <script src="../../static/popUp.js"></script> 
 <script src="../../static/edit-cluster.js"></script>
@@ -232,16 +246,6 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../../static/back_page_load.js"></script>
 <script></script>
-
-<!-- https://stackoverflow.com/questions/8556933/screen-styling-when-virtual-keyboard-is-active -->
-
-<script type="text/javascript">
-  var isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1; //&& ua.indexOf("mobile");
-  if(isAndroid) {
-      document.write('<meta name="viewport" content="width=device-width,height='+window.innerHeight+', initial-scale=1.0">');
-  }
-  </script> 
-
 </body>
 </html>
 
