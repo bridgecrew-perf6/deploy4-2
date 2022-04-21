@@ -159,19 +159,20 @@
     ></iframe>
   </div>
   <div class="video_player_description">
-    <span style="font-size: 1vh; padding: 1vh;">
+    <span style="font-size: 1.5vh; padding: 1vh;">
       <a href="{{my_video.video_url}}">SEE ON YOUTUBE.COM</a>
     </span>
     <br>
-    <span style="font-size: 2.5vh; padding: 4vh;">
+    <br>
+    <div style="font-size: 2.5vh; padding: 4vh;">
       {{my_video.video_title}}
-    </span>
-    <br> <br>
+    </div>
+
     <p onclick="showDescAndHideDesc()" id="my_div">More</p>
     <br>
-    <span style="font-size: 2vh; padding: 4vh; display: none;" id="myDIV">
+    <div style="font-size: 2vh; display: none;" id="myDIV">
       {{my_video.video_description}}
-    </span>
+    </div>
     
     <div>
       <img src="{{my_video.video_owner_thumbnail}}" alt="owner">
