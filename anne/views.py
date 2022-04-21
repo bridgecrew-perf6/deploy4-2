@@ -1,3 +1,6 @@
+from django.core import paginator
+from django.template.loader import render_to_string
+
 import urllib
 import json
 from django.http import JsonResponse
@@ -128,6 +131,37 @@ def userLogout(request):
     return HttpResponseRedirect('http://kudos02.pythonanywhere.com/login/')
 
 
+# def searchUser(request):
+
+#     if 'how_many_visits' in request.session:
+#         request.session['how_many_visits'] += 1
+
+#     else:
+#         request.session.setdefault('how_many_visits', 1)
+        
+#     form = SearchVideoForm()
+#     authform = LoginForm()
+#     registerform = RegisterForm()
+#     cluster_form = ClusterForm()
+#     obj = list(models.Video.objects.all())
+
+#     if(len(obj)/5 <= request.session['how_many_visits']):
+#         request.session['how_many_visits'] = 1
+
+#     obj = obj[5 * (request.session['how_many_visits'] - 1) : 5 * request.session['how_many_visits'] ]
+#     site_d = models.SiteDesc.objects.all()
+#     if 'session_username' in request.session:
+#         user = models.CustomUser.objects.get(username = request.session['session_username'])
+#         clusters = models.Cluster.objects.filter(user = user)
+#         #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
+#         return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_video_form':AddVideoForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form, 'clusters': clusters})
+#     else:
+#         #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
+#         return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_video_form':AddVideoForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form})
+
+
+NEWS_COUNT_PER_PAGE = 3
+
 def searchUser(request):
 
     if 'how_many_visits' in request.session:
@@ -135,38 +169,166 @@ def searchUser(request):
 
     else:
         request.session.setdefault('how_many_visits', 1)
-        
+
+    page = int(request.GET.get('page', 1))   
     form = SearchVideoForm()
     authform = LoginForm()
     registerform = RegisterForm()
     cluster_form = ClusterForm()
     obj = list(models.Video.objects.all())
 
-    if(len(obj)/5 <= request.session['how_many_visits']):
-        request.session['how_many_visits'] = 1
 
-    obj = obj[5 * (request.session['how_many_visits'] - 1) : 5 * request.session['how_many_visits'] ]
-    site_d = models.SiteDesc.objects.all()
-    if 'session_username' in request.session:
-        user = models.CustomUser.objects.get(username = request.session['session_username'])
-        clusters = models.Cluster.objects.filter(user = user)
-        #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_video_form':AddVideoForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form, 'clusters': clusters})
-    else:
-        #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
-        return render(request,'anne/index.html', {'cluster_form':cluster_form, 'add_video_form':AddVideoForm, 'authform':authform, 'registerform':registerform, 'obj':obj, 'form': form})
+    # if(len(obj)/5 <= request.session['how_many_visits']):
+    #     request.session['how_many_visits'] = 1
+
+    # obj = obj[5 * (request.session['how_many_visits'] - 1) : 5 * request.session['how_many_visits'] ]
     
+    p = paginator.Paginator(obj,
+                            NEWS_COUNT_PER_PAGE)
+    print(p)                        
+    site_d = models.SiteDesc.objects.all()
+    try:
+        post_page = p.page(page)
+    except paginator.EmptyPage:
+        post_page = paginator.Page([], page, p)
+
+    if not request.is_ajax():
+        print("not ajax call ajax call")
+        print("not ajax call ajax call")
+        print("not ajax call ajax call")
+        print("not ajax call ajax call")
+        
+        if 'session_username' in request.session:
+            user = models.CustomUser.objects.get(username = request.session['session_username'])
+            clusters = models.Cluster.objects.filter(user = user)
+            context = {
+              'obj': post_page,
+              'cluster_form':cluster_form,
+              'add_video_form':AddVideoForm,
+              'authform':authform,
+              'registerform':registerform,
+              'form': form,
+              'clusters': clusters,
+              }
+            
+            #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
+            return render(request,'anne/index.html', context)
+            
+        else:
+            context = {
+              'obj': post_page,
+              'cluster_form':cluster_form,
+              'add_video_form':AddVideoForm,
+              'authform':authform,
+              'registerform':registerform,
+              'form': form,
+              }
+            #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
+            return render(request,'anne/index.html', context)
+                  
+    else:
+        print("ajax call ajax call")
+        print("ajax call ajax call")
+        print("ajax call ajax call")
+        print("ajax call ajax call")
+        content = ''
+        for post in post_page:
+            content += render_to_string('anne/post.html',
+                                        {'i': post},
+                                        request=request)
+        return JsonResponse({
+            "content": content,
+            "end_pagination": True if page >= p.num_pages else False,
+        })
 
 
 def videoPlayer(request):
-    clusters = models.Cluster.objects.all()
-    obj = models.Video.objects.all()
     video_id = request.GET['video_id']
     video = models.Video.objects.get(id=video_id)
-    for p in models.Profile.objects.all():
-        if video.cluster.user == p.user:
-            return render(request, 'anne/video_player.html', {'profile_pic':p.image, 'obj':obj, 'my_video':video, 'clusters':clusters, 'add_video_form':AddVideoForm, 'form' : SearchVideoForm()})
-    return render(request, 'anne/video_player.html', {'obj':obj, 'my_video':video, 'clusters':clusters, 'add_video_form':AddVideoForm, 'form' : SearchVideoForm()})
+    page = int(request.GET.get('page', 1))   
+    form = SearchVideoForm()
+    authform = LoginForm()
+    registerform = RegisterForm()
+    cluster_form = ClusterForm()
+    obj = list(models.Video.objects.all())
+
+
+    # if(len(obj)/5 <= request.session['how_many_visits']):
+    #     request.session['how_many_visits'] = 1
+
+    # obj = obj[5 * (request.session['how_many_visits'] - 1) : 5 * request.session['how_many_visits'] ]
+    
+    p = paginator.Paginator(obj,
+                            NEWS_COUNT_PER_PAGE)
+    print(p)                        
+    site_d = models.SiteDesc.objects.all()
+    try:
+        post_page = p.page(page)
+    except paginator.EmptyPage:
+        post_page = paginator.Page([], page, p)
+
+    if not request.is_ajax():
+        print("not ajax call ajax call")
+        print("not ajax call ajax call")
+        print("not ajax call ajax call")
+        print("not ajax call ajax call")
+        
+        if 'session_username' in request.session:
+            user = models.CustomUser.objects.get(username = request.session['session_username'])
+            clusters = models.Cluster.objects.filter(user = user)
+            context = {
+              'video_id': video_id,  
+              'obj': post_page,
+              'cluster_form':cluster_form,
+              'add_video_form':AddVideoForm,
+              'form': form,
+              'form' : SearchVideoForm(),
+              'clusters': clusters,
+              'my_video': video,
+              }
+            
+            #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
+            return render(request,'anne/video_player.html', context)
+            
+        else:
+            context = {
+              'video_id': video_id,
+              'obj': post_page,
+              'cluster_form':cluster_form,
+              'add_video_form':AddVideoForm,
+              'form' : SearchVideoForm(),
+              'form': form,
+              'my_video': video,
+              }
+            #return render(request,'anne/index.html', {'authform':authform, 'registerform':registerform,'obj':obj, 'site_des':set(site_d), 'form': form})
+            return render(request,'anne/video_player.html', context)
+                  
+    else:
+        print("ajax call ajax call")
+        print("ajax call ajax call")
+        print("ajax call ajax call")
+        print("ajax call ajax call")
+        content = ''
+        for post in post_page:
+            content += render_to_string('anne/post.html',
+                                        {'i': post},
+                                        request=request)
+        return JsonResponse({
+            "content": content,
+            "end_pagination": True if page >= p.num_pages else False,
+        })
+
+
+# def videoPlayer(request):
+#     clusters = models.Cluster.objects.all()
+#     obj = models.Video.objects.all()
+#     video_id = request.GET['video_id']
+#     video = models.Video.objects.get(id=video_id)
+#     for p in models.Profile.objects.all():
+#         if video.cluster.user == p.user:
+#             return render(request, 'anne/video_player.html', {'profile_pic':p.image, 'obj':obj, 'my_video':video, 'clusters':clusters, 'add_video_form':AddVideoForm, 'form' : SearchVideoForm()})
+#     return render(request, 'anne/video_player.html', {'video_id': video_id, 'obj':obj, 'my_video':video, 'clusters':clusters, 'add_video_form':AddVideoForm, 'form' : SearchVideoForm()})
+           
 
 def searchVideo(request):
     if request.method=='POST':
@@ -360,6 +522,7 @@ def addVideo(request):
         video = models.Video()
         video.video_platform_id = request.GET['video_platform_id']
         video.video_title = request.GET['video_title']
+        video.video_description = request.GET['video_description']
         video.video_url = request.GET['video_url']
         video.video_thumbnail = request.GET['video_thumbnail']
         video.video_owner = request.session['session_username']

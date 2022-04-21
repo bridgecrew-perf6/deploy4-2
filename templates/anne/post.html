@@ -1,0 +1,27 @@
+<!-- https://progerhub.com/tutorial/adding-pagination-with-infinite-scroll-in-django -->
+<!-- https://progerhub.com/tutorial/adding-pagination-with-infinite-scroll-in-django -->
+<!-- https://progerhub.com/tutorial/adding-pagination-with-infinite-scroll-in-django -->
+<!-- https://progerhub.com/tutorial/adding-pagination-with-infinite-scroll-in-django -->
+
+
+<div class="videos_list" style="margin: 4vh;">
+    <div>
+
+      <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
+        <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
+      </a>
+      
+    </div>
+    <div class="video_description" style="text-align: justify; height: 7vh; display: flex; justify-content: space-between; margin: 1vh;">
+      <div style="font-size: 2vh;">
+        {{i.video_title}} <br>
+        {{i.video_owner}}
+      </div>
+
+      <div>
+        <img onclick="descFunc(this)" name="{{i.id}}" style="height: 5vh; " src="../../static/anne/icon6.png" alt="">
+      </div>
+    </div>
+
+  </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

@@ -1,24 +1,45 @@
-<div class="">
-    {% for i in obj %}
-      <div class="videos_list" style="margin: 4vh;">
-        <div>
+{% load static %}
 
-          <a href="http://kudos02.pythonanywhere.com/video-player?video_id={{i.id}}">
-            <img style="border-radius: 5%; width: 100%; height: auto" src="{{i.video_thumbnail}}" alt="">
-          </a>
-          
-        </div>
-        <div class="video_description" style="text-align: justify; height: 7vh; display: flex; justify-content: space-between; margin: 1vh;">
-          <div style="font-size: 2vh;">
-            {{i.video_title}} <br>
-            {{i.video_owner}}
-          </div>
+<div class="row news-list">
+  {% for i in obj %}
+      {% include 'anne/post.html' %}
+  {% endfor %}
+</div>
 
-          <div>
-            <img onclick="descFunc(this)" name="{{i.id}}" style="height: 5vh; " src="../../static/anne/icon6.png" alt="">
-          </div>
-        </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-      </div>  
-    {% endfor %}
-    </div>
+<script>
+
+    $(document).ready(function () {
+        window.news_index = 'http://kudos02.pythonanywhere.com/';
+                                      
+        var page = 1;
+        var block_request = false;
+        var end_pagination = false;
+
+        $(window).scroll(function () {
+            var margin = $(document).height() - $(window).height() - 200;
+
+            if ($(window).scrollTop() > margin && end_pagination === false && block_request === false) {
+                block_request = true;
+                page += 1;
+
+                $.ajax({
+                    type: 'GET',
+                    url: window.news_index,
+                    data: {
+                        "page": page
+                    },
+                    success: function (data) {
+                        if (data.end_pagination === true) {
+                            end_pagination = true;
+                        } else {
+                            block_request = false;
+                        }
+                        $('.news-list').append(data.content);
+                    }
+                })
+            }
+        });
+    })
+</script>

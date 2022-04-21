@@ -166,6 +166,9 @@
     <span style="font-size: 3vh; display: block; padding: 4vh;">
       {{my_video.video_title}}
     </span>
+    <span style="font-size: 3vh; display: block; padding: 4vh;">
+      {{my_video.video_description}}
+    </span>
     
     <div>
       <img src="{{my_video.video_owner_thumbnail}}" alt="owner">
@@ -208,7 +211,50 @@
     </div>
 </div>
 
-    {% include "anne/videos_list.html" %}
+    <!-- {% include "anne/videos_list.html" %} -->
+    <div class="row news-list">
+      {% for i in obj %}
+          {% include 'anne/post.html' %}
+      {% endfor %}
+    </div>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+    <script>
+    
+        $(document).ready(function () {
+            window.news_index = 'http://kudos02.pythonanywhere.com/video-player?video_id={{video_id}}';
+                                          
+            var page = 1;
+            var block_request = false;
+            var end_pagination = false;
+    
+            $(window).scroll(function () {
+                var margin = $(document).height() - $(window).height() - 200;
+    
+                if ($(window).scrollTop() > margin && end_pagination === false && block_request === false) {
+                    block_request = true;
+                    page += 1;
+    
+                    $.ajax({
+                        type: 'GET',
+                        url: window.news_index,
+                        data: {
+                            "page": page
+                        },
+                        success: function (data) {
+                            if (data.end_pagination === true) {
+                                end_pagination = true;
+                            } else {
+                                block_request = false;
+                            }
+                            $('.news-list').append(data.content);
+                        }
+                    })
+                }
+            });
+        })
+    </script>
   </div>
 
     {% include "anne/footer.html" %}
