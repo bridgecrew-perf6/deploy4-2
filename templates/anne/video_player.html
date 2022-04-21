@@ -162,11 +162,13 @@
     <span style="font-size: 0.5vh; padding: 1vh;">
       <a href="{{my_video.video_url}}">SEE ON YOUTUBE.COM</a>
     </span>
-    
+    <br>
     <span style="font-size: 1vh; padding: 4vh;">
       {{my_video.video_title}}
     </span>
-    <span style="font-size: 1vh; padding: 4vh;">
+    
+    <p onclick="showDescAndHideDesc()" id="my_div">More</p>
+    <span style="font-size: 1vh; padding: 4vh; display: none;" id="myDiv">
       {{my_video.video_description}}
     </span>
     
@@ -280,6 +282,20 @@
     });
 
 </script>
+
+<script>
+  function showDescAndHideDesc() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+      document.getElementById("my_div").innerHTML = "Less";
+    } else {
+      x.style.display = "none";
+      document.getElementById("my_div").innerHTML = "More";
+    }
+  }
+</script>
+
 <script src="../../static/universal.js"></script>
 <script src="../../static/style.js"></script>
 <script src="../../static/popUp.js"></script> 
